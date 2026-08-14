@@ -1,31 +1,33 @@
 <script lang="ts">
 	import { IMG } from '$lib/images';
+	import ComplianceMock from '$lib/components/products/ComplianceMock.svelte';
 </script>
 
 <svelte:head>
 	<title>ComplianceCall — SymNexus</title>
-	<meta name="description" content="ComplianceCall (Purochem): benchmarks pharmaceutical development against federal regulation. Full audit-trail transparency, built in by design for FDA-regulated teams." />
+	<meta name="description" content="ComplianceCall: benchmarks pharmaceutical development against federal regulation. Full audit-trail transparency, built in by design for FDA-regulated teams." />
 </svelte:head>
 
 <!-- Hero -->
-<section class="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
-	<img src={IMG.complianceDesk} alt="Compliance documentation and regulatory management" class="absolute inset-0 h-full w-full object-cover opacity-40" loading="eager" />
-	<div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 15% 80%, rgba(123,143,232,0.15) 0%, transparent 55%)"></div>
-	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/55 to-slate-950/10"></div>
-	<div class="container-page relative z-10 flex h-full flex-col justify-end pb-20 md:pb-28">
+<section class="relative w-full overflow-hidden bg-slate-950 pt-32 pb-16 md:pt-40 md:pb-20">
+	<div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 15% 0%, rgba(123,143,232,0.12) 0%, transparent 55%)"></div>
+	<div class="container-page relative z-10">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Regulatory Compliance</p>
-			<h1 class="mt-3 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
+			<h1 class="mt-3 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl max-w-3xl">
 				ComplianceCall
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
-				ComplianceCall (Purochem) benchmarks pharmaceutical development against federal regulation — auditable, always current, and built for the teams who answer to FDA and other regulatory bodies.
+				ComplianceCall benchmarks pharmaceutical development against federal regulation — auditable, always current, and built for the teams who answer to FDA and other regulatory bodies.
 			</p>
+			<div class="mt-8 flex flex-wrap gap-4">
+				<a href="/demo" class="btn-hero-primary">Request Demonstration</a>
+				<a href="/compliancecall/pricing" class="btn-hero-secondary">View Pricing</a>
+			</div>
 		</div>
-		<div class="mt-8 flex flex-wrap gap-4" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
-			<a href="/demo" class="btn-hero-primary">Request Demonstration</a>
-			<a href="/compliancecall/pricing" class="btn-hero-secondary">View Pricing</a>
-			<a href="#overview" class="btn-ghost-dark">See how it works <span class="text-white/40">↓</span></a>
+		<div class="mt-12 max-w-2xl" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
+			<ComplianceMock />
+			<p class="mt-3 font-body text-[0.68rem] text-white/25">Illustrative interface preview. Request a demonstration to see the live product.</p>
 		</div>
 	</div>
 </section>
@@ -75,15 +77,13 @@
 	</div>
 </section>
 
-<!-- Image break + quote -->
-<section class="relative h-64 overflow-hidden md:h-80">
-	<img src={IMG.labTeam} alt="Compliance team reviewing regulatory documentation" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-	<div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40"></div>
-	<div class="container-page relative z-10 flex h-full items-center">
-		<div class="reveal max-w-lg">
-			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;ComplianceCall is the only tool we've found that tells us not just what a chemical's current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.&rdquo;</p>
-			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University</p>
-		</div>
+<!-- Pull quote -->
+<section class="relative overflow-hidden border-y border-slate-200/60 bg-slate-950 py-16 md:py-20">
+	<div class="container-page relative z-10">
+		<blockquote class="reveal max-w-2xl font-display text-xl font-normal italic leading-relaxed text-white md:text-2xl">
+			&ldquo;It tells us not just what a chemical's current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.&rdquo;
+		</blockquote>
+		<p class="reveal mt-4 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University · ComplianceCall pilot customer</p>
 	</div>
 </section>
 
@@ -101,7 +101,7 @@
 				{title:'Full audit-trail transparency',  body:'Every action is logged, attributable, and exportable by design — critical trust infrastructure for teams operating under FDA and other regulatory bodies.'},
 				{title:'Document control', body:'Structured document lifecycle management with version history and access logs, built for regulated development teams.'},
 				{title:'Shared modular AI stack',       body:'Runs on the same ingestion, data lake, and fine-tuned-model architecture as FluorocellAI, letting us extend coverage to new jurisdictions without rebuilding.'},
-				{title:'Built for FDA filings',       body:'Purochem\'s regulatory benchmarking is built for teams filing into the FDA process — the majority of the world\'s pharmaceutical applications.'},
+				{title:'Built for FDA filings',       body:'ComplianceCall\'s regulatory benchmarking is built for teams filing into the FDA process — the majority of the world\'s pharmaceutical applications.'},
 			] as feat, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*50}ms;">
 					<div class="mb-3 h-0.5 w-8 rounded-full" style="background:#7b8fe8;"></div>

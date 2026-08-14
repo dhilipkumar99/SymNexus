@@ -16,10 +16,10 @@
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">About SymNexus</p>
 			<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
-				We build AI systems for the regulated enterprise, not the generic platform.
+				The team behind FluorocellAI and ComplianceCall.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
-				Founded on the conviction that regulated industries deserve AI built for their exact workflow — proven first in the laboratory, now expanding globally.
+				We're a small team of engineers and researchers building AI software for cell image analysis and pharmaceutical compliance.
 			</p>
 		</div>
 	</div>
@@ -30,9 +30,9 @@
 	<div class="container-page">
 		<div class="grid gap-16 md:grid-cols-2 md:gap-24 items-center">
 			<div class="reveal">
-				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Our Mission</p>
+				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">What We Do</p>
 				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl lg:text-5xl">
-					Rigour as a design constraint, not an aspiration.
+					We build software domain experts actually use.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
 					Most AI vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly when precision and accountability matter — which is why we chose to prove our AI models first, and train businesses to manage these systems independently.
@@ -66,13 +66,13 @@
 <section class="border-t border-slate-200/60 bg-paper py-24 md:py-32">
 	<div class="container-page">
 		<div class="reveal mb-14 max-w-2xl">
-			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Our Competitive Advantages</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Five principles that govern everything we ship.</h2>
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Why Teams Choose Us</p>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">What makes our software different.</h2>
 		</div>
 		<div class="grid gap-4 sm:grid-cols-2">
 			{#each [
 				{ num: '01', title: 'Team expertise',        body: 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers, led by a neuroscience Ph.D. researcher and a Berkeley-trained operator — built for both the hardware/deployment side and the regulated-science domain side of this problem.' },
-				{ num: '02', title: 'Unique wedge',    body: 'We build domain-native software, validated by the working scientists and compliance professionals who use it — not generic enterprise AI adapted after the fact for the lab. That discipline carries over directly from our founding company, Yashara Biosciences.' },
+				{ num: '02', title: 'Unique wedge',    body: 'We build domain-native software, validated by the working scientists and compliance professionals who use it — not generic enterprise AI adapted after the fact for the lab.' },
 				{ num: '03', title: 'Proprietary data',body: 'Every deployment adds annotated microscopy data and mapped regulatory precedent across FDA — a compounding dataset a generic AI tool cannot replicate.' },
 				{ num: '04', title: 'Flexible architecture',          body: 'One modular AI stack — ingestion, data lake, fine-tuned models, agents, and copilot — powers both products today and lets us add new regulatory jurisdictions or imaging modalities without rebuilding from scratch.' },
 				{ num: '05', title: 'Compliance by design', body: 'Full audit-trail transparency is built into every SymNexus platform by design, not bolted on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.' },
@@ -102,32 +102,6 @@
 	</div>
 </section>
 
-<!-- Commitments -->
-<section class="bg-warm-white py-24 md:py-32">
-	<div class="container-page">
-		<div class="reveal mb-12">
-			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Our Commitments</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">What we will never compromise on.</h2>
-		</div>
-		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-			{#each [
-				{ title: 'No feature bloat',           body: 'We add capabilities when a working scientist or compliance professional cannot do their job without them. Not because a competitor released it, not because a marketing deck demanded it.' },
-				{ title: 'Full audit transparency',    body: 'In regulated environments, the software audit trail is as important as the data. Every action in every SymNexus platform is logged, attributable, and exportable.' },
-				{ title: 'No vendor lock-in',          body: 'Your data is yours. All platforms export to open formats. We provide documented REST APIs and design no proprietary data silos.' },
-				{ title: 'Stability over novelty',     body: 'Regulated workflows cannot be interrupted by disruptive redesigns or breaking API changes. We version everything, and deprecate nothing without multi-year notice.' },
-				{ title: 'No abstraction without cause', body: 'Complexity in regulated software is a liability. Every layer of abstraction must earn its presence by solving a real problem that no simpler design can solve.' },
-				{ title: 'Prove it, then teach it',         body: 'We prove our AI models first, then train businesses to manage these systems independently — not sell a platform and leave the customer to adapt.' },
-			] as v, i}
-				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*50}ms;">
-					<div class="mb-3 h-0.5 w-6 rounded-full bg-crystal-rose"></div>
-					<h4 class="font-heading text-sm font-semibold text-slate-900">{v.title}</h4>
-					<p class="mt-2 font-body text-sm leading-relaxed text-slate-400">{v.body}</p>
-				</div>
-			{/each}
-		</div>
-	</div>
-</section>
-
 <!-- Team -->
 <section class="border-t border-slate-200/60 bg-paper py-24 md:py-32">
 	<div class="container-page">
@@ -151,17 +125,19 @@
 		</div>
 		<div class="reveal grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each [
-				{ name: 'Brent Luker', role: 'Generative AI Software Engineer', note: 'Formerly Zoom · Full-Time' },
-				{ name: 'Sameera Velammuri', role: 'AI/ML Software Engineer', note: 'Formerly Amazon · Full-Time' },
-				{ name: 'Prabhat Jammalamadaka', role: 'Sales Outreach', note: 'Part-Time' },
-				{ name: 'Arshi Saxena', role: 'Product Development & FDE', note: 'Formerly ServiceNow · Part-Time' },
-				{ name: 'Rijul Mahajan', role: 'Front-End Software Engineer', note: 'UC Berkeley · Part-Time' },
-				{ name: 'Varun Singh', role: 'AI/ML Researcher', note: 'Stanford · Part-Time' },
+				{ name: 'Brent Luker', role: 'Generative AI Software Engineer', note: 'Formerly Zoom' },
+				{ name: 'Sameera Velammuri', role: 'AI/ML Software Engineer', note: 'Formerly Amazon' },
+				{ name: 'Prabhat Jammalamadaka', role: 'Sales Outreach', note: '' },
+				{ name: 'Arshi Saxena', role: 'Product Development & FDE', note: 'Formerly ServiceNow' },
+				{ name: 'Rijul Mahajan', role: 'Front-End Software Engineer', note: 'UC Berkeley' },
+				{ name: 'Varun Singh', role: 'AI/ML Researcher', note: 'Stanford' },
 			] as member}
 				<div class="rounded-2xl border border-slate-200/60 bg-white p-6">
 					<h4 class="font-heading text-sm font-semibold text-slate-900">{member.name}</h4>
 					<p class="mt-1 font-body text-sm text-slate-500">{member.role}</p>
-					<p class="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-slate-300">{member.note}</p>
+					{#if member.note}
+						<p class="mt-2 font-mono text-[0.62rem] uppercase tracking-[0.1em] text-slate-300">{member.note}</p>
+					{/if}
 				</div>
 			{/each}
 		</div>

@@ -34,15 +34,20 @@
 	</a>
 
 	<!-- Desktop pill nav -->
-	<div class="nav-pill relative z-10 hidden md:flex">
-		{#each links as link}
-			<a
-				href={link.href}
-				class="nav-link {$page.url.pathname === link.href ? 'nav-link-active' : ''}"
-			>
-				{link.label}
-			</a>
-		{/each}
+	<div class="relative z-10 hidden items-center gap-4 md:flex">
+		<div class="nav-pill flex">
+			{#each links as link}
+				<a
+					href={link.href}
+					class="nav-link {$page.url.pathname === link.href ? 'nav-link-active' : ''}"
+				>
+					{link.label}
+				</a>
+			{/each}
+		</div>
+		<a href="/demo" class="rounded-full border border-white/20 px-4 py-2 font-heading text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:border-white/40 hover:bg-white/5">
+			Log In
+		</a>
 	</div>
 
 	<!-- Mobile hamburger -->
@@ -74,6 +79,15 @@
 					</a>
 				</li>
 			{/each}
+			<li>
+				<a
+					href="/demo"
+					onclick={() => (mobileOpen = false)}
+					class="block rounded-xl border border-white/15 px-4 py-3.5 font-heading text-sm font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-white/5"
+				>
+					Log In
+				</a>
+			</li>
 		</ul>
 	</div>
 {/if}

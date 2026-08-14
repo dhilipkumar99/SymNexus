@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { IMG } from '$lib/images';
+	import FluorocellMock from '$lib/components/products/FluorocellMock.svelte';
 </script>
 
 <svelte:head>
@@ -8,24 +9,25 @@
 </svelte:head>
 
 <!-- Hero -->
-<section class="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
-	<img src={IMG.fluoroHero} alt="Fluorescence microscopy — multi-channel cell imaging" class="absolute inset-0 h-full w-full object-cover opacity-50" loading="eager" />
-	<div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 15% 80%, rgba(64,224,208,0.18) 0%, transparent 55%)"></div>
-	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-slate-950/10"></div>
-	<div class="container-page relative z-10 flex h-full flex-col justify-end pb-20 md:pb-28">
+<section class="relative w-full overflow-hidden bg-slate-950 pt-32 pb-16 md:pt-40 md:pb-20">
+	<div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 15% 0%, rgba(64,224,208,0.12) 0%, transparent 55%)"></div>
+	<div class="container-page relative z-10">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Imaging & Cell Analysis</p>
-			<h1 class="mt-3 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
+			<h1 class="mt-3 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl max-w-3xl">
 				FluorocellAI
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
 				AI-automated cell identification, counting, and analysis for cell and cancer research labs. A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.
 			</p>
+			<div class="mt-8 flex flex-wrap gap-4">
+				<a href="/demo" class="btn-hero-primary">Request Evaluation</a>
+				<a href="/fluorocellai/pricing" class="btn-hero-secondary">View Pricing</a>
+			</div>
 		</div>
-		<div class="mt-8 flex flex-wrap gap-4" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
-			<a href="/demo" class="btn-hero-primary">Request Evaluation</a>
-			<a href="/fluorocellai/pricing" class="btn-hero-secondary">View Pricing</a>
-			<a href="#overview" class="btn-ghost-dark">See how it works <span class="text-white/40">↓</span></a>
+		<div class="mt-12 max-w-2xl" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
+			<FluorocellMock />
+			<p class="mt-3 font-body text-[0.68rem] text-white/25">Illustrative interface preview. Request an evaluation to see the live product.</p>
 		</div>
 	</div>
 </section>
@@ -74,15 +76,13 @@
 	</div>
 </section>
 
-<!-- Image break -->
-<section class="relative h-72 overflow-hidden md:h-96">
-	<img src={IMG.fluoroCells} alt="Deep-field fluorescence microscopy — cellular structures" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-	<div class="absolute inset-0 bg-gradient-to-r from-slate-950/70 to-transparent"></div>
-	<div class="container-page relative z-10 flex h-full items-center">
-		<div class="reveal max-w-md">
-			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.&rdquo;</p>
-			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Cancer-research lab — FluorocellAI customer</p>
-		</div>
+<!-- Pull quote -->
+<section class="relative overflow-hidden border-y border-slate-200/60 bg-slate-950 py-16 md:py-20">
+	<div class="container-page relative z-10">
+		<blockquote class="reveal max-w-2xl font-display text-xl font-normal italic leading-relaxed text-white md:text-2xl">
+			&ldquo;A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.&rdquo;
+		</blockquote>
+		<p class="reveal mt-4 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Cancer-research lab — FluorocellAI pilot customer</p>
 	</div>
 </section>
 
@@ -128,7 +128,7 @@
 			] as uc, i}
 				<div class="reveal group rounded-2xl border border-slate-200/60 overflow-hidden bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*60}ms;">
 					<div class="relative h-36 overflow-hidden">
-						<img src={uc.img} alt={uc.role} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" loading="lazy" />
+						<img src={uc.img} alt="" aria-hidden="true" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80" loading="lazy" />
 						<div class="absolute inset-0 bg-gradient-to-t from-slate-950/60 to-transparent"></div>
 					</div>
 					<div class="p-5">
