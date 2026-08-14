@@ -1,6 +1,6 @@
 <svelte:head>
-	<title>Products — Yashara Biosciences</title>
-	<meta name="description" content="The Yashara Biosciences product suite: FluorocellAI and ComplianceCall." />
+	<title>Products — SymNexus</title>
+	<meta name="description" content="The SymNexus product suite: FluorocellAI and ComplianceCall — domain-native AI for regulated industries." />
 </svelte:head>
 
 <!-- Hero -->
@@ -13,7 +13,7 @@
 			Distinct disciplines.<br />One standard of rigour.
 		</h1>
 		<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400 md:text-lg">
-			Each platform addresses a distinct domain of laboratory operations — sharing a common design philosophy: exactitude over convenience, transparency over opacity, durability over novelty.
+			Each platform addresses a distinct regulated domain — sharing a common design philosophy: domain-native over generic, transparency over opacity, durability over novelty.
 		</p>
 	</div>
 </section>
@@ -26,21 +26,19 @@
 				<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Imaging & Cell Analysis</p>
 				<h2 class="mt-3 font-display text-4xl font-normal italic leading-tight text-slate-900 md:text-5xl">FluorocellAI</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
-					High-throughput AI cell labeling and segmentation, integrating natively with ImageJ, Fiji, OMERO, and CellProfiler. Institutional-grade segmentation accuracy — nucleus detection, whole-cell boundary delineation, and multi-channel fluorophore analysis — at a cost accessible to independent research groups.
+					FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					The platform integrates as a native plugin within ImageJ and Fiji, preserving the analytical environment that cell biology laboratories have built over decades. For high-content screening, batch pipelines operate autonomously with automated QC flagging, producing output compatible with KNIME, R, and CellProfiler Analyst without additional format conversion.
+					A cell-analysis workflow that once took three to four days of manual cross-referencing — slide prep, manual counting, manual QC, and write-up — compresses to a same-day first pass. Slide prep and imaging stay unchanged; automated segmentation and counting run in minutes instead of days, with automatic QC and an audit trail behind every result.
 				</p>
 				<ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
 					{#each [
-						'Transformer + CNN ensemble segmentation model',
-						'DAPI, GFP, RFP, and custom multi-channel support',
-						'>10,000 cells/hour batch processing throughput',
-						'3D volume segmentation for confocal & light-sheet',
-						'ImageJ/Fiji native plugin & OMERO server integration',
-						'96-well and 384-well plate batch automation',
-						'KNIME, R, and CellProfiler Analyst compatibility',
-						'Automated QC flagging on batch runs',
+						'Automated segmentation & counting, in minutes',
+						'Automatic QC / built-in audit trail',
+						'Same-day reporting, unchanged slide prep',
+						'Validated by working cell biologists',
+						'Fine-tuned models on proprietary annotated data',
+						'REST API for lab pipeline integration',
 					] as feat}
 						<li class="flex items-center gap-2 font-body text-xs text-slate-400">
 							<span class="h-1.5 w-1.5 flex-shrink-0 rounded-full" style="background:#40e0d0;"></span>
@@ -56,14 +54,25 @@
 			<div class="reveal md:col-span-2">
 				<div class="rounded-2xl border border-slate-200/60 overflow-hidden bg-white">
 					<div class="border-b border-slate-100 px-6 py-4">
-						<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-slate-300">Integrations</span>
+						<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-slate-300">Before / After</span>
 					</div>
-					<div class="grid grid-cols-2 gap-px bg-slate-100">
-						{#each ['ImageJ','Fiji','OMERO','CellProfiler','KNIME','R','HDF5','REST API'] as intg}
-							<div class="flex items-center justify-center bg-white px-4 py-5 text-center">
-								<span class="font-heading text-[0.78rem] font-semibold text-slate-700">{intg}</span>
-							</div>
-						{/each}
+					<div class="grid grid-cols-2 divide-x divide-slate-100">
+						<div class="px-5 py-6">
+							<p class="font-mono text-[0.6rem] uppercase tracking-[0.1em] text-slate-400 mb-3">Before</p>
+							<ul class="space-y-3 font-body text-xs text-slate-500">
+								<li>Manual counting: 1–2 days</li>
+								<li>Manual QC / re-count: ~1 day</li>
+								<li>Reporting: ~1 day</li>
+							</ul>
+						</div>
+						<div class="px-5 py-6">
+							<p class="font-mono text-[0.6rem] uppercase tracking-[0.1em] text-teal-600 mb-3">With FluorocellAI</p>
+							<ul class="space-y-3 font-body text-xs text-slate-700">
+								<li>Automated counting: minutes</li>
+								<li>QC / audit trail: automatic</li>
+								<li>Reporting: same day</li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -82,21 +91,19 @@
 				<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Regulatory Compliance</p>
 				<h2 class="mt-3 font-display text-4xl font-normal italic leading-tight text-slate-900 md:text-5xl">ComplianceCall</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
-					End-to-end CLIA compliance management for clinical and research laboratories. Personnel credentialing, quality control scheduling, document control with e-signatures, instrument lifecycle management, CMS-116 licensing, and real-time CLIA Federal Register integration — unified in a single, continuously auditable platform.
+					ComplianceCall (Purochem) benchmarks pharmaceutical development against federal regulation, unified in a single, continuously auditable platform — built for the teams who answer to FDA and other regulatory bodies.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					The platform maintains live connections to the CLIA Federal Register and the FDA CLIA test database, ensuring that changes to regulatory requirements surface automatically. Technical Consultants overseeing multiple facilities manage all client laboratories from a single account with consolidated compliance analytics.
+					The platform tracks not just a chemical's current hazard category, but what it used to be and why it changed — the historical record regulatory and EHS auditors ask for. Full audit-trail transparency is built in by design, not bolted on after the fact.
 				</p>
 				<ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
 					{#each [
-						'21 integrated CLIA compliance modules',
-						'Live FDA test database & Federal Register',
-						'Multi-laboratory consulting company accounts',
-						'DTag prevention and CLIA survey preparation',
-						'Personnel credentialing & competency tracking',
-						'Document control with e-signatures',
-						'Instrument lifecycle & calibration management',
-						'CMS-116 laboratory licensing workflows',
+						'Live federal regulatory benchmarking',
+						'Full audit-trail transparency by design',
+						'Historical hazard category tracking',
+						'Built for FDA-regulated development teams',
+						'One modular AI stack shared with FluorocellAI',
+						'REST API for compliance workflow integration',
 					] as feat}
 						<li class="flex items-center gap-2 font-body text-xs text-slate-400">
 							<span class="h-1.5 w-1.5 flex-shrink-0 rounded-full" style="background:#7b8fe8;"></span>
@@ -112,12 +119,13 @@
 			<div class="reveal md:col-span-2 md:order-1">
 				<div class="rounded-2xl border border-slate-200/60 overflow-hidden bg-white">
 					<div class="border-b border-slate-100 px-6 py-4">
-						<span class="font-mono text-[0.6rom] font-medium uppercase tracking-[0.18em] text-slate-300">Integrations</span>
+						<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-slate-300">Market</span>
 					</div>
 					<div class="grid grid-cols-2 gap-px bg-slate-100">
-						{#each ['FDA CLIA DB','Federal Register','CMS-116','OSHA HCS','CLIA Online','REST API'] as intg}
-							<div class="flex items-center justify-center bg-white px-4 py-5 text-center">
-								<span class="font-heading text-[0.75rem] font-semibold text-slate-700">{intg}</span>
+						{#each [{n:'$2.2–2.4B',l:'Pharma compliance software market'},{n:'$1.1–1.5B',l:'AI-in-microscopy market'},{n:'$60M+',l:'Asia long-term addressable market'},{n:'FDA',l:'Majority of filings, globally'}] as m}
+							<div class="flex flex-col items-center justify-center gap-1 bg-white px-4 py-6 text-center">
+								<span class="font-heading text-base font-semibold text-slate-800">{m.n}</span>
+								<span class="font-body text-[0.62rem] text-slate-400">{m.l}</span>
 							</div>
 						{/each}
 					</div>
@@ -133,8 +141,8 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Ready to see these platforms in your laboratory context?</h2>
-			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific staff conducts demonstrations tailored to your specific workflow — not a generic product tour.</p>
+			<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Ready to see these platforms in your context?</h2>
+			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow — not a generic product tour.</p>
 			<div class="mt-8 flex flex-wrap justify-center gap-4">
 				<a href="/contact" class="btn-hero-primary">Request a Demonstration</a>
 			</div>

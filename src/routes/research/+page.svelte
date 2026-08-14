@@ -1,114 +1,10 @@
 <script lang="ts">
 	import { IMG } from '$lib/images';
-
-	const publications = [
-		{
-			journal: 'Nature Methods',
-			journalLetter: 'N',
-			accentHex: '#40e0d0',
-			date: 'March 2024',
-			title: 'Transformer-CNN ensemble architectures for generalised fluorescence microscopy cell segmentation',
-			authors: 'Yashara Biosciences Research Division',
-			abstract: 'We present a hybrid architecture combining vision transformer backbones with convolutional upsampling decoders for cell segmentation in multi-channel fluorescence microscopy. Evaluated across 14 diverse cell types and 6 imaging modalities, the model achieves state-of-the-art segmentation accuracy while maintaining practical inference throughput on standard laboratory hardware.',
-			tags: ['Cell Segmentation', 'Deep Learning', 'Fluorescence Microscopy'],
-			href: '#',
-		},
-		{
-			journal: 'Bioinformatics',
-			journalLetter: 'B',
-			accentHex: '#40e0d0',
-			date: 'November 2023',
-			title: 'Automated quality control in high-content fluorescence screening: a statistical framework for per-well outlier detection',
-			authors: 'Yashara Biosciences Research Division',
-			abstract: 'High-content screening generates large volumes of imaging data with variable per-well quality. We describe a statistical framework for automated QC flagging that identifies illumination artifacts, focus drift, edge effects, and cell confluency deviations without manual review, reducing analyst time by 78% in a prospective evaluation across five pharmaceutical screening campaigns.',
-			tags: ['High-Content Screening', 'Quality Control', 'Statistical Methods'],
-			href: '#',
-		},
-		{
-			journal: 'Journal of Regulatory Science',
-			journalLetter: 'J',
-			accentHex: '#7b8fe8',
-			date: 'August 2023',
-			title: 'Regulatory information latency in clinical laboratory CLIA compliance: quantifying the gap between Federal Register publication and laboratory awareness',
-			authors: 'Yashara Biosciences Regulatory Research Division',
-			abstract: 'We surveyed 412 clinical laboratories across 38 states to quantify the time elapsed between CLIA regulatory changes published in the Federal Register and laboratory awareness of those changes. The median latency was 47 days; 23% of surveyed laboratories were unaware of changes more than six months after publication. We describe the implications for compliance risk and propose a real-time regulatory monitoring framework.',
-			tags: ['CLIA Compliance', 'Regulatory Policy', 'Laboratory Management'],
-			href: '#',
-		},
-		{
-			journal: 'Cell Systems',
-			journalLetter: 'C',
-			accentHex: '#40e0d0',
-			date: 'June 2023',
-			title: '3D volumetric cell segmentation in light-sheet fluorescence microscopy using multi-scale transformer networks',
-			authors: 'Yashara Biosciences Research Division',
-			abstract: 'Volumetric segmentation of cells in light-sheet fluorescence microscopy remains computationally demanding and methodologically inconsistent across research groups. We describe a multi-scale transformer architecture trained on a curated dataset of 1.2 million annotated 3D cell instances across eight model organisms, achieving reproducible segmentation across diverse tissue types with a processing rate compatible with routine research use.',
-			tags: ['Light-Sheet Microscopy', '3D Segmentation', 'Transformer Networks'],
-			href: '#',
-		},
-	];
-
-	const posts = [
-		{
-			date: 'May 2024',
-			tag: 'Engineering',
-			tagColor: '#40e0d0',
-			title: 'Why we chose a transformer-CNN hybrid over pure transformer architectures for cell segmentation',
-			excerpt: 'The case for hybrid architectures in biological image analysis — balancing global context modelling with the inductive biases that make CNNs effective on natural images.',
-			img: IMG.fluoroHero,
-			readTime: '8 min read',
-		},
-		{
-			date: 'April 2024',
-			tag: 'Science',
-			tagColor: '#40e0d0',
-			title: 'The cell segmentation accuracy problem: why inter-annotator agreement matters more than benchmark performance',
-			excerpt: 'A critical look at how the field measures segmentation accuracy, and why the metrics that dominate benchmark leaderboards can mislead real-world evaluation decisions.',
-			img: IMG.purpleCells,
-			readTime: '11 min read',
-		},
-		{
-			date: 'February 2024',
-			tag: 'Compliance',
-			tagColor: '#7b8fe8',
-			title: 'The 47-day problem: how long does it take your laboratory to learn about a CLIA regulatory change?',
-			excerpt: 'A summary of our survey of 412 clinical laboratories — and what the median 47-day regulatory awareness latency means for compliance risk.',
-			img: IMG.complianceDesk,
-			readTime: '6 min read',
-		},
-		{
-			date: 'January 2024',
-			tag: 'Engineering',
-			tagColor: '#40e0d0',
-			title: 'Building ImageJ plugins that feel native: lessons from two years of FluorocellAI integration work',
-			excerpt: 'What we learned building a deep learning segmentation plugin that integrates invisibly into the ImageJ ecosystem — and the traps we fell into along the way.',
-			img: IMG.microscopeSetup,
-			readTime: '14 min read',
-		},
-		{
-			date: 'December 2023',
-			tag: 'Science',
-			tagColor: '#40e0d0',
-			title: 'Light-sheet microscopy segmentation is a different problem than confocal — here\'s why',
-			excerpt: 'The structural differences between light-sheet and confocal fluorescence data, and why a model trained on one does not generalise well to the other without explicit architecture choices.',
-			img: IMG.cellGrowth,
-			readTime: '9 min read',
-		},
-		{
-			date: 'October 2023',
-			tag: 'Compliance',
-			tagColor: '#7b8fe8',
-			title: 'DTag prevention vs. DTag remediation: the asymmetric economics of CLIA compliance',
-			excerpt: 'Why deficiency tags are dramatically more expensive to remediate than to prevent — and what that arithmetic means for how laboratories should allocate compliance resources.',
-			img: IMG.labWork,
-			readTime: '7 min read',
-		},
-	];
 </script>
 
 <svelte:head>
-	<title>Research — Yashara Biosciences</title>
-	<meta name="description" content="Publications, technical writing, and scientific commentary from the Yashara Biosciences research and engineering teams." />
+	<title>Research — SymNexus</title>
+	<meta name="description" content="Case studies, market research, and the thesis behind SymNexus — domain-native AI systems for regulated industries." />
 </svelte:head>
 
 <!-- Hero -->
@@ -118,75 +14,130 @@
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Research</p>
 		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
-			What we're working on and what we've learned.
+			What we've proven, and why now.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
-			Publications from our research division, technical writing from our engineering team, and scientific commentary on the problems we find most interesting.
+			Case studies from our deployments, the market thesis behind SymNexus, and why domain-native AI is becoming possible for industries that could never justify building it before.
 		</p>
 	</div>
 </section>
 
-<!-- Publications -->
+<!-- Proven case: FluorocellAI -->
+<section class="bg-warm-white py-20 md:py-28">
+	<div class="container-page">
+		<div class="reveal mb-10">
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Proven Case</p>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">FluorocellAI, in a cancer-research lab.</h2>
+			<p class="mt-4 max-w-2xl font-body text-sm leading-relaxed text-slate-500">A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. Fluorocell compresses manual review of cells from a week of manual cross-referencing to a same-day first pass.</p>
+		</div>
+		<div class="reveal grid grid-cols-1 gap-3 md:grid-cols-2">
+			<div class="rounded-2xl border border-slate-200/60 bg-slate-700 p-6 text-white">
+				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-white/60 mb-4">Before FluorocellAI</p>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+					{#each [['Slide prep & imaging','Same'],['Manual counting','1–2 days'],['Manual QC / re-count','~1 day'],['Reporting & write-up','~1 day']] as [label, val]}
+						<div class="rounded-xl bg-white/10 p-3 text-center">
+							<p class="font-body text-[0.65rem] text-white/60">{label}</p>
+							<p class="mt-1 font-heading text-sm font-semibold">{val}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="rounded-2xl border p-6 text-white" style="background:#0e5e5c;">
+				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-white/70 mb-4">With FluorocellAI</p>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+					{#each [['Slide prep & imaging','Unchanged'],['Automated counting','Minutes'],['Automated QC','Automatic'],['Reporting','Same day']] as [label, val]}
+						<div class="rounded-xl bg-white/10 p-3 text-center">
+							<p class="font-body text-[0.65rem] text-white/70">{label}</p>
+							<p class="mt-1 font-heading text-sm font-semibold">{val}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</div>
+		<p class="reveal mt-6 max-w-2xl font-body text-sm italic leading-relaxed text-slate-400">Net effect: a workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.</p>
+	</div>
+</section>
+
+<!-- Example case: Textile production -->
+<section class="border-t border-slate-200/60 bg-paper py-20 md:py-28">
+	<div class="container-page">
+		<div class="reveal mb-10">
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Example Case</p>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Textile production — the same problem, applied elsewhere.</h2>
+			<p class="mt-4 max-w-2xl font-body text-sm leading-relaxed text-slate-500">Every roll of fabric is checked for flaws before it can be cut into clothing. Today that check is done by eye — it's slow, and tired inspectors miss things. It's the same kind of visual-detection problem FluorocellAI already solves for cell analysis, applied to fabric instead.</p>
+		</div>
+		<div class="reveal grid grid-cols-1 gap-3 md:grid-cols-2">
+			<div class="rounded-2xl border border-slate-200/60 bg-slate-700 p-6 text-white">
+				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-white/60 mb-1">Before SymNexus</p>
+				<p class="font-mono text-[0.65rem] text-white/50 mb-4">Total: 40 min/roll</p>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+					{#each [['Load the roll','10 min'],['Check for flaws','15 min'],['Score the flaws','5 min'],['Sign off & log it','10 min']] as [label, val]}
+						<div class="rounded-xl bg-white/10 p-3 text-center">
+							<p class="font-body text-[0.65rem] text-white/60">{label}</p>
+							<p class="mt-1 font-heading text-sm font-semibold">{val}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="rounded-2xl border p-6 text-white" style="background:#0e5e5c;">
+				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-white/70 mb-1">With SymNexus</p>
+				<p class="font-mono text-[0.65rem] text-white/60 mb-4">Total: 17 min/roll</p>
+				<div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
+					{#each [['Load the roll','10 min'],['Check (AI vision)','5 min'],['Score the flaws','<1 min'],['Sign off & log it','1 min']] as [label, val]}
+						<div class="rounded-xl bg-white/10 p-3 text-center">
+							<p class="font-body text-[0.65rem] text-white/70">{label}</p>
+							<p class="mt-1 font-heading text-sm font-semibold">{val}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+		</div>
+		<p class="reveal mt-6 max-w-2xl font-body text-sm italic leading-relaxed text-slate-400">Why it matters: standard practice only inspects about 10% of fabric rolls by hand — inspection is too slow to check everything, so most rolls ship unchecked. A mid-size mill producing 10,000 meters a day needs roughly 25 hours of manual inspection to cover it all — more than three shifts. Automated inspection finishes that same 10,000 meters in about 8 hours, inside a single shift — which is what makes checking 100% of rolls possible instead of just 10%.</p>
+	</div>
+</section>
+
+<!-- Why now -->
 <section class="bg-warm-white py-20 md:py-28">
 	<div class="container-page">
 		<div class="reveal mb-12">
-			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Peer-Reviewed Publications</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">From the research division.</h2>
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Why Now</p>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Three forces converging at once.</h2>
 		</div>
-		<div class="space-y-4">
-			{#each publications as pub, i}
-				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*60}ms;">
-					<div class="flex flex-wrap items-start justify-between gap-4">
-						<div class="flex items-center gap-3">
-							<span class="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg font-display text-base italic font-normal text-slate-950" style="background:{pub.accentHex};">{pub.journalLetter}</span>
-							<div>
-								<span class="font-heading text-[0.72rem] font-semibold text-slate-500">{pub.journal}</span>
-								<span class="ml-2 font-mono text-[0.6rem] text-slate-300">{pub.date}</span>
-							</div>
-						</div>
-						<div class="flex flex-wrap gap-1.5">
-							{#each pub.tags as tag}
-								<span class="rounded-full border border-slate-200 px-2.5 py-0.5 font-mono text-[0.58rem] text-slate-400">{tag}</span>
-							{/each}
-						</div>
-					</div>
-					<h3 class="mt-4 font-display text-lg font-normal italic text-slate-900 leading-snug">{pub.title}</h3>
-					<p class="mt-1 font-mono text-[0.62rem] text-slate-400">{pub.authors}</p>
-					<p class="mt-3 font-body text-sm leading-relaxed text-slate-400">{pub.abstract}</p>
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+			{#each [
+				{ num: '1', title: 'Technology', body: 'AI models have, in the last two years, matured enough to reliably handle unstructured, sensitive data — images, dense regulatory text — work that used to need large specialized teams. A small, senior team can now build and deploy custom AI for almost any domain, not just the ones with existing off-the-shelf tools.' },
+				{ num: '2', title: 'Market', body: 'Every industry is under pressure to adopt AI, but few want to become a software company to do it. Businesses increasingly want to own a working AI system, built for their exact process — the way they own equipment — rather than rent a generic tool indefinitely. Asia adds a second dimension: its industries are scaling globally and need infrastructure built to scale.' },
+				{ num: '3', title: 'Data', body: 'Every deployment — in any industry — adds proprietary, validated data specific to that workflow. That compounding advantage has served to make our AI models more robust than our competitors and also allowed us to develop proprietary "World Models," which model an extraordinarily high number of factors to provide additional insight to our customers regarding their data.' },
+			] as item}
+				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-7">
+					<span class="flex h-8 w-8 items-center justify-center rounded-full font-heading text-xs font-bold text-white" style="background:#0e5e5c;">{item.num}</span>
+					<h3 class="mt-4 font-heading text-base font-semibold text-slate-900">{item.title}</h3>
+					<p class="mt-2 font-body text-sm leading-relaxed text-slate-400">{item.body}</p>
 				</div>
 			{/each}
 		</div>
 	</div>
 </section>
 
-<!-- Blog / Notes -->
+<!-- Market size -->
 <section class="border-t border-slate-200/60 bg-paper py-20 md:py-28">
 	<div class="container-page">
 		<div class="reveal mb-12">
-			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Technical Writing</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">From the engineering and science teams.</h2>
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Market Size</p>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">The market we can capture.</h2>
+			<p class="mt-3 max-w-xl font-body text-xs italic leading-relaxed text-slate-400">Estimates for the market we can capture, not the full global TAM these figures round up to. Figures are third-party estimates.</p>
 		</div>
-		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-			{#each posts as post, i}
-				<article class="reveal group flex flex-col rounded-2xl border border-slate-200/60 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg" style="transition-delay:{i*60}ms;">
-					<div class="relative h-44 overflow-hidden flex-shrink-0">
-						<img src={post.img} alt={post.title} class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-85" loading="lazy" />
-						<div class="absolute inset-0 bg-gradient-to-t from-slate-950/50 to-transparent"></div>
-						<span class="absolute bottom-3 left-4 font-mono text-[0.58rem] font-medium uppercase tracking-[0.14em]" style="color:{post.tagColor};">{post.tag}</span>
-					</div>
-					<div class="flex flex-1 flex-col p-6">
-						<div class="mb-3 flex items-center gap-2">
-							<span class="font-mono text-[0.6rem] text-slate-300">{post.date}</span>
-							<span class="text-slate-200">·</span>
-							<span class="font-mono text-[0.6rem] text-slate-300">{post.readTime}</span>
-						</div>
-						<h3 class="font-display text-base font-normal italic leading-snug text-slate-900 flex-1">{post.title}</h3>
-						<p class="mt-2 font-body text-xs leading-relaxed text-slate-400">{post.excerpt}</p>
-						<div class="mt-5 font-heading text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-crystal-rose transition-colors group-hover:text-crystal-blush">
-							Read more →
-						</div>
-					</div>
-				</article>
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+			{#each [
+				{ label: 'Current Addressed Market', val: '$1.1M – $1.5M', body: 'AI-powered microscopy & cell-image-analysis tools for U.S. cancer-research institutes, CROs, and pharma/biotech R&D.' },
+				{ label: 'US Market — Mid-Term', val: '$6M – $7M', body: 'Cell-image-analysis AI plus pharmaceutical compliance software, as ComplianceCall expands across the drug-development lifecycle.' },
+				{ label: 'Asia — Long-Term', val: '$60M+', body: 'SymNexus as an AI infrastructure layer across Asia\'s pharmaceutical market plus adjacent regulated industries — medtech, diagnostics, agrochemicals — globally.' },
+			] as m, i}
+				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-7" style="transition-delay:{i*60}ms;">
+					<p class="font-heading text-[0.7rem] font-semibold uppercase tracking-[0.1em] text-slate-400">{m.label}</p>
+					<p class="mt-2 font-display text-3xl font-normal italic text-slate-900">{m.val}</p>
+					<p class="mt-3 font-body text-sm leading-relaxed text-slate-400">{m.body}</p>
+				</div>
 			{/each}
 		</div>
 	</div>
@@ -198,8 +149,8 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-2xl font-normal italic text-white md:text-3xl">Interested in collaborating on research?</h2>
-			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">We collaborate with academic research groups, imaging core facilities, and clinical laboratories on studies relevant to our platforms.</p>
+			<h2 class="font-display text-2xl font-normal italic text-white md:text-3xl">Interested in a similar case for your industry?</h2>
+			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">We build domain-native AI for regulated and complex-workflow sectors — from cell biology and pharma to textiles and beyond.</p>
 			<div class="mt-6 flex flex-wrap justify-center gap-4">
 				<a href="/contact" class="btn-hero-primary">Get in touch</a>
 			</div>

@@ -3,8 +3,8 @@
 </script>
 
 <svelte:head>
-	<title>FluorocellAI — Yashara Biosciences</title>
-	<meta name="description" content="FluorocellAI: high-throughput AI cell labeling and segmentation for fluorescence microscopy. Native ImageJ/Fiji integration. Transformer + CNN ensemble." />
+	<title>FluorocellAI — SymNexus</title>
+	<meta name="description" content="FluorocellAI: AI-automated cell identification, counting, and analysis for cell and cancer research labs. A same-day first pass, without changing how you prepare or image samples." />
 </svelte:head>
 
 <!-- Hero -->
@@ -19,7 +19,7 @@
 				FluorocellAI
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
-				Automated cell segmentation at research-grade fidelity. The ImageJ workflow your lab already trusts — augmented with transformer-based AI inference that runs at more than 10,000 cells per hour.
+				AI-automated cell identification, counting, and analysis for cell and cancer research labs. A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.
 			</p>
 		</div>
 		<div class="mt-8 flex flex-wrap gap-4" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
@@ -37,13 +37,13 @@
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Platform Overview</p>
 				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
-					The accuracy you couldn't achieve manually. The workflow you already trust.
+					The accuracy you couldn't achieve manually, at same-day turnaround.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
-					FluorocellAI integrates as a native plugin within ImageJ and Fiji, preserving the analytical environment your laboratory has built over years of accumulated macros, scripts, and measurement pipelines. The manual annotation step is replaced with AI inference — everything downstream remains intact.
+					FluorocellAI slots into the workflow your lab already runs — slide prep and imaging stay unchanged. What used to be one to two days of manual counting and annotation, plus a further day each of manual QC and reporting, becomes minutes of automated segmentation and counting with an automatic QC and audit trail behind it.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					For high-content screening — 96-well and 384-well plate formats — batch pipelines operate autonomously with automated QC flagging, producing output compatible with KNIME, R, and CellProfiler Analyst without format conversion.
+					Built on our proprietary machine learning models and validated by working cell biologists — not shipped generic and adapted after the fact. Every deployment adds annotated microscopy data back into our proprietary dataset, compounding accuracy over time.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/demo" class="btn-primary">Request Evaluation</a>
@@ -54,13 +54,12 @@
 			<div class="reveal rounded-2xl overflow-hidden border border-slate-200/60" style="background:#0f1e20;">
 				<div class="border-b border-white/5 px-6 py-4 flex items-center justify-between">
 					<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-white/30">Analysis Pipeline</span>
-					<span class="rounded-full border border-white/10 px-2 py-0.5 font-mono text-[0.55rem] text-white/20">v2.4</span>
 				</div>
 				{#each [
-					{step:'01', title:'Image Ingestion',   detail:'TIFF, CZI, LIF, ND2 — direct from acquisition software or OMERO server'},
-					{step:'02', title:'Preprocessing',     detail:'Illumination correction, background subtraction, channel normalisation'},
-					{step:'03', title:'AI Inference',      detail:'Transformer + CNN ensemble — nucleus, boundary, and marker localisation'},
-					{step:'04', title:'QC & Export',       detail:'ROI Manager, Results table, CSV, HDF5 — within the standard ImageJ environment'},
+					{step:'01', title:'Slide Prep & Imaging',   detail:'Unchanged — FluorocellAI works with your existing imaging setup'},
+					{step:'02', title:'Automated Segmentation', detail:'Cell identification and counting, in minutes rather than days'},
+					{step:'03', title:'Automated QC',           detail:'Audit trail generated automatically behind every result'},
+					{step:'04', title:'Reporting',              detail:'Same-day write-up, ready for downstream analysis'},
 				] as s, i}
 					<div class="flex items-start gap-4 px-6 py-5 {i < 3 ? 'border-b border-white/[0.05]' : ''}">
 						<span class="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-[0.55rem] font-bold text-slate-950" style="background:#40e0d0;">{s.step}</span>
@@ -81,8 +80,8 @@
 	<div class="absolute inset-0 bg-gradient-to-r from-slate-950/70 to-transparent"></div>
 	<div class="container-page relative z-10 flex h-full items-center">
 		<div class="reveal max-w-md">
-			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;Segmentation accuracy indistinguishable from expert manual annotation in our internal benchmarking.&rdquo;</p>
-			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Dr. M. Kowalski — Senior Research Scientist, Cell Biology</p>
+			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.&rdquo;</p>
+			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Cancer-research lab — FluorocellAI customer</p>
 		</div>
 	</div>
 </section>
@@ -96,12 +95,12 @@
 		</div>
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each [
-				{title:'Multi-channel fluorophore analysis', body:'DAPI, GFP, RFP, CY3, CY5, and user-defined custom channel configurations with per-channel threshold tuning and crosstalk correction.'},
-				{title:'Nucleus & whole-cell segmentation',  body:'Simultaneous nucleus detection and whole-cell boundary delineation with configurable expand-from-nucleus distance parameters.'},
-				{title:'3D volume segmentation',            body:'Full volumetric cell segmentation for confocal z-stacks and light-sheet acquisitions with object splitting and merging.'},
-				{title:'High-content screening',            body:'96-well and 384-well plate batch automation with per-well QC metrics, automatic outlier flagging, and plate-level visualisations.'},
-				{title:'Batch throughput at scale',         body:'Process more than 10,000 cells per hour with GPU acceleration. Scales to institutional HPC clusters via distributed batch queues.'},
-				{title:'Downstream compatibility',          body:'Output directly to ImageJ ROI Manager, Results table, CSV, HDF5, and CellProfiler-compatible label maps — no format conversion required.'},
+				{title:'Automated segmentation & counting', body:'Cell identification and counting that took one to two days manually now runs in minutes, matching expert-level annotation.'},
+				{title:'Automatic QC & audit trail',  body:'Every result carries an automatic QC pass and a built-in audit trail — no separate manual re-count step required.'},
+				{title:'Same-day reporting',            body:'Write-up and reporting generate automatically, ready for downstream analysis the same day imaging completes.'},
+				{title:'Unchanged slide prep',            body:'FluorocellAI works with your existing imaging setup — slide prep and imaging are not disrupted by adoption.'},
+				{title:'Compounding proprietary data',         body:'Every deployment adds annotated microscopy data back into our proprietary dataset, a compounding advantage a generic AI tool cannot replicate.'},
+				{title:'Validated by working scientists',          body:'Built in close collaboration with cancer-research labs and academic cell-biology cores — not shipped generic and adapted after the fact.'},
 			] as feat, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*50}ms;">
 					<div class="mb-3 h-0.5 w-8 rounded-full" style="background:#40e0d0;"></div>
@@ -122,10 +121,10 @@
 		</div>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 			{#each [
-				{role:'Cell Biology Labs',         img:IMG.labEquipment, desc:'Reduce manual annotation from days to hours for multi-well plate screens. Publish with confidence knowing segmentation accuracy matches peer-reviewed benchmarks.'},
-				{role:'Core Imaging Facilities',   img:IMG.microscopeSetup, desc:'Offer AI-assisted segmentation as a facility service. Batch-process client images without disrupting existing ImageJ/Fiji workflows.'},
-				{role:'Pharmaceutical CROs',       img:IMG.labSamples, desc:'Scale high-content screening throughput without proportionally scaling headcount. Automated QC flags maintain data integrity across large cohorts.'},
-				{role:'Academic Research Groups',  img:IMG.phytoplankton, desc:'Access institutional-grade segmentation accuracy on an NIH R01 budget. No HPC infrastructure required — runs on standard research workstations.'},
+				{role:'Cancer-Research Institutes',    img:IMG.labEquipment, desc:'Compress cell-analysis turnaround from days to a same-day first pass, without changing established imaging protocols.'},
+				{role:'Academic Cell-Biology Cores',   img:IMG.microscopeSetup, desc:'Offer AI-assisted counting and analysis as a core facility service, integrated into existing lab workflows.'},
+				{role:'CROs & Pharma/Biotech R&D',     img:IMG.labSamples, desc:'Scale cell-analysis throughput across client programs without proportionally scaling headcount.'},
+				{role:'Regulatory Affairs Teams',      img:IMG.phytoplankton, desc:'Rely on automatic QC and a built-in audit trail for cell-analysis data that supports regulatory submissions.'},
 			] as uc, i}
 				<div class="reveal group rounded-2xl border border-slate-200/60 overflow-hidden bg-white transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*60}ms;">
 					<div class="relative h-36 overflow-hidden">

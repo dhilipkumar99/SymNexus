@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Privacy Policy — Yashara Biosciences</title>
+	<title>Privacy Policy — SymNexus</title>
 </svelte:head>
 
 <section class="relative py-20" style="background:#0B1F3A;">
@@ -16,7 +16,7 @@
 		<div class="space-y-8 text-sm leading-relaxed text-neutral-600">
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Information We Collect</h2>
-				<p>Yashara Biosciences collects information you provide when you contact us, request a demonstration, or use our products. This includes name, email address, organization, and job title. We collect usage data from our software platforms to improve product functionality and reliability.</p>
+				<p>SymNexus collects information you provide when you contact us, request a demonstration, or use our products. This includes name, email address, organization, and job title. We collect usage data from our software platforms to improve product functionality and reliability.</p>
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">How We Use Your Information</h2>
@@ -24,11 +24,11 @@
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Data Security</h2>
-				<p>We implement industry-standard security measures including encryption in transit (TLS 1.3), encryption at rest (AES-256), and access controls aligned with our security policy. Laboratory data processed by Yashara platforms is subject to our data processing agreements and is never used for purposes beyond service delivery.</p>
+				<p>We implement industry-standard security measures including encryption in transit (TLS 1.3), encryption at rest (AES-256), and access controls aligned with our security policy. Data processed by SymNexus platforms is subject to our data processing agreements and is never used for purposes beyond service delivery.</p>
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Contact</h2>
-				<p>For privacy-related enquiries, contact us at <a href="mailto:info@yashara.us" class="text-brand-600 hover:text-brand-800">info@yashara.us</a>.</p>
+				<p>For privacy-related enquiries, contact us at <a href="mailto:cell.ai.solutions@gmail.com" class="text-brand-600 hover:text-brand-800">cell.ai.solutions@gmail.com</a>.</p>
 			</div>
 		</div>
 	</div>

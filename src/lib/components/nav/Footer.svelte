@@ -38,15 +38,14 @@
 			<!-- Brand -->
 			<div class="col-span-2 md:col-span-2">
 				<a href="/" class="flex flex-col leading-none">
-					<span class="font-display text-xl font-normal italic text-slate-900">Yashara</span>
-					<span class="font-mono text-[0.48rem] uppercase tracking-[0.3em] text-slate-400 mt-0.5">Biosciences</span>
+					<span class="font-display text-xl font-normal italic text-slate-900">SymNexus</span>
+					<span class="font-mono text-[0.48rem] uppercase tracking-[0.3em] text-slate-400 mt-0.5">AI Solutions</span>
 				</a>
 				<p class="mt-4 max-w-xs font-body text-sm leading-relaxed text-slate-500">
-					Life sciences software infrastructure for biological and biochemical research teams. Precision-engineered. Built to last.
+					Domain-native AI systems for regulated industries. Built by Silicon Valley engineers, validated by the scientists and compliance professionals who use it.
 				</p>
 				<div class="mt-5 space-y-1">
-					<a href="mailto:info@yashara.us" class="block font-mono text-[0.68rem] text-slate-400 transition-colors hover:text-crystal-rose">info@yashara.us</a>
-					<a href="mailto:careers@yashara.us" class="block font-mono text-[0.68rem] text-slate-400 transition-colors hover:text-crystal-rose">careers@yashara.us</a>
+					<a href="mailto:cell.ai.solutions@gmail.com" class="block font-mono text-[0.68rem] text-slate-400 transition-colors hover:text-crystal-rose">cell.ai.solutions@gmail.com</a>
 				</div>
 				<!-- Mini image strip -->
 				<div class="mt-6 grid grid-cols-3 gap-1.5 max-w-[180px]">
@@ -74,7 +73,7 @@
 		</div>
 
 		<div class="mt-14 flex flex-col items-start justify-between gap-4 border-t border-slate-200/60 pt-8 sm:flex-row sm:items-center">
-			<p class="font-body text-xs text-slate-400">&copy; {new Date().getFullYear()} Yashara Biosciences, Inc. All rights reserved.</p>
+			<p class="font-body text-xs text-slate-400">&copy; {new Date().getFullYear()} SymNexus Ltd. All rights reserved.</p>
 			<div class="flex gap-6">
 				<a href="/privacy"  class="font-body text-xs text-slate-400 transition-colors hover:text-slate-600">Privacy</a>
 				<a href="/terms"    class="font-body text-xs text-slate-400 transition-colors hover:text-slate-600">Terms</a>

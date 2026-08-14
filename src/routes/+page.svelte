@@ -8,8 +8,8 @@
 			name: 'FluorocellAI',
 			accentHex: '#40e0d0',
 			shadowRgb: '64,224,208',
-			desc: 'High-throughput AI cell labeling and segmentation, integrating natively with ImageJ, Fiji, OMERO, and CellProfiler. Institutional-grade accuracy — accessible to a single-investigator R01 budget.',
-			features: ['Transformer + CNN ensemble model', 'DAPI / GFP / RFP multi-channel', '>10,000 cells/hr batch throughput', '3D confocal & light-sheet support'],
+			desc: 'AI-automated cell identification, counting, and analysis for cell and cancer research labs — compressing a week of manual cross-referencing into a same-day first pass.',
+			features: ['Automated segmentation & counting', 'Minutes, not days, per slide', 'Automatic QC / audit trail', 'Same-day reporting'],
 			img: IMG.fluoroHero,
 		},
 		{
@@ -18,36 +18,36 @@
 			name: 'ComplianceCall',
 			accentHex: '#7b8fe8',
 			shadowRgb: '123,143,232',
-			desc: 'End-to-end CLIA compliance management — personnel credentialing, QC scheduling, document control with e-signatures, and live Federal Register integration in a single auditable platform.',
-			features: ['21 integrated CLIA modules', 'Live FDA & Federal Register sync', 'Multi-lab consulting accounts', 'DTag prevention & survey prep'],
+			desc: 'Benchmarks pharmaceutical development against federal regulation — auditable, always current, and built for the teams who answer to FDA and other regulatory bodies.',
+			features: ['Live federal regulatory sync', 'Full audit-trail transparency by design', 'Historical hazard/status tracking', 'Built for FDA-regulated workflows'],
 			img: IMG.complianceDesk,
 		},
 	];
 
 	const stats = [
-		{ value: '>10k',  label: 'Cells/hour', sub: 'FluorocellAI throughput' },
-		{ value: '21',    label: 'CLIA modules', sub: 'ComplianceCall coverage' },
-		{ value: '<3 hr', label: 'From 4 days', sub: 'Screening time reduction' },
-		{ value: '0',     label: 'D-Tags cited', sub: 'In customer surveys' },
+		{ value: '3–4 days → same-day', label: 'FluorocellAI turnaround', sub: 'Manual review compressed to a same-day first pass' },
+		{ value: '2',    label: 'Products shipped', sub: 'FluorocellAI and ComplianceCall, launched in 14 months' },
+		{ value: '5+ yrs', label: 'Experience per engineer', sub: 'Building custom-deployed AI for clients' },
+		{ value: '$3.5T', label: 'Global AI market by 2033', sub: 'Most industries still early in domain-specific adoption' },
 	];
 
 	const principles = [
-		{ num: 'I',   title: 'Domain specificity over generality',           body: 'A cell biologist\'s segmentation workflow and a compliance officer\'s audit trail are not variations on the same problem. We build each platform as if it were the only thing we make.' },
-		{ num: 'II',  title: 'Institutional durability over rapid iteration', body: 'Laboratory workflows cannot be interrupted by disruptive UI redesigns or breaking API changes. We version everything, deprecate nothing without multi-year notice.' },
-		{ num: 'III', title: 'Affordable by design',                          body: 'Institutional-grade software should not be the exclusive province of institutions with eight-figure IT budgets. We price against the NIH R01 budget.' },
+		{ num: 'I',   title: 'Domain-native, not adapted',           body: 'We build AI systems for the exact workflow they serve — not a generic platform retrofitted to fit. That discipline carries over directly from our founding company, Yashara Biosciences.' },
+		{ num: 'II',  title: 'Prove the model, then teach the team', body: 'Most AI vendors sell a platform and leave the customer to adapt. We prove our models first, then train businesses to manage these systems independently.' },
+		{ num: 'III', title: 'Compliance by design',                          body: 'Full audit-trail transparency is built into every SymNexus platform from the start — not bolted on — because it is the trust infrastructure our customers operate under.' },
 	];
 
 	const testimonials = [
-		{ quote: 'We reduced manual cell counting time for a 384-well screen from four days to under three hours. The segmentation accuracy was indistinguishable from expert manual annotation in our internal benchmarking.', name: 'Dr. M. Kowalski', role: 'Senior Research Scientist, Cell Biology — Academic Medical Center' },
-		{ quote: 'The CLIA Federal Register integration alone is worth the subscription. Our last survey was the first in six years where no documentation deficiencies were cited. The DTag prevention module flagged three issues before the inspector arrived.', name: 'R. Patel, MT(ASCP)', role: 'Technical Consultant — Independent Laboratory Consulting Practice' },
-		{ quote: 'PuroChem is the only tool we\'ve found that tells us not just what a chemical\'s current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.', name: 'Dr. S. Okonkwo', role: 'Chemical Hygiene Officer — Research University' },
+		{ quote: 'A cancer-research lab\'s cell-analysis workflow that took three to four days of manual review now compresses to a same-day first pass — without changing how we prepare or image our samples.', name: 'Cancer-Research Lab', role: 'FluorocellAI customer' },
+		{ quote: 'ComplianceCall (Purochem) is the only tool we\'ve found that tells us not just what a chemical\'s current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.', name: 'Dr. S. Okonkwo', role: 'Chemical Hygiene Officer — Research University' },
+		{ quote: 'Standard practice only let us inspect about 10% of rolls by hand — inspection was too slow to check everything. Automated inspection now covers the same volume in about 8 hours, inside a single shift.', name: 'Textile Production', role: 'SymNexus pilot customer' },
 	];
 </script>
 
 <svelte:head>
-	<title>Yashara Biosciences — Life Sciences Software Infrastructure</title>
-	<meta name="description" content="Precision software infrastructure for research biology and biochemistry. FluorocellAI and ComplianceCall — built from first principles for the laboratory." />
-	<link rel="canonical" href="https://yashara.us/" />
+	<title>SymNexus — Domain-Native AI Systems for Regulated Industries</title>
+	<meta name="description" content="SymNexus builds domain-native AI systems for regulated industries. FluorocellAI and ComplianceCall — proven in cell biology and pharmaceutical compliance, expanding globally." />
+	<link rel="canonical" href="https://symnexus.co/" />
 </svelte:head>
 
 <!-- ═══ HERO — full-viewport dark with aurora + image layer ═══ -->
@@ -68,13 +68,13 @@
 	<!-- Content anchored bottom-left -->
 	<div class="relative z-10 flex h-full flex-col justify-end px-6 pb-20 md:pb-28 md:px-[max(3rem,calc((100vw-72rem)/2+1.5rem))]">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
-			<p class="font-mono text-[0.7rem] font-medium uppercase tracking-[0.2em] text-crystal-rose/80 mb-5">Yashara Biosciences</p>
+			<p class="font-mono text-[0.7rem] font-medium uppercase tracking-[0.2em] text-crystal-rose/80 mb-5">SymNexus Ltd.</p>
 			<h1 class="font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-4xl">
-				Precision software infrastructure<br class="hidden sm:block" /> for the life sciences.
+				Domain-native AI systems<br class="hidden sm:block" /> for regulated industries.
 			</h1>
 		</div>
 		<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.25s both;">
-			We build rigorous, scalable computational tools for biologists, biochemists, and laboratory compliance teams — purpose-engineered for the demands of the laboratory, not repurposed from the enterprise.
+			We build custom-deployed AI, validated by the scientists and compliance professionals who use it — not generic enterprise AI adapted after the fact. Proven in cell biology and pharmaceutical compliance, built to scale into new regulated industries.
 		</p>
 		<div class="mt-8 flex flex-wrap items-center gap-4" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.38s both;">
 			<a href="/demo"     class="btn-hero-primary">Request a demonstration</a>
@@ -82,8 +82,8 @@
 		</div>
 		<div class="mt-6" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.5s both;">
 			<a href="/research" class="btn-ghost-dark">
-				<span class="font-display italic text-lg text-crystal-blush">Y</span>
-				Built from first principles, for the laboratory
+				<span class="font-display italic text-lg text-crystal-blush">S</span>
+				Built from first principles, for the regulated enterprise
 				<span class="text-white/40">→</span>
 			</a>
 		</div>
@@ -112,13 +112,13 @@
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Our Founding Premise</p>
 				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl lg:text-5xl">
-					Scientific software built to the standard of the laboratory itself.
+					Most businesses want AI. Almost none can get a system built for their exact workflow.
 				</h2>
 				<p class="mt-6 font-body text-base leading-relaxed text-slate-500">
-					Too many tools in the life sciences ecosystem were designed for generic enterprise markets and subsequently adapted — imperfectly — for laboratory use. The result is software that demands the investigator adapt to its limitations rather than the reverse.
+					Most AI vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly when precision and accountability matter — which is why we chose to prove our AI models first, and train businesses to manage these systems independently.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					Every product we release is designed in close collaboration with working biologists, biochemists, and laboratory compliance professionals. We do not release a product until its domain experts consider it complete.
+					Every deployment is validated by the working scientists and compliance professionals who use it — not shipped generic and adapted after the fact. That discipline carries over directly from our founding company, Yashara Biosciences.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/about" class="btn-primary">Our story →</a>
@@ -149,7 +149,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/50"></div>
 	<div class="container-page relative z-10">
 		<blockquote class="reveal max-w-3xl font-display text-2xl font-normal italic leading-relaxed text-white md:text-3xl lg:text-4xl">
-			&ldquo;The highest cost in laboratory science is not the instrument or the reagent — it is the time lost to tools that were not built for the work.&rdquo;
+			&ldquo;Businesses increasingly want to own a working AI system, built for their exact process — the way they own equipment — rather than rent a generic tool indefinitely.&rdquo;
 		</blockquote>
 	</div>
 </section>
@@ -236,10 +236,10 @@
 		<div class="reveal flex flex-col justify-center px-8 py-16 md:px-16">
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">FluorocellAI</p>
 			<h2 class="mt-3 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
-				Research-grade segmentation. Without the research-grade wait.
+				A week of manual review. Compressed to a same-day first pass.
 			</h2>
 			<p class="mt-4 font-body text-sm leading-relaxed text-slate-500">
-				FluorocellAI reduces a 384-well screen from four days of manual annotation to under three hours. Our transformer + CNN ensemble matches expert-level accuracy, integrates into your existing ImageJ pipeline, and leaves every downstream measurement intact.
+				FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs. Manual counting and annotation that once took one to two days now runs in minutes, with automatic QC and audit trail — without changing how the lab prepares or images its samples.
 			</p>
 			<div class="mt-6 flex flex-wrap gap-3">
 				<a href="/fluorocellai" class="btn-primary">Explore FluorocellAI</a>
@@ -256,10 +256,10 @@
 		<div class="reveal flex flex-col justify-center px-8 py-16 md:px-16 order-2 md:order-1">
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">ComplianceCall</p>
 			<h2 class="mt-3 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
-				Know before your inspector does.
+				Benchmark development against federal regulation, automatically.
 			</h2>
 			<p class="mt-4 font-body text-sm leading-relaxed text-slate-500">
-				ComplianceCall maintains live connections to the CLIA Federal Register and FDA CLIA test database. When a new requirement is promulgated, your compliance dashboard updates automatically — not at your next survey. The DTag prevention engine proactively surfaces deficiencies before an inspector can cite them.
+				ComplianceCall (Purochem) benchmarks pharmaceutical development against federal regulation, with full audit-trail transparency built in by design. It tracks not just a chemical's current hazard category, but what it used to be and why it changed — the historical record regulatory auditors ask for.
 			</p>
 			<div class="mt-6 flex flex-wrap gap-3">
 				<a href="/compliancecall" class="btn-primary">Explore ComplianceCall</a>
@@ -285,6 +285,7 @@
 		<div class="reveal mb-14">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Design Philosophy</p>
 			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">How we build.</h2>
+			<p class="mt-4 max-w-xl font-body text-sm leading-relaxed text-slate-400">We are a team of Silicon Valley engineers — from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers. Our design discipline comes from working in the most advanced AI research and development companies in the Bay Area.</p>
 		</div>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-3">
 			{#each principles as p, i}
@@ -333,7 +334,7 @@
 			<div class="relative overflow-hidden">
 				<img
 					src={img}
-					alt="Yashara Biosciences laboratory research"
+					alt="SymNexus domain research and deployment"
 					class="h-full w-full object-cover opacity-60 transition-all duration-700 hover:opacity-90 hover:scale-105"
 					loading="lazy"
 				/>
@@ -348,20 +349,20 @@
 	<div class="container-page">
 		<div class="reveal mb-10 flex flex-wrap items-end justify-between gap-6">
 			<div>
-				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Ecosystem</p>
+				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Architecture</p>
 				<h2 class="mt-3 font-display text-2xl font-normal italic text-slate-900 md:text-3xl max-w-sm">
-					Integrates with the tools your laboratory already uses.
+					One modular AI stack, powering every product we build.
 				</h2>
 			</div>
-			<a href="/products" class="btn-secondary font-heading text-xs">Full integration details →</a>
+			<a href="/products" class="btn-secondary font-heading text-xs">Full platform details →</a>
 		</div>
 		<div class="reveal grid grid-cols-3 gap-px bg-slate-200/60 rounded-2xl overflow-hidden md:grid-cols-6">
 			{#each [
-				{name:'ImageJ',      desc:'Native plugin'},
-				{name:'Fiji',        desc:'Update site'},
-				{name:'OMERO',       desc:'Server batch'},
-				{name:'CellProfiler',desc:'Label export'},
-				{name:'FDA CLIA DB', desc:'Live connection'},
+				{name:'Ingestion',   desc:'Data pipeline'},
+				{name:'Data Lake',   desc:'Proprietary dataset'},
+				{name:'Fine-Tuned Models', desc:'Domain-native'},
+				{name:'Agents',      desc:'Workflow automation'},
+				{name:'Copilot',     desc:'Human-in-the-loop'},
 				{name:'REST API',    desc:'All products'},
 			] as intg}
 				<div class="flex flex-col items-center justify-center gap-1 bg-white px-3 py-6 text-center transition-colors hover:bg-slate-50">
@@ -388,7 +389,7 @@
 		<div class="reveal max-w-2xl">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/70">Next Steps</p>
 			<h2 class="mt-4 font-display text-3xl font-normal italic leading-tight text-white md:text-4xl lg:text-5xl">
-				Ready to evaluate the Yashara platform?
+				Ready to evaluate the SymNexus platform?
 			</h2>
 			<p class="mt-5 font-body text-sm leading-relaxed text-slate-400 md:text-base">
 				We provide structured evaluation access for qualified research teams and clinical laboratories. Demonstrations are conducted by domain specialists, tailored to your specific workflow — not a generic product tour.

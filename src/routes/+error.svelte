@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>{$page.status} — Yashara Biosciences</title>
+	<title>{$page.status} — SymNexus</title>
 </svelte:head>
 
 <section class="relative flex h-svh w-full items-center overflow-hidden bg-slate-950">
@@ -20,7 +20,7 @@
 		<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 max-w-md">
 			{$page.status === 404
 				? 'The page you\'re looking for may have moved or never existed. Let\'s get you back to familiar ground.'
-				: 'An unexpected error occurred. Please try again — if the problem persists, contact us at info@yashara.us.'}
+				: 'An unexpected error occurred. Please try again — if the problem persists, contact us at cell.ai.solutions@gmail.com.'}
 		</p>
 		<div class="mt-8 flex flex-wrap gap-4">
 			<a href="/"        class="btn-hero-primary">Back to home</a>

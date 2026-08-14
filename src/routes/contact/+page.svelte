@@ -13,22 +13,22 @@
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					service_id: 'service_yashara', template_id: 'template_contact',
+					service_id: 'service_symnexus', template_id: 'template_contact',
 					user_id: 'public_key', template_params: form,
 				}),
 			});
 			status = res.ok ? 'success' : 'error';
-			if (!res.ok) errorMsg = 'Submission failed. Please email info@yashara.us directly.';
+			if (!res.ok) errorMsg = 'Submission failed. Please email cell.ai.solutions@gmail.com directly.';
 		} catch {
 			status = 'error';
-			errorMsg = 'A network error occurred. Please try again or email info@yashara.us.';
+			errorMsg = 'A network error occurred. Please try again or email cell.ai.solutions@gmail.com.';
 		}
 	}
 </script>
 
 <svelte:head>
-	<title>Contact — Yashara Biosciences</title>
-	<meta name="description" content="Contact Yashara Biosciences to request a product demonstration or discuss your laboratory's requirements." />
+	<title>Contact — SymNexus</title>
+	<meta name="description" content="Contact SymNexus to request a product demonstration or discuss your requirements." />
 </svelte:head>
 
 <!-- Hero -->
@@ -38,10 +38,10 @@
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Contact</p>
 		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-2xl">
-			Let's discuss your laboratory's requirements.
+			Let's discuss your requirements.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
-			We provide structured evaluation access for qualified research teams and clinical laboratories. Demonstrations are conducted by domain specialists, not sales staff.
+			We provide structured evaluation access for qualified research and regulatory teams. Demonstrations are conducted by domain specialists, not sales staff.
 		</p>
 	</div>
 </section>
@@ -56,7 +56,7 @@
 				<div class="space-y-4">
 					<div>
 						<p class="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-slate-300 mb-1">Email</p>
-						<a href="mailto:info@yashara.us" class="font-body text-sm text-crystal-rose hover:text-crystal-blush transition-colors">info@yashara.us</a>
+						<a href="mailto:cell.ai.solutions@gmail.com" class="font-body text-sm text-crystal-rose hover:text-crystal-blush transition-colors">cell.ai.solutions@gmail.com</a>
 					</div>
 					<div>
 						<p class="font-mono text-[0.6rem] uppercase tracking-[0.15em] text-slate-300 mb-1">Phone</p>
@@ -128,7 +128,7 @@
 						<div>
 							<label for="message" class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">Message *</label>
 							<textarea id="message" required rows="5" bind:value={form.message}
-								placeholder="Describe your laboratory type, current workflow, and what you'd like to evaluate..."
+								placeholder="Describe your organization, current workflow, and what you'd like to evaluate..."
 								class="w-full resize-vertical rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-body text-sm text-slate-900 placeholder:text-slate-300 transition-colors focus:border-crystal-rose focus:bg-white focus:outline-none focus:ring-1 focus:ring-crystal-rose">
 							</textarea>
 						</div>

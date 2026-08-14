@@ -14,7 +14,7 @@
 	}
 
 	const steps = [
-		{ num: '01', title: 'Submit this form',          body: 'Describe your laboratory type and the workflow you want to evaluate.' },
+		{ num: '01', title: 'Submit this form',          body: 'Describe your organization type and the workflow you want to evaluate.' },
 		{ num: '02', title: 'Qualification call (15 min)',body: 'A member of our scientific team reviews your context and confirms a good fit.' },
 		{ num: '03', title: 'Tailored demonstration',    body: 'A domain specialist walks through the platform using your workflow as the basis — not a generic tour.' },
 		{ num: '04', title: 'Evaluation access',         body: 'Qualified teams receive full platform access for a structured evaluation period. We support you through it.' },
@@ -22,7 +22,7 @@
 </script>
 
 <svelte:head>
-	<title>Request a Demonstration — Yashara Biosciences</title>
+	<title>Request a Demonstration — SymNexus</title>
 	<meta name="description" content="Request a tailored demonstration of FluorocellAI or ComplianceCall. Conducted by domain specialists, not sales staff." />
 </svelte:head>
 
@@ -34,10 +34,10 @@
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Request a Demonstration</p>
 		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
-			See it in the context of your laboratory.
+			See it in the context of your workflow.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
-			Every demonstration is conducted by a domain specialist and built around your workflow — your imaging modality, your cell type, your compliance structure. Not a scripted product walkthrough.
+			Every demonstration is conducted by a domain specialist and built around your workflow — your imaging modality, your cell type, your regulatory structure. Not a scripted product walkthrough.
 		</p>
 	</div>
 </section>
@@ -71,10 +71,10 @@
 					<h3 class="font-heading text-xs font-semibold uppercase tracking-[0.1em] text-slate-400 mb-4">Typical evaluation outcomes</h3>
 					<ul class="space-y-3">
 						{#each [
-							'Full segmentation accuracy benchmarks on your own imaging data',
-							'Pipeline integration into your existing ImageJ / OMERO environment',
-							'A compliance posture gap analysis against current CLIA requirements',
-							'Pricing recommendation matched to your laboratory structure',
+							'Segmentation accuracy benchmarks on your own imaging data',
+							'Integration guidance into your existing lab pipeline',
+							'A regulatory-benchmarking gap analysis against current federal requirements',
+							'Pricing recommendation matched to your deployment',
 						] as item}
 							<li class="flex items-start gap-2.5 font-body text-xs leading-relaxed text-slate-500">
 								<span class="mt-1.5 h-1 w-1 flex-shrink-0 rounded-full bg-crystal-rose"></span>
@@ -96,7 +96,7 @@
 					</div>
 				{:else}
 					<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="rounded-2xl border border-slate-200/60 bg-white p-8 space-y-5">
-						<h2 class="font-display text-xl font-normal italic text-slate-900">Tell us about your laboratory.</h2>
+						<h2 class="font-display text-xl font-normal italic text-slate-900">Tell us about your work.</h2>
 
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							{#each [
@@ -127,16 +127,15 @@
 								</select>
 							</div>
 							<div>
-								<label for="labType" class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">Laboratory Type</label>
+								<label for="labType" class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">Organization Type</label>
 								<select id="labType" bind:value={form.labType}
 									class="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-2.5 font-body text-sm text-slate-900 transition-colors focus:border-crystal-rose focus:bg-white focus:outline-none focus:ring-1 focus:ring-crystal-rose">
 									<option value="">Select type</option>
-									<option value="academic">Academic Research Lab</option>
-									<option value="core">Core Imaging / Core Facility</option>
-									<option value="clinical">Clinical Laboratory</option>
-									<option value="pharma">Pharmaceutical / Biotech</option>
-									<option value="cro">Contract Research Organisation</option>
-									<option value="consulting">Laboratory Consulting Practice</option>
+									<option value="cancer">Cancer-Research Institute</option>
+									<option value="academic">Academic Cell-Biology Core</option>
+									<option value="cro">Contract Research Organization</option>
+									<option value="pharma">Pharma / Biotech R&D</option>
+									<option value="regulatory">Regulatory Affairs Team</option>
 									<option value="other">Other</option>
 								</select>
 							</div>
@@ -145,7 +144,7 @@
 						<div>
 							<label for="message" class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">Describe your workflow *</label>
 							<textarea id="message" required rows="4" bind:value={form.message}
-								placeholder="What are you imaging / what compliance challenges are you facing? The more specific, the more useful our demonstration will be."
+								placeholder="What are you imaging / what regulatory challenges are you facing? The more specific, the more useful our demonstration will be."
 								class="w-full resize-vertical rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 font-body text-sm text-slate-900 placeholder:text-slate-300 transition-colors focus:border-crystal-rose focus:bg-white focus:outline-none focus:ring-1 focus:ring-crystal-rose">
 							</textarea>
 						</div>

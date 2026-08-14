@@ -3,13 +3,13 @@
 </script>
 
 <svelte:head>
-	<title>ComplianceCall — Yashara Biosciences</title>
-	<meta name="description" content="ComplianceCall: comprehensive CLIA compliance management for clinical and research laboratories. 21 integrated modules, live Federal Register integration." />
+	<title>ComplianceCall — SymNexus</title>
+	<meta name="description" content="ComplianceCall (Purochem): benchmarks pharmaceutical development against federal regulation. Full audit-trail transparency, built in by design for FDA-regulated teams." />
 </svelte:head>
 
 <!-- Hero -->
 <section class="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-slate-950">
-	<img src={IMG.complianceDesk} alt="Laboratory compliance documentation and regulatory management" class="absolute inset-0 h-full w-full object-cover opacity-40" loading="eager" />
+	<img src={IMG.complianceDesk} alt="Compliance documentation and regulatory management" class="absolute inset-0 h-full w-full object-cover opacity-40" loading="eager" />
 	<div class="pointer-events-none absolute inset-0" style="background: radial-gradient(ellipse 80% 60% at 15% 80%, rgba(123,143,232,0.15) 0%, transparent 55%)"></div>
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/55 to-slate-950/10"></div>
 	<div class="container-page relative z-10 flex h-full flex-col justify-end pb-20 md:pb-28">
@@ -19,13 +19,13 @@
 				ComplianceCall
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
-				Comprehensive CLIA governance for every tier of laboratory operations — from single-site clinical labs to multi-facility consulting practices. Know before your inspector does.
+				ComplianceCall (Purochem) benchmarks pharmaceutical development against federal regulation — auditable, always current, and built for the teams who answer to FDA and other regulatory bodies.
 			</p>
 		</div>
 		<div class="mt-8 flex flex-wrap gap-4" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
 			<a href="/demo" class="btn-hero-primary">Request Demonstration</a>
 			<a href="/compliancecall/pricing" class="btn-hero-secondary">View Pricing</a>
-			<a href="#overview" class="btn-ghost-dark">See all 21 modules <span class="text-white/40">↓</span></a>
+			<a href="#overview" class="btn-ghost-dark">See how it works <span class="text-white/40">↓</span></a>
 		</div>
 	</div>
 </section>
@@ -37,37 +37,32 @@
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Platform Overview</p>
 				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
-					The only CLIA platform that tells you before your inspector does.
+					The historical record your auditors ask for, generated automatically.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
-					The platform maintains live connections to the CLIA Federal Register and the FDA CLIA test database. When a new QC requirement is promulgated, ComplianceCall tells you before your next survey does. Your compliance dashboard updates automatically — not at your next review cycle.
+					ComplianceCall tracks not just a chemical's current hazard category, but what it used to be and why it changed — full audit-trail transparency built into the platform by design, not bolted on after the fact.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					Technical Consultants overseeing multiple facilities manage all client laboratories from a single organisational account, with configurable access controls, consolidated compliance analytics, and cross-laboratory benchmarking that siloed per-laboratory tools cannot provide.
+					Built on the same modular AI stack as FluorocellAI — ingestion, data lake, fine-tuned models, agents, and copilot — letting us extend coverage to new regulatory jurisdictions without rebuilding from scratch.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/demo" class="btn-primary">Request Demonstration</a>
 					<a href="/compliancecall/pricing" class="btn-secondary">View Pricing</a>
 				</div>
 			</div>
-			<!-- Module checklist -->
+			<!-- Coverage checklist -->
 			<div class="reveal rounded-2xl border border-slate-200/60 overflow-hidden" style="background:#0d1320;">
 				<div class="border-b border-white/5 px-6 py-4 flex items-center justify-between">
-					<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-white/30">Compliance Module Coverage</span>
-					<span class="rounded-full bg-prismatic-blue/20 px-2.5 py-0.5 font-mono text-[0.55rem] font-semibold text-prismatic-blue">21 modules</span>
+					<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-white/30">Platform Coverage</span>
 				</div>
 				<ul class="divide-y divide-white/[0.05]">
 					{#each [
-						'Personnel Management & Credentialing',
-						'Quality Control Management',
-						'Document Control & E-Signatures',
-						'CLIA Survey & DTag Management',
-						'Precision, Accuracy & Linearity Studies',
-						'Laboratory Licensing & CMS-116',
-						'FDA Database & Federal Register Integration',
-						'Mini-LIS: Requisitions & Result Management',
-						'Inventory Management & Reorder Automation',
-						'Instrument Lifecycle & Calibration Records',
+						'Live Federal Regulatory Benchmarking',
+						'Historical Hazard Category Tracking',
+						'Full Audit-Trail Transparency',
+						'Document Control',
+						'FDA Filing Support',
+						'Multi-Site Program Management',
 					] as mod}
 						<li class="flex items-center gap-3 px-6 py-3">
 							<span class="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border text-[9px] font-bold" style="border-color:#7b8fe8; color:#7b8fe8; background:rgba(123,143,232,0.1);">✓</span>
@@ -75,9 +70,6 @@
 						</li>
 					{/each}
 				</ul>
-				<div class="border-t border-white/5 px-6 py-3">
-					<span class="font-mono text-[0.6rem] text-white/25">+ 11 additional modules — see full documentation</span>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -85,12 +77,12 @@
 
 <!-- Image break + quote -->
 <section class="relative h-64 overflow-hidden md:h-80">
-	<img src={IMG.labTeam} alt="Laboratory compliance team reviewing documentation" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+	<img src={IMG.labTeam} alt="Compliance team reviewing regulatory documentation" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
 	<div class="absolute inset-0 bg-gradient-to-r from-slate-950/80 to-slate-950/40"></div>
 	<div class="container-page relative z-10 flex h-full items-center">
 		<div class="reveal max-w-lg">
-			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;Our last survey was the first in six years where no documentation deficiencies were cited. The DTag prevention module flagged three issues before the inspector arrived.&rdquo;</p>
-			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">R. Patel, MT(ASCP) — Technical Consultant, Independent Laboratory Consulting</p>
+			<p class="font-display text-xl font-normal italic text-white md:text-2xl">&ldquo;ComplianceCall is the only tool we've found that tells us not just what a chemical's current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.&rdquo;</p>
+			<p class="mt-3 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University</p>
 		</div>
 	</div>
 </section>
@@ -100,16 +92,16 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Key Capabilities</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Designed for every role in the laboratory compliance hierarchy.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Designed for every role in the pharmaceutical compliance chain.</h2>
 		</div>
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each [
-				{title:'DTag prevention engine',       body:'Proactive identification of documentation gaps and process deviations that generate Deficiency Tags before they are cited in a CLIA survey.'},
-				{title:'Live Federal Register sync',   body:'Automatic ingestion of CLIA regulatory updates. New requirements appear in your compliance dashboard within 24 hours of Federal Register publication.'},
-				{title:'Multi-laboratory management',  body:'Technical Consultants managing multiple facilities see consolidated compliance status, cross-laboratory analytics, and configurable access tiers in a single account.'},
-				{title:'E-signature document control', body:'Full document lifecycle management with legally binding e-signatures, complete version history, access logs, and automated retention scheduling.'},
-				{title:'QC schedule automation',       body:'Automated QC scheduling based on your test menu, with alerting for missed events and direct integration into the instrument calibration record.'},
-				{title:'Survey-ready reporting',       body:'One-click export of all documentation packages required for CLIA survey preparation, organised by standard and condition of participation.'},
+				{title:'Historical hazard tracking',   body:'Not just a chemical\'s current hazard category, but what it used to be and why it changed — the record EHS and regulatory auditors ask for.'},
+				{title:'Live federal regulatory sync',   body:'Benchmarks pharmaceutical development against current federal regulation, so requirements surface automatically rather than at the next review.'},
+				{title:'Full audit-trail transparency',  body:'Every action is logged, attributable, and exportable by design — critical trust infrastructure for teams operating under FDA and other regulatory bodies.'},
+				{title:'Document control', body:'Structured document lifecycle management with version history and access logs, built for regulated development teams.'},
+				{title:'Shared modular AI stack',       body:'Runs on the same ingestion, data lake, and fine-tuned-model architecture as FluorocellAI, letting us extend coverage to new jurisdictions without rebuilding.'},
+				{title:'Built for FDA filings',       body:'Purochem\'s regulatory benchmarking is built for teams filing into the FDA process — the majority of the world\'s pharmaceutical applications.'},
 			] as feat, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*50}ms;">
 					<div class="mb-3 h-0.5 w-8 rounded-full" style="background:#7b8fe8;"></div>
@@ -126,14 +118,14 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Who Uses ComplianceCall</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Built for every laboratory compliance role.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Built for every pharmaceutical compliance role.</h2>
 		</div>
 		<div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
 			{#each [
-				{role:'Clinical Laboratory Directors', desc:'Maintain a continuously auditable compliance record across all 21 CLIA domains. Eliminate the scramble before surveys.'},
-				{role:'Technical Consultants',         desc:'Manage all client laboratories from a single account. Cross-laboratory benchmarking and consolidated analytics no siloed tool can provide.'},
-				{role:'Quality Managers',             desc:'Automate QC scheduling, track personnel competency deadlines, and manage document revisions with legally binding e-signatures.'},
-				{role:'Laboratory Compliance Officers',desc:'The DTag prevention engine surfaces deficiencies proactively. Know your gaps before the inspector arrives — not after.'},
+				{role:'Pharma & Biotech R&D Teams', desc:'Maintain a continuously auditable compliance record as development progresses toward FDA filing.'},
+				{role:'Regulatory Affairs Teams',         desc:'Benchmark development against current federal regulation automatically, rather than reconstructing history at audit time.'},
+				{role:'Chemical Hygiene & EHS Officers',             desc:'Access the historical hazard-category record — not just current status — that EHS audits require.'},
+				{role:'Compliance Officers',desc:'Full audit-trail transparency surfaces gaps proactively, built into the platform rather than reconstructed after the fact.'},
 			] as uc, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*60}ms;">
 					<div class="mb-3 h-1 w-6 rounded-full" style="background:#7b8fe8;"></div>
@@ -154,7 +146,7 @@
 		<div class="reveal flex flex-wrap items-center justify-between gap-10">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Speak with a compliance specialist.</h2>
-				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">ComplianceCall demonstrations are conducted by CLIA specialists, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your laboratory.</p>
+				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">ComplianceCall demonstrations are conducted by domain specialists, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your work.</p>
 			</div>
 			<div class="flex flex-wrap gap-4">
 				<a href="/demo" class="btn-hero-primary">Request Demonstration</a>

@@ -29,8 +29,8 @@
 
 	<!-- Logo -->
 	<a href="/" class="relative z-10 flex flex-col leading-none transition-colors duration-300 hover:text-crystal-rose">
-		<span class="font-display text-2xl font-normal italic text-white tracking-tight">Yashara</span>
-		<span class="font-mono text-[0.5rem] font-medium uppercase tracking-[0.3em] text-white/40 mt-0.5">Biosciences</span>
+		<span class="font-display text-2xl font-normal italic text-white tracking-tight">SymNexus</span>
+		<span class="font-mono text-[0.5rem] font-medium uppercase tracking-[0.3em] text-white/40 mt-0.5">AI Solutions</span>
 	</a>
 
 	<!-- Desktop pill nav -->
