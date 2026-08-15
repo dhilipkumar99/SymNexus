@@ -19,7 +19,7 @@
 
 <svelte:window bind:scrollY />
 
-<nav class="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4 md:px-[max(3rem,calc((100vw-72rem)/2+1.5rem))] transition-all duration-300">
+<nav class="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-6 py-4 md:px-[max(3rem,calc((100vw-100rem)/2+1.5rem))] transition-all duration-300">
 	<!-- gradient scrim so nav is readable over hero -->
 	<div
 		class="pointer-events-none absolute inset-0 transition-opacity duration-500"

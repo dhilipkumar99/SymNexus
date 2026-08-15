@@ -20,7 +20,7 @@
 
 @layer components {
 	.container-page {
-		@apply mx-auto w-full max-w-[72rem] px-6 md:px-[max(3rem,calc((100vw-72rem)/2+1.5rem))];
+		@apply mx-auto w-full max-w-[100rem] px-6 md:px-[max(3rem,calc((100vw-100rem)/2+1.5rem))];
 	}
 
 	/* Aurora background — exact Eon implementation */
