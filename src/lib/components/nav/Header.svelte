@@ -46,7 +46,7 @@
 			{/each}
 		</div>
 		<a href="/demo" class="rounded-full border border-white/20 px-4 py-2 font-heading text-[0.72rem] font-semibold uppercase tracking-[0.08em] text-white transition-colors hover:border-white/40 hover:bg-white/5">
-			Log In
+			Request a Demonstration
 		</a>
 	</div>
 
@@ -85,7 +85,7 @@
 					onclick={() => (mobileOpen = false)}
 					class="block rounded-xl border border-white/15 px-4 py-3.5 font-heading text-sm font-medium uppercase tracking-[0.08em] text-white transition-colors hover:bg-white/5"
 				>
-					Log In
+					Request a Demonstration
 				</a>
 			</li>
 		</ul>

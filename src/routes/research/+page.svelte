@@ -65,7 +65,7 @@
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
 			<h2 class="font-display text-2xl font-normal italic text-white md:text-3xl">Want to see this on your own data?</h2>
-			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">Request a demonstration and we'll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.</p>
+			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">Request a Demonstration and we'll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.</p>
 			<div class="mt-6 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>
 			</div>

@@ -42,7 +42,7 @@
 					The accuracy you couldn't achieve manually, at same-day turnaround.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
-					FluorocellAI slots into the workflow your lab already runs — slide prep and imaging stay unchanged. What used to be one to two days of manual counting and annotation, plus a further day each of manual QC and reporting, becomes minutes of automated segmentation and counting with an automatic QC and audit trail behind it.
+					FluorocellAI slots into the workflow your lab already runs — slide prep and imaging stay unchanged. What used to be one to two days of manual counting and annotation, plus a further day each of manual QC and reporting, becomes minutes of automated segmentation and counting with an automatic QC and audit trail behind it. Manual counts also drift — between technicians, and within the same technician across a long session — which is exactly what a reviewer questions first; automated segmentation returns the same count on the same slide every time.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
 					Built on our proprietary machine learning models and validated by working cell biologists — not shipped generic and adapted after the fact. Every deployment adds annotated microscopy data back into our proprietary dataset, compounding accuracy over time.

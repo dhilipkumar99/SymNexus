@@ -23,7 +23,7 @@
 	const stats = [
 		{ value: '3–4 days → same-day', label: 'FluorocellAI turnaround', sub: 'Manual review compressed to a same-day first pass' },
 		{ value: '2',    label: 'Products in production', sub: 'FluorocellAI and ComplianceCall' },
-		{ value: '5+ yrs', label: 'Experience per engineer', sub: 'Building custom-deployed AI for clients' },
+		{ value: '5+ yrs', label: 'Experience per engineer', sub: 'Ex-NXP, Zoom, Amazon, and ServiceNow, building custom-deployed AI' },
 	];
 
 	const testimonials = [
@@ -38,7 +38,7 @@
 	<link rel="canonical" href="https://symnexus.co/" />
 </svelte:head>
 
-<!-- ═══ HERO — plain statement of what we sell, mockups visible immediately ═══ -->
+<!-- ═══ HERO — outcome-led headline, mockups visible immediately ═══ -->
 <section class="relative overflow-hidden bg-slate-950 pt-32 pb-16 md:pt-40 md:pb-24">
 	<div class="aurora opacity-20" aria-hidden="true"></div>
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950"></div>
@@ -47,13 +47,13 @@
 		<div class="max-w-3xl" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.7rem] font-medium uppercase tracking-[0.2em] text-crystal-rose/80 mb-5">SymNexus Ltd. — Software</p>
 			<h1 class="font-display text-4xl font-normal italic leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
-				AI software for cell image analysis and pharmaceutical compliance.
+				The audit trail your reviewers will accept. The cell counts your team won't have to redo.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
 				We build two products: <strong class="text-white font-semibold">FluorocellAI</strong>, which automates cell counting and analysis for research labs, and <strong class="text-white font-semibold">ComplianceCall</strong>, which tracks pharmaceutical development against federal regulation in real time.
 			</p>
 			<div class="mt-8 flex flex-wrap items-center gap-4">
-				<a href="/demo"     class="btn-hero-primary">Request a demonstration</a>
+				<a href="/demo"     class="btn-hero-primary">Request a Demonstration</a>
 				<a href="/products" class="btn-hero-secondary">See both products</a>
 			</div>
 		</div>
@@ -69,7 +69,7 @@
 				<p class="mt-3 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-white/40 group-hover:text-[#7b8fe8] transition-colors">ComplianceCall — regulatory dashboard →</p>
 			</a>
 		</div>
-		<p class="mt-3 font-body text-[0.68rem] text-white/25">Illustrative interface previews. Request a demonstration to see the live product.</p>
+		<p class="mt-3 font-body text-[0.68rem] text-white/25">Illustrative interface previews. Request a Demonstration to see the live product.</p>
 	</div>
 </section>
 
@@ -138,6 +138,7 @@
 				</div>
 			{/each}
 		</div>
+		<p class="reveal mt-6 max-w-2xl font-body text-xs leading-relaxed text-slate-400">We're an early-stage vendor working with a small number of design partners under NDA, which is why some details above are withheld at the customer's request. Full references and case detail are shared directly during evaluation.</p>
 	</div>
 </section>
 
@@ -154,7 +155,7 @@
 				Every demonstration is conducted by the people who build the product, tailored to your workflow — not a generic sales tour.
 			</p>
 			<div class="mt-8 flex flex-wrap gap-4">
-				<a href="/demo"     class="btn-hero-primary">Request a demonstration</a>
+				<a href="/demo"     class="btn-hero-primary">Request a Demonstration</a>
 				<a href="/pricing"  class="btn-hero-secondary">View pricing</a>
 			</div>
 		</div>

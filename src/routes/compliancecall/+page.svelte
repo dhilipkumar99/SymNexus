@@ -62,9 +62,9 @@
 						'Live Federal Regulatory Benchmarking',
 						'Historical Hazard Category Tracking',
 						'Full Audit-Trail Transparency',
-						'Document Control',
-						'FDA Filing Support',
-						'Multi-Site Program Management',
+						'Document Control — version history so a superseded SOP can never be mistaken for current',
+						'FDA Filing Support — submission-ready records, not a scramble before the deadline',
+						'Multi-Site Program Management — one compliance record across every site, not one per location',
 					] as mod}
 						<li class="flex items-center gap-3 px-6 py-3">
 							<span class="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border text-[9px] font-bold" style="border-color:#7b8fe8; color:#7b8fe8; background:rgba(123,143,232,0.1);">✓</span>
@@ -99,7 +99,7 @@
 				{title:'Historical hazard tracking',   body:'Not just a chemical\'s current hazard category, but what it used to be and why it changed — the record EHS and regulatory auditors ask for.'},
 				{title:'Live federal regulatory sync',   body:'Benchmarks pharmaceutical development against current federal regulation, so requirements surface automatically rather than at the next review.'},
 				{title:'Full audit-trail transparency',  body:'Every action is logged, attributable, and exportable by design — critical trust infrastructure for teams operating under FDA and other regulatory bodies.'},
-				{title:'Document control', body:'Structured document lifecycle management with version history and access logs, built for regulated development teams.'},
+				{title:'Document control', body:'Version history and access logs mean a superseded SOP can never be mistaken for the current one — the ambiguity that turns into a finding during an audit.'},
 				{title:'Shared modular AI stack',       body:'Runs on the same ingestion, data lake, and fine-tuned-model architecture as FluorocellAI, letting us extend coverage to new jurisdictions without rebuilding.'},
 				{title:'Built for FDA filings',       body:'ComplianceCall\'s regulatory benchmarking is built for teams filing into the FDA process — the majority of the world\'s pharmaceutical applications.'},
 			] as feat, i}

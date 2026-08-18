@@ -7,6 +7,7 @@
 			accentHex: '#40e0d0',
 			slug: 'fluorocellai',
 			desc: 'AI-automated cell identification, counting, and analysis for cell and cancer research labs.',
+			ctaLabel: 'Request Evaluation',
 			features: [
 				'Automated segmentation & counting',
 				'Automatic QC and audit trail',
@@ -19,6 +20,7 @@
 			accentHex: '#7b8fe8',
 			slug: 'compliancecall',
 			desc: 'Benchmarks pharmaceutical development against federal regulation, with full audit-trail transparency.',
+			ctaLabel: 'Request Demonstration',
 			features: [
 				'Live federal regulatory benchmarking',
 				'Historical hazard-category tracking',
@@ -67,7 +69,7 @@
 						{/each}
 					</ul>
 					<div class="mt-8 flex flex-wrap gap-3">
-						<a href="/demo" class="rounded-xl px-5 py-3 text-center font-heading text-sm font-semibold text-slate-900 bg-slate-100 transition-all duration-200 hover:bg-slate-200 flex-1">Request a demo</a>
+						<a href="/demo" class="rounded-xl px-5 py-3 text-center font-heading text-sm font-semibold text-slate-900 bg-slate-100 transition-all duration-200 hover:bg-slate-200 flex-1">{p.ctaLabel}</a>
 						<a href="/{p.slug}" class="rounded-xl px-5 py-3 text-center font-heading text-sm font-semibold transition-all duration-200 flex-1" style="color:{p.accentHex};">Learn more →</a>
 					</div>
 				</div>
@@ -88,9 +90,9 @@
 				{ q:'Is there an evaluation period?', a:'Every engagement begins with a structured evaluation, during which our team works with you to configure the platform for your specific workflow. Evaluation access is granted after a brief qualification conversation.' },
 				{ q:'How is pricing determined?', a:'We size pricing to the scope of your deployment — number of sites, data volume, and workflow complexity. We prove the model on your data first, then discuss a plan sized to your organization.' },
 				{ q:'Is pricing billed monthly or annually?', a:'Both options are available and discussed as part of your pricing conversation.' },
-				{ q:'Do you work with academic or non-profit institutions?', a:'Yes — cancer-research institutes and academic cell-biology cores are part of our current customer base. Contact us to discuss institutional pricing.' },
+				{ q:'Do you work with academic or non-profit institutions?', a:'Yes — our early FluorocellAI deployments are with a cancer-research lab and an academic cell-biology core. Contact us to discuss institutional pricing.' },
 				{ q:'What does onboarding look like?', a:'Demonstrations are conducted by domain specialists, not sales staff, and every demo is tailored to your specific workflow before we discuss terms.' },
-				{ q:'Can I cancel or change my plan?', a:'Yes — reach out to your account contact and we\'ll work through the details with you directly.' },
+				{ q:'Can I cancel or change my plan?', a:'Cancellation and plan-change terms, including notice period, are set out in your contract. Reach out to your account contact to review your specific terms or initiate a change.' },
 			] as item, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6" style="transition-delay:{i*50}ms;">
 					<h3 class="font-heading text-sm font-semibold text-slate-900">{item.q}</h3>
@@ -110,7 +112,7 @@
 			<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Not sure which plan is right for you?</h2>
 			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific team will review your workflow and recommend the right plan before you commit to anything.</p>
 			<div class="mt-8 flex flex-wrap justify-center gap-4">
-				<a href="/demo" class="btn-hero-primary">Talk to our team</a>
+				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>
 			</div>
 		</div>
 	</div>

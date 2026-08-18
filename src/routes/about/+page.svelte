@@ -38,7 +38,7 @@
 					Most AI vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly when precision and accountability matter — which is why we chose to prove our AI models first, and train businesses to manage these systems independently.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					At SymNexus, we begin with a deep operational understanding of the domain — a cancer-research lab's cell-analysis workflow, a pharmaceutical team's regulatory audit trail — and build software validated by the working scientists and compliance professionals who use it. In order to expand into Asian markets, we're now building similar solutions for Malaysian companies, applying our proprietary machine learning algorithms to a different set of problems.
+					At SymNexus, we begin with a deep operational understanding of the domain — a cancer-research lab's cell-analysis workflow, a pharmaceutical team's regulatory audit trail — and build software validated by the working scientists and compliance professionals who use it.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/products" class="btn-primary">Explore our products</a>
@@ -96,7 +96,7 @@
 	<div class="container-page relative z-10 flex h-full items-end pb-12">
 		<div class="reveal max-w-2xl">
 			<p class="font-display text-2xl font-normal italic text-white md:text-3xl">
-				&ldquo;With our robust team of engineers, we've launched two products within 14 months: FluorocellAI and ComplianceCall. We build fewer things than our competitors, and build each one to a higher standard.&rdquo;
+				&ldquo;Two products in fourteen months, both in production with paying pilot customers. We'd rather ship two things a regulatory auditor can trust than ten things nobody's validated.&rdquo;
 			</p>
 		</div>
 	</div>
@@ -127,7 +127,7 @@
 			{#each [
 				{ name: 'Brent Luker', role: 'Generative AI Software Engineer', note: 'Formerly Zoom' },
 				{ name: 'Sameera Velammuri', role: 'AI/ML Software Engineer', note: 'Formerly Amazon' },
-				{ name: 'Prabhat Jammalamadaka', role: 'Sales Outreach', note: '' },
+				{ name: 'Prabhat Jammalamadaka', role: 'Business Development', note: '' },
 				{ name: 'Arshi Saxena', role: 'Product Development & FDE', note: 'Formerly ServiceNow' },
 				{ name: 'Rijul Mahajan', role: 'Front-End Software Engineer', note: 'UC Berkeley' },
 				{ name: 'Varun Singh', role: 'AI/ML Researcher', note: 'Stanford' },
@@ -156,7 +156,7 @@
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 max-w-lg">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow. We want to understand your process before we show you the software.</p>
 			</div>
 			<div class="flex flex-col justify-center gap-3">
-				<a href="/demo"    class="btn-hero-primary text-center">Request a demonstration</a>
+				<a href="/demo"    class="btn-hero-primary text-center">Request a Demonstration</a>
 				<a href="/careers" class="btn-ghost-dark text-center">We're hiring →</a>
 			</div>
 		</div>
