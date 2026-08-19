@@ -14,7 +14,7 @@
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Research</p>
 		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
-			What changed for one cancer-research lab.
+			What changed for one small research lab.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
 			A before-and-after look at FluorocellAI in production.
