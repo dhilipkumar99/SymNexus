@@ -20,12 +20,6 @@
 		},
 	];
 
-	const stats = [
-		{ value: '3–4 days → same-day', label: 'FluorocellAI turnaround', sub: 'Manual review compressed to a same-day first pass' },
-		{ value: '2',    label: 'Products in production', sub: 'FluorocellAI and ComplianceCall' },
-		{ value: '5+ yrs', label: 'Experience per engineer', sub: 'Building custom-deployed AI for clients' },
-	];
-
 	const testimonials = [
 		{ quote: 'A cancer-research lab\'s cell-analysis workflow that took three to four days of manual review now compresses to a same-day first pass — without changing how we prepare or image our samples.', name: 'Cancer-research lab', role: 'FluorocellAI pilot customer · name withheld at customer\'s request' },
 		{ quote: 'It tells us not just what a chemical\'s current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.', name: 'Dr. S. Okonkwo', role: 'Chemical Hygiene Officer, Research University · ComplianceCall pilot customer' },
@@ -73,18 +67,12 @@
 	</div>
 </section>
 
-<!-- ═══ STATS BAND ═══ -->
+<!-- ═══ APPROACH BAND ═══ -->
 <section class="border-b border-slate-200/60 bg-paper">
-	<div class="container-page">
-		<div class="grid grid-cols-1 divide-y divide-slate-200/60 md:grid-cols-3 md:divide-y-0 md:divide-x">
-			{#each stats as s, i}
-				<div class="reveal px-6 py-8 text-center" style="transition-delay:{i*60}ms;">
-					<p class="font-display text-3xl font-normal text-slate-900">{s.value}</p>
-					<p class="mt-1 font-heading text-sm font-semibold text-slate-700">{s.label}</p>
-					<p class="mt-0.5 font-body text-xs text-slate-400">{s.sub}</p>
-				</div>
-			{/each}
-		</div>
+	<div class="container-page py-14 md:py-16">
+		<p class="mx-auto max-w-3xl text-center font-display text-xl font-normal leading-relaxed text-slate-800 md:text-2xl">
+			We build domain-native AI systems, not generic tools bent to fit. FluorocellAI turns a 3–4 day manual review into a same-day first pass — because the system is built around how a lab already works, not the other way around.
+		</p>
 	</div>
 </section>
 
