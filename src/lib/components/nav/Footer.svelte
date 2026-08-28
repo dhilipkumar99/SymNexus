@@ -38,7 +38,7 @@
 			<!-- Brand -->
 			<div class="col-span-2 md:col-span-2">
 				<a href="/" class="flex flex-col leading-none">
-					<span class="font-display text-xl font-normal italic text-slate-900">SymNexus</span>
+					<span class="font-display text-xl font-normal text-slate-900">SymNexus</span>
 					<span class="font-mono text-[0.48rem] uppercase tracking-[0.3em] text-slate-400 mt-0.5">AI Solutions</span>
 				</a>
 				<p class="mt-4 max-w-xs font-body text-sm leading-relaxed text-slate-500">

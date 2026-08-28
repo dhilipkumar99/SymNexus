@@ -14,7 +14,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent"></div>
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Products</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl max-w-2xl">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl max-w-2xl">
 			AI Agents to Maximize Efficiency
 		</h1>
 		<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400 md:text-lg">
@@ -29,7 +29,7 @@
 		<div class="grid gap-14 md:grid-cols-5 md:gap-20 items-start">
 			<div class="reveal md:col-span-3">
 				<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Imaging & Cell Analysis</p>
-				<h2 class="mt-3 font-display text-4xl font-normal italic leading-tight text-slate-900 md:text-5xl">FluorocellAI</h2>
+				<h2 class="mt-3 font-display text-4xl font-normal leading-tight text-slate-900 md:text-5xl">FluorocellAI</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
 					FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.
 				</p>
@@ -95,7 +95,7 @@
 		<div class="grid gap-14 md:grid-cols-5 md:gap-20 items-start">
 			<div class="reveal md:col-span-3 md:order-2">
 				<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#7b8fe8;">Regulatory Compliance</p>
-				<h2 class="mt-3 font-display text-4xl font-normal italic leading-tight text-slate-900 md:text-5xl">ComplianceCall</h2>
+				<h2 class="mt-3 font-display text-4xl font-normal leading-tight text-slate-900 md:text-5xl">ComplianceCall</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
 					ComplianceCall benchmarks pharmaceutical development against federal regulation, unified in a single, continuously auditable platform — built for the teams who answer to FDA and other regulatory bodies.
 				</p>
@@ -135,7 +135,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Ready to see these on your own data?</h2>
+			<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Ready to see these on your own data?</h2>
 			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow — not a generic product tour.</p>
 			<div class="mt-8 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>

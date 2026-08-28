@@ -37,7 +37,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/40 to-transparent"></div>
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Contact</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-2xl">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-2xl">
 			Let's discuss your requirements.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
@@ -87,7 +87,7 @@
 				{#if status === 'success'}
 					<div class="flex flex-col items-center justify-center rounded-2xl border border-slate-200/60 bg-white p-16 text-center">
 						<div class="mb-3 h-1 w-10 rounded-full bg-crystal-rose"></div>
-						<h2 class="font-display text-2xl font-normal italic text-slate-900">Thank you.</h2>
+						<h2 class="font-display text-2xl font-normal text-slate-900">Thank you.</h2>
 						<p class="mt-3 max-w-sm font-body text-sm leading-relaxed text-slate-400">We've received your enquiry and a member of our scientific team will be in touch within one business day.</p>
 					</div>
 				{:else}

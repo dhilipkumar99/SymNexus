@@ -15,7 +15,7 @@
 	<div class="container-page relative z-10 flex h-full flex-col justify-end pb-20 md:pb-28">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">About SymNexus</p>
-			<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
+			<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
 				The team behind FluorocellAI and ComplianceCall.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
@@ -31,7 +31,7 @@
 		<div class="grid gap-16 md:grid-cols-2 md:gap-24 items-center">
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">What We Do</p>
-				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl lg:text-5xl">
+				<h2 class="mt-4 font-display text-3xl font-normal leading-snug text-slate-900 md:text-4xl lg:text-5xl">
 					We build software domain experts actually use.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
@@ -67,7 +67,7 @@
 	<div class="container-page">
 		<div class="reveal mb-14 max-w-2xl">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Why Teams Choose Us</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">What makes our software different.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">What makes our software different.</h2>
 		</div>
 		<div class="grid gap-4 sm:grid-cols-2">
 			{#each [
@@ -95,7 +95,7 @@
 	<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
 	<div class="container-page relative z-10 flex h-full items-end pb-12">
 		<div class="reveal max-w-2xl">
-			<p class="font-display text-2xl font-normal italic text-white md:text-3xl">
+			<p class="font-display text-2xl font-normal text-white md:text-3xl">
 				&ldquo;Two products in fourteen months, both in production with paying pilot customers. We'd rather ship two things a regulatory auditor can trust than ten things nobody's validated.&rdquo;
 			</p>
 		</div>
@@ -107,7 +107,7 @@
 	<div class="container-page">
 		<div class="reveal mb-14 max-w-2xl">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Team</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Leadership</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">Leadership</h2>
 		</div>
 		<div class="reveal grid gap-4 sm:grid-cols-2 mb-4">
 			<div class="rounded-2xl border border-slate-200/60 bg-white p-7">
@@ -152,7 +152,7 @@
 	<div class="container-page relative z-10">
 		<div class="reveal grid gap-8 md:grid-cols-3">
 			<div class="md:col-span-2">
-				<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Ready to see the platforms in your context?</h2>
+				<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Ready to see the platforms in your context?</h2>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 max-w-lg">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow. We want to understand your process before we show you the software.</p>
 			</div>
 			<div class="flex flex-col justify-center gap-3">

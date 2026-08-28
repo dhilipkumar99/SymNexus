@@ -46,7 +46,7 @@
 	<div class="container-page relative z-10">
 		<div class="max-w-3xl" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.7rem] font-medium uppercase tracking-[0.2em] text-crystal-rose/80 mb-5">SymNexus Ltd. — Software</p>
-			<h1 class="font-display text-4xl font-normal italic leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
+			<h1 class="font-display text-4xl font-normal leading-[1.1] tracking-tight text-white md:text-5xl lg:text-6xl">
 				AI software for cell image analysis and pharmaceutical compliance.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
@@ -79,7 +79,7 @@
 		<div class="grid grid-cols-1 divide-y divide-slate-200/60 md:grid-cols-3 md:divide-y-0 md:divide-x">
 			{#each stats as s, i}
 				<div class="reveal px-6 py-8 text-center" style="transition-delay:{i*60}ms;">
-					<p class="font-display text-3xl font-normal italic text-slate-900">{s.value}</p>
+					<p class="font-display text-3xl font-normal text-slate-900">{s.value}</p>
 					<p class="mt-1 font-heading text-sm font-semibold text-slate-700">{s.label}</p>
 					<p class="mt-0.5 font-body text-xs text-slate-400">{s.sub}</p>
 				</div>
@@ -93,7 +93,7 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">What We Sell</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic leading-tight text-slate-900 md:text-4xl">
+			<h2 class="mt-4 font-display text-3xl font-normal leading-tight text-slate-900 md:text-4xl">
 				Two products. Two regulated workflows.
 			</h2>
 		</div>
@@ -102,7 +102,7 @@
 			{#each products as p, i}
 				<div class="reveal flex flex-col rounded-2xl border border-slate-200/60 bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl" style="transition-delay:{i*80}ms;">
 					<span class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:{p.accentHex};">{p.tag}</span>
-					<h3 class="mt-2 font-display text-2xl font-normal italic text-slate-900">{p.name}</h3>
+					<h3 class="mt-2 font-display text-2xl font-normal text-slate-900">{p.name}</h3>
 					<p class="mt-3 font-body text-sm leading-relaxed text-slate-500 flex-1">{p.desc}</p>
 					<div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
 						<a href="/{p.slug}" class="font-heading text-[0.72rem] font-semibold uppercase tracking-[0.1em] transition-colors duration-200" style="color:{p.accentHex};">
@@ -123,12 +123,12 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">From Pilot Customers</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">What our early customers say.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">What our early customers say.</h2>
 		</div>
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 max-w-4xl">
 			{#each testimonials as t, i}
 				<div class="reveal flex flex-col rounded-2xl border border-slate-200/60 bg-white p-7" style="transition-delay:{i*80}ms;">
-					<blockquote class="flex-1 font-display text-base font-normal italic leading-relaxed text-slate-700">
+					<blockquote class="flex-1 font-display text-base font-normal leading-relaxed text-slate-700">
 						&ldquo;{t.quote}&rdquo;
 					</blockquote>
 					<div class="mt-6 border-t border-slate-100 pt-4">
@@ -147,7 +147,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/40"></div>
 	<div class="container-page relative z-10">
 		<div class="reveal max-w-2xl">
-			<h2 class="font-display text-3xl font-normal italic leading-tight text-white md:text-4xl">
+			<h2 class="font-display text-3xl font-normal leading-tight text-white md:text-4xl">
 				See FluorocellAI or ComplianceCall on your own data.
 			</h2>
 			<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 md:text-base">

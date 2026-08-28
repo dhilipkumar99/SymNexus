@@ -20,7 +20,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/55 to-slate-950/10"></div>
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Careers</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] text-white md:text-6xl max-w-2xl">
 			Build AI that matters to the people who use it.
 		</h1>
 		<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
@@ -39,7 +39,7 @@
 		<div class="grid gap-14 md:grid-cols-2 md:gap-20 items-center">
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">How We Work</p>
-				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
+				<h2 class="mt-4 font-display text-3xl font-normal leading-snug text-slate-900 md:text-4xl">
 					Small team. Deep expertise. Domain-native discipline.
 				</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500">
@@ -79,10 +79,10 @@
 	<div class="container-page">
 		<div class="reveal mb-8">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Open Roles</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">No open roles listed right now.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">No open roles listed right now.</h2>
 		</div>
 		<div class="reveal rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center">
-			<h3 class="font-display text-lg font-normal italic text-slate-700">Think you'd be a fit anyway?</h3>
+			<h3 class="font-display text-lg font-normal text-slate-700">Think you'd be a fit anyway?</h3>
 			<p class="mt-2 font-body text-sm text-slate-400 max-w-md mx-auto">We occasionally bring people on outside of a formal listing. If you're exceptional at something that matters for the work we do, introduce yourself.</p>
 			<a href="/contact" class="mt-5 inline-block btn-secondary text-xs">Send an introduction →</a>
 		</div>
@@ -95,7 +95,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-2xl font-normal italic text-white md:text-3xl">Questions before reaching out?</h2>
+			<h2 class="font-display text-2xl font-normal text-white md:text-3xl">Questions before reaching out?</h2>
 			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">Email us at <a href="mailto:cell.ai.solutions@gmail.com" class="text-crystal-rose hover:text-crystal-blush transition-colors">cell.ai.solutions@gmail.com</a>. We read every message.</p>
 		</div>
 	</div>

@@ -42,7 +42,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Pricing</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl mx-auto">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] text-white md:text-6xl max-w-2xl mx-auto">
 			Sized to your deployment.
 		</h1>
 		<p class="mt-5 max-w-lg mx-auto font-body text-base leading-relaxed text-slate-400">
@@ -58,7 +58,7 @@
 			{#each products as p, i}
 				<div class="reveal flex flex-col rounded-2xl border border-slate-200/60 bg-white p-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*80}ms;">
 					<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em]" style="color:{p.accentHex};">{p.name}</p>
-					<p class="mt-4 font-display text-3xl font-normal italic text-slate-900">Contact us for pricing</p>
+					<p class="mt-4 font-display text-3xl font-normal text-slate-900">Contact us for pricing</p>
 					<p class="mt-3 font-body text-sm leading-relaxed text-slate-500">{p.desc}</p>
 					<ul class="mt-7 flex-1 space-y-2.5">
 						{#each p.features as feat}
@@ -83,7 +83,7 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Common Questions</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Pricing FAQ.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">Pricing FAQ.</h2>
 		</div>
 		<div class="grid gap-5 md:grid-cols-2 max-w-4xl">
 			{#each [
@@ -109,7 +109,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Not sure which plan is right for you?</h2>
+			<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Not sure which plan is right for you?</h2>
 			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific team will review your workflow and recommend the right plan before you commit to anything.</p>
 			<div class="mt-8 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>

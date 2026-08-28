@@ -33,7 +33,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-slate-950/20"></div>
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Request a Demonstration</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] text-white md:text-6xl max-w-2xl">
 			See it in the context of your workflow.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
@@ -49,7 +49,7 @@
 			<!-- Left: process + context -->
 			<div class="lg:col-span-2 space-y-10">
 				<div class="reveal">
-					<h2 class="font-display text-2xl font-normal italic text-slate-900">How it works.</h2>
+					<h2 class="font-display text-2xl font-normal text-slate-900">How it works.</h2>
 					<div class="mt-6 space-y-0">
 						{#each steps as s, i}
 							<div class="flex gap-4 py-5 {i < steps.length - 1 ? 'border-b border-slate-100' : ''}">
@@ -90,13 +90,13 @@
 				{#if status === 'success'}
 					<div class="flex flex-col items-center justify-center rounded-2xl border border-slate-200/60 bg-white p-16 text-center min-h-[400px]">
 						<div class="mb-4 h-1 w-10 rounded-full bg-crystal-rose mx-auto"></div>
-						<h2 class="font-display text-2xl font-normal italic text-slate-900">Thank you.</h2>
+						<h2 class="font-display text-2xl font-normal text-slate-900">Thank you.</h2>
 						<p class="mt-3 max-w-sm font-body text-sm leading-relaxed text-slate-400">We've received your request. A member of our scientific team will reach out within one business day to schedule your qualification call.</p>
 						<a href="/" class="mt-8 btn-secondary">Back to home</a>
 					</div>
 				{:else}
 					<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="rounded-2xl border border-slate-200/60 bg-white p-8 space-y-5">
-						<h2 class="font-display text-xl font-normal italic text-slate-900">Tell us about your work.</h2>
+						<h2 class="font-display text-xl font-normal text-slate-900">Tell us about your work.</h2>
 
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 							{#each [

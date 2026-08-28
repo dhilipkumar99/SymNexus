@@ -14,7 +14,7 @@
 	<div class="container-page relative z-10">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Imaging & Cell Analysis</p>
-			<h1 class="mt-3 font-display text-5xl font-normal italic leading-[1.05] tracking-tight text-white md:text-6xl max-w-3xl">
+			<h1 class="mt-3 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl max-w-3xl">
 				FluorocellAI
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-300 md:text-lg">
@@ -38,7 +38,7 @@
 		<div class="grid gap-16 md:grid-cols-2 md:gap-24 items-center">
 			<div class="reveal">
 				<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Platform Overview</p>
-				<h2 class="mt-4 font-display text-3xl font-normal italic leading-snug text-slate-900 md:text-4xl">
+				<h2 class="mt-4 font-display text-3xl font-normal leading-snug text-slate-900 md:text-4xl">
 					The accuracy you couldn't achieve manually, at same-day turnaround.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
@@ -79,7 +79,7 @@
 <!-- Pull quote -->
 <section class="relative overflow-hidden border-y border-slate-200/60 bg-slate-950 py-16 md:py-20">
 	<div class="container-page relative z-10">
-		<blockquote class="reveal max-w-2xl font-display text-xl font-normal italic leading-relaxed text-white md:text-2xl">
+		<blockquote class="reveal max-w-2xl font-display text-xl font-normal leading-relaxed text-white md:text-2xl">
 			&ldquo;A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.&rdquo;
 		</blockquote>
 		<p class="reveal mt-4 font-mono text-[0.6rem] uppercase tracking-[0.15em] text-white/40">Cancer-research lab — FluorocellAI pilot customer</p>
@@ -91,7 +91,7 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Capabilities</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Built for every fluorescence microscopy workflow.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">Built for every fluorescence microscopy workflow.</h2>
 		</div>
 		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
 			{#each [
@@ -117,7 +117,7 @@
 	<div class="container-page">
 		<div class="reveal mb-12">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Use Cases</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">Who uses FluorocellAI.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">Who uses FluorocellAI.</h2>
 		</div>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
 			{#each [
@@ -149,7 +149,7 @@
 	<div class="container-page relative z-10">
 		<div class="reveal flex flex-wrap items-center justify-between gap-10">
 			<div class="max-w-xl">
-				<h2 class="font-display text-3xl font-normal italic text-white md:text-4xl">Begin your FluorocellAI evaluation.</h2>
+				<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Begin your FluorocellAI evaluation.</h2>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">We tailor every evaluation to your imaging modality, cell type, and existing pipeline. Our scientific team guides the process from installation to your first publication-quality output.</p>
 			</div>
 			<div class="flex flex-wrap gap-4">

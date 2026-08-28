@@ -13,7 +13,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/60 to-transparent"></div>
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Research</p>
-		<h1 class="mt-4 font-display text-5xl font-normal italic leading-[1.05] text-white md:text-6xl max-w-2xl">
+		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] text-white md:text-6xl max-w-2xl">
 			What changed for one small research lab.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
@@ -27,7 +27,7 @@
 	<div class="container-page">
 		<div class="reveal mb-10">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em]" style="color:#40e0d0;">Case Study</p>
-			<h2 class="mt-4 font-display text-3xl font-normal italic text-slate-900 md:text-4xl">FluorocellAI, in a cancer-research lab.</h2>
+			<h2 class="mt-4 font-display text-3xl font-normal text-slate-900 md:text-4xl">FluorocellAI, in a cancer-research lab.</h2>
 			<p class="mt-4 max-w-2xl font-body text-sm leading-relaxed text-slate-500">A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual review of cells from a week of manual cross-referencing to a same-day first pass.</p>
 		</div>
 		<div class="reveal grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -54,7 +54,7 @@
 				</div>
 			</div>
 		</div>
-		<p class="reveal mt-6 max-w-2xl font-body text-sm italic leading-relaxed text-slate-400">Net effect: a workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.</p>
+		<p class="reveal mt-6 max-w-2xl font-body text-sm leading-relaxed text-slate-400">Net effect: a workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.</p>
 	</div>
 </section>
 
@@ -64,7 +64,7 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 to-transparent"></div>
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
-			<h2 class="font-display text-2xl font-normal italic text-white md:text-3xl">Want to see this on your own data?</h2>
+			<h2 class="font-display text-2xl font-normal text-white md:text-3xl">Want to see this on your own data?</h2>
 			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">Request a Demonstration and we'll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.</p>
 			<div class="mt-6 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>
