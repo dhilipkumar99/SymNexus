@@ -46,7 +46,7 @@
 			Sized to your deployment.
 		</h1>
 		<p class="mt-5 max-w-lg mx-auto font-body text-base leading-relaxed text-slate-400">
-			Every engagement begins with an evaluation tailored to your workflow. We prove the model on your data before we talk pricing — contact us for a quote sized to your deployment.
+			We design and build domain-native AI systems across a range of technical and regulated fields. Every engagement begins with an evaluation tailored to your workflow — we prove the model on your data before we talk pricing.
 		</p>
 	</div>
 </section>
@@ -54,6 +54,11 @@
 <!-- Products -->
 <section class="bg-warm-white py-20 md:py-28">
 	<div class="container-page">
+		<div class="reveal mb-12 max-w-2xl">
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose">Currently Offering</p>
+			<h2 class="mt-4 font-display text-3xl font-normal leading-tight text-slate-900 md:text-4xl">Two regulated workflows, and counting.</h2>
+			<p class="mt-3 font-body text-sm leading-relaxed text-slate-500">Pricing for the systems we've already built for research labs and pharmaceutical teams. If your field isn't listed, that's the point — we build custom.</p>
+		</div>
 		<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 			{#each products as p, i}
 				<div class="reveal flex flex-col rounded-2xl border border-slate-200/60 bg-white p-8 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*80}ms;">
@@ -75,6 +80,14 @@
 				</div>
 			{/each}
 		</div>
+
+		<div class="reveal mt-6 flex flex-col items-start gap-4 rounded-2xl border border-dashed border-slate-300 bg-white/60 p-8 sm:flex-row sm:items-center sm:justify-between">
+			<div>
+				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Not on this list?</p>
+				<p class="mt-2 max-w-xl font-body text-sm leading-relaxed text-slate-500">We design and build domain-native AI systems for other technical and regulated fields too — imaging, laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.</p>
+			</div>
+			<a href="/contact" class="flex-shrink-0 rounded-xl px-5 py-3 text-center font-heading text-sm font-semibold text-slate-900 bg-slate-100 transition-all duration-200 hover:bg-slate-200">Discuss a custom system</a>
+		</div>
 	</div>
 </section>
 
@@ -90,7 +103,8 @@
 				{ q:'Is there an evaluation period?', a:'Every engagement begins with a structured evaluation, during which our team works with you to configure the platform for your specific workflow. Evaluation access is granted after a brief qualification conversation.' },
 				{ q:'How is pricing determined?', a:'We size pricing to the scope of your deployment — number of sites, data volume, and workflow complexity. We prove the model on your data first, then discuss a plan sized to your organization.' },
 				{ q:'Is pricing billed monthly or annually?', a:'Both options are available and discussed as part of your pricing conversation.' },
-				{ q:'Do you work with academic or non-profit institutions?', a:'Yes — our early FluorocellAI deployments are with a cancer-research lab and an academic cell-biology core. Contact us to discuss institutional pricing.' },
+				{ q:'Do you work with academic or non-profit institutions?', a:'Yes — several of our early deployments are with research labs and academic institutions. Contact us to discuss institutional pricing.' },
+				{ q:'What if my field isn\'t FluorocellAI or ComplianceCall?', a:'Those are our current products, not the limit of what we build. We design domain-native AI systems for other technical and regulated fields — reach out to discuss your workflow.' },
 				{ q:'What does onboarding look like?', a:'Demonstrations are conducted by domain specialists, not sales staff, and every demo is tailored to your specific workflow before we discuss terms.' },
 				{ q:'Can I cancel or change my plan?', a:'Cancellation and plan-change terms, including notice period, are set out in your contract. Reach out to your account contact to review your specific terms or initiate a change.' },
 			] as item, i}
