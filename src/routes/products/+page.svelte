@@ -5,7 +5,7 @@
 
 <svelte:head>
 	<title>Products — SymNexus</title>
-	<meta name="description" content="FluorocellAI: AI-automated cell image analysis. ComplianceCall: live pharmaceutical compliance tracking against federal regulation. Two products, explained." />
+	<meta name="description" content="FluorocellAI: AI-automated cell image analysis. ComplianceCall: live pharmaceutical compliance tracking against federal regulation. Plus custom systems built for other fields, like Yashara's retail operations." />
 </svelte:head>
 
 <!-- Hero -->
@@ -124,6 +124,42 @@
 			</div>
 			<div class="reveal md:col-span-2 md:order-1">
 				<ComplianceMock />
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Divider -->
+<div class="border-t border-slate-200/60"></div>
+
+<!-- Yashara deep-dive -->
+<section class="bg-warm-white py-24 md:py-32">
+	<div class="container-page">
+		<div class="reveal max-w-3xl">
+			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#c9a24b;">Retail & Wholesale Operations</p>
+			<h2 class="mt-3 font-display text-4xl font-normal leading-tight text-slate-900 md:text-5xl">Yashara</h2>
+			<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
+				Built for Yashara, an ethically-sourced South East Asian goods retailer — the same domain-native approach we bring to regulated science applied to retail operations.
+			</p>
+			<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
+				An AI monitoring system watches inventory and product quality across Yashara's handcrafted goods catalog, flagging inconsistencies before they reach a customer. A second AI layer handles interfacing for large wholesale accounts — routing orders, answering account-specific questions, and surfacing exceptions to a human when it matters.
+			</p>
+			<ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+				{#each [
+					'Automated inventory & quality monitoring',
+					'Anomaly flagging across the goods catalog',
+					'AI-driven large-account interfacing',
+					'Exception routing to a human when needed',
+				] as feat}
+					<li class="flex items-center gap-2 font-body text-xs text-slate-400">
+						<span class="h-1.5 w-1.5 flex-shrink-0 rounded-full" style="background:#c9a24b;"></span>
+						{feat}
+					</li>
+				{/each}
+			</ul>
+			<div class="mt-8 flex flex-wrap gap-3">
+				<a href="https://yashara.org/" target="_blank" rel="noopener noreferrer" class="btn-primary">Visit Yashara ↗</a>
+				<a href="/demo" class="btn-secondary">Discuss a Custom System</a>
 			</div>
 		</div>
 	</div>

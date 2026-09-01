@@ -4,7 +4,7 @@
 
 <svelte:head>
 	<title>About — SymNexus</title>
-	<meta name="description" content="SymNexus builds domain-native AI systems for regulated industries — a team of Silicon Valley engineers proving AI in cell biology and pharmaceutical compliance, and expanding globally." />
+	<meta name="description" content="SymNexus designs and builds domain-native AI systems for regulated and technical industries — a team of Silicon Valley engineers proving AI across cell biology, pharmaceutical compliance, and beyond." />
 </svelte:head>
 
 <!-- Hero -->
@@ -16,10 +16,10 @@
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
 			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">About SymNexus</p>
 			<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
-				The team behind FluorocellAI and ComplianceCall.
+				The team building domain-native AI systems.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
-				We're a small team of engineers and researchers building AI software for cell image analysis and pharmaceutical compliance.
+				We're a small team of engineers and researchers building AI systems for regulated and technical industries — from cell image analysis and pharmaceutical compliance to monitoring and account intelligence for other fields entirely.
 			</p>
 		</div>
 	</div>
@@ -85,19 +85,6 @@
 					</div>
 				</div>
 			{/each}
-		</div>
-	</div>
-</section>
-
-<!-- Image break -->
-<section class="relative h-80 overflow-hidden md:h-[28rem]">
-	<img src={IMG.purpleCells} alt="Fluorescence microscopy — the biology at the heart of everything we build" class="absolute inset-0 h-full w-full object-cover" loading="lazy" />
-	<div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-transparent"></div>
-	<div class="container-page relative z-10 flex h-full items-end pb-12">
-		<div class="reveal max-w-2xl">
-			<p class="font-display text-2xl font-normal text-white md:text-3xl">
-				&ldquo;Two products in fourteen months, both in production with paying pilot customers. We'd rather ship two things a regulatory auditor can trust than ten things nobody's validated.&rdquo;
-			</p>
 		</div>
 	</div>
 </section>
