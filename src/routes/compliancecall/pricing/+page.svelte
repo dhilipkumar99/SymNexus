@@ -1,4 +1,1 @@
-<script lang="ts">
-	import { goto } from '$app/navigation';
-	goto('/pricing');
-</script>
+<script lang="ts"></script>
