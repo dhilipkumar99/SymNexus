@@ -1,10 +1,10 @@
 <svelte:head>
-	<title>SymNexus</title>
+	<title>Symnexus</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
 <div class="video-page">
-	<video src="/video/SymNexusForYou.mp4" autoplay controls playsinline></video>
+	<video src="/video/SymnexusForYou.mp4" autoplay controls playsinline></video>
 </div>
 
 <style>

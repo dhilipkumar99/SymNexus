@@ -32,8 +32,8 @@
 </script>
 
 <svelte:head>
-	<title>Pricing — SymNexus</title>
-	<meta name="description" content="SymNexus pricing for FluorocellAI and ComplianceCall. We size every deployment to your workflow — contact us for a quote." />
+	<title>Pricing — Symnexus</title>
+	<meta name="description" content="Symnexus pricing for FluorocellAI and ComplianceCall. We size every deployment to your workflow — contact us for a quote." />
 </svelte:head>
 
 <!-- Hero -->
@@ -46,7 +46,7 @@
 			Sized to your deployment.
 		</h1>
 		<p class="mt-5 max-w-lg mx-auto font-body text-base leading-relaxed text-slate-400">
-			We design and build domain-native AI systems across a range of technical and regulated fields. Every engagement begins with an evaluation tailored to your workflow — we prove the model on your data before we talk pricing.
+			Our Silicon Valley engineering team designs and builds domain-native software systems across a range of technical and regulated fields, deployed for clients operating globally. Every engagement begins with an evaluation tailored to your workflow — we prove the model on your data before we talk pricing.
 		</p>
 	</div>
 </section>
@@ -84,7 +84,7 @@
 		<div class="reveal mt-6 flex flex-col items-start gap-4 rounded-2xl border border-dashed border-slate-300 bg-white/60 p-8 sm:flex-row sm:items-center sm:justify-between">
 			<div>
 				<p class="font-heading text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Not on this list?</p>
-				<p class="mt-2 max-w-xl font-body text-sm leading-relaxed text-slate-500">We design and build domain-native AI systems for other technical and regulated fields too — imaging, laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.</p>
+				<p class="mt-2 max-w-xl font-body text-sm leading-relaxed text-slate-500">We design and build domain-native software systems for other technical and regulated fields too — imaging, laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.</p>
 			</div>
 			<a href="/contact" class="flex-shrink-0 rounded-xl px-5 py-3 text-center font-heading text-sm font-semibold text-slate-900 bg-slate-100 transition-all duration-200 hover:bg-slate-200">Discuss a custom system</a>
 		</div>
@@ -104,8 +104,8 @@
 				{ q:'How is pricing determined?', a:'We size pricing to the scope of your deployment — number of sites, data volume, and workflow complexity. We prove the model on your data first, then discuss a plan sized to your organization.' },
 				{ q:'Is pricing billed monthly or annually?', a:'Both options are available and discussed as part of your pricing conversation.' },
 				{ q:'Do you work with academic or non-profit institutions?', a:'Yes — several of our early deployments are with research labs and academic institutions. Contact us to discuss institutional pricing.' },
-				{ q:'What if my field isn\'t FluorocellAI or ComplianceCall?', a:'Those are our current products, not the limit of what we build. We design domain-native AI systems for other technical and regulated fields — reach out to discuss your workflow.' },
-				{ q:'What does onboarding look like?', a:'Demonstrations are conducted by domain specialists, not sales staff, and every demo is tailored to your specific workflow before we discuss terms.' },
+				{ q:'What if my field isn\'t FluorocellAI or ComplianceCall?', a:'Those are our current products, not the limit of what we build. We design domain-native software systems for other technical and regulated fields — reach out to discuss your workflow.' },
+				{ q:'What does onboarding look like?', a:'Domain specialists run every demonstration, not sales staff, and we build each demo around your specific workflow before we discuss terms.' },
 				{ q:'Can I cancel or change my plan?', a:'Cancellation and plan-change terms, including notice period, are set out in your contract. Reach out to your account contact to review your specific terms or initiate a change.' },
 			] as item, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6" style="transition-delay:{i*50}ms;">

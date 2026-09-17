@@ -1,10 +1,10 @@
 <script lang="ts">
-	import FluorocellMock from '$lib/components/products/FluorocellMock.svelte';
+	import { IMG } from '$lib/images';
 	import ComplianceMock from '$lib/components/products/ComplianceMock.svelte';
 </script>
 
 <svelte:head>
-	<title>Products — SymNexus</title>
+	<title>Products — Symnexus</title>
 	<meta name="description" content="FluorocellAI: AI-automated cell image analysis. ComplianceCall: live pharmaceutical compliance tracking against federal regulation. Plus custom systems built for other fields, like Yashara's retail operations." />
 </svelte:head>
 
@@ -57,7 +57,9 @@
 				</div>
 			</div>
 			<div class="reveal md:col-span-2 space-y-4">
-				<FluorocellMock />
+				<div class="overflow-hidden rounded-2xl">
+					<img src={IMG.fluoroCells} alt="Fluorescence microscopy of cells, the kind FluorocellAI analyzes" class="h-64 w-full object-cover" loading="lazy" />
+				</div>
 				<div class="rounded-2xl border border-slate-200/60 overflow-hidden bg-white">
 					<div class="border-b border-slate-100 px-6 py-4">
 						<span class="font-mono text-[0.6rem] font-medium uppercase tracking-[0.18em] text-slate-300">Before / After</span>
@@ -100,7 +102,7 @@
 					ComplianceCall benchmarks pharmaceutical development against federal regulation, unified in a single, continuously auditable platform — built for the teams who answer to FDA and other regulatory bodies.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					The platform tracks not just a chemical's current hazard category, but what it used to be and why it changed — the historical record regulatory and EHS auditors ask for. Full audit-trail transparency is built in by design, not bolted on after the fact.
+					The platform tracks not just a chemical's current hazard category, but what it used to be and why it changed — the historical record regulatory and EHS auditors ask for. We build full audit-trail transparency in by design, rather than bolt it on after the fact.
 				</p>
 				<ul class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
 					{#each [
@@ -139,7 +141,7 @@
 			<p class="font-mono text-[0.62rem] font-medium uppercase tracking-[0.18em]" style="color:#c9a24b;">Retail & Wholesale Operations</p>
 			<h2 class="mt-3 font-display text-4xl font-normal leading-tight text-slate-900 md:text-5xl">Yashara</h2>
 			<p class="mt-5 font-body text-sm leading-relaxed text-slate-500 md:text-base">
-				Built for Yashara, an ethically-sourced South East Asian goods retailer — the same domain-native approach we bring to regulated science applied to retail operations.
+				Built for Yashara, an ethically-sourced South East Asian goods retailer — our Silicon Valley engineering team deployed the same domain-native approach we bring to regulated science, this time overseas, applied to retail operations.
 			</p>
 			<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
 				An AI monitoring system watches inventory and product quality across Yashara's handcrafted goods catalog, flagging inconsistencies before they reach a customer. A second AI layer handles interfacing for large wholesale accounts — routing orders, answering account-specific questions, and surfacing exceptions to a human when it matters.
@@ -172,7 +174,7 @@
 	<div class="container-page relative z-10 text-center">
 		<div class="reveal">
 			<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Ready to see these on your own data?</h2>
-			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow — not a generic product tour.</p>
+			<p class="mx-auto mt-4 max-w-md font-body text-sm leading-relaxed text-slate-400">Our scientific and engineering staff build every demonstration around your specific workflow, skipping the generic product tour.</p>
 			<div class="mt-8 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>
 				<a href="/pricing" class="btn-hero-secondary">View Pricing</a>

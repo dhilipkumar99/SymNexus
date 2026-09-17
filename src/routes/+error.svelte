@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>{$page.status} — SymNexus</title>
+	<title>{$page.status} — Symnexus</title>
 </svelte:head>
 
 <section class="relative flex h-svh w-full items-center overflow-hidden bg-slate-950">

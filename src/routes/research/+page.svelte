@@ -3,7 +3,7 @@
 </script>
 
 <svelte:head>
-	<title>Research — SymNexus</title>
+	<title>Research — Symnexus</title>
 	<meta name="description" content="A case study on FluorocellAI in a cancer-research lab: what changed, and how much time it saved." />
 </svelte:head>
 
@@ -66,6 +66,7 @@
 		<div class="reveal">
 			<h2 class="font-display text-2xl font-normal text-white md:text-3xl">Want to see this on your own data?</h2>
 			<p class="mx-auto mt-3 max-w-md font-body text-sm leading-relaxed text-slate-400">Request a Demonstration and we'll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.</p>
+			<p class="mx-auto mt-3 max-w-md font-body text-xs leading-relaxed text-slate-500">Working outside imaging or compliance? We build domain-native software systems for many industries — <a href="/contact" class="text-slate-300 underline underline-offset-2 hover:text-white">reach out</a> to discuss a custom system.</p>
 			<div class="mt-6 flex flex-wrap justify-center gap-4">
 				<a href="/demo" class="btn-hero-primary">Request a Demonstration</a>
 			</div>

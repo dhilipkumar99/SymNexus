@@ -1,5 +1,5 @@
 <svelte:head>
-	<title>Terms of Use — SymNexus</title>
+	<title>Terms of Use — Symnexus</title>
 </svelte:head>
 
 <section class="relative py-20" style="background:#0B1F3A;">
@@ -16,15 +16,15 @@
 		<div class="space-y-8 text-sm leading-relaxed text-neutral-600">
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Acceptance of Terms</h2>
-				<p>By accessing or using any SymNexus platform or website, you agree to be bound by these terms. If you are accessing our platforms on behalf of an organization, you represent that you have the authority to bind that organization to these terms.</p>
+				<p>By accessing or using any Symnexus platform or website, you agree to be bound by these terms. If you are accessing our platforms on behalf of an organization, you represent that you have the authority to bind that organization to these terms.</p>
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">License and Permitted Use</h2>
-				<p>SymNexus grants you a limited, non-exclusive, non-transferable license to use our platforms for their intended scientific and research purposes. You may not reverse engineer, resell, or redistribute our software or its outputs without written authorization.</p>
+				<p>Symnexus grants you a limited, non-exclusive, non-transferable license to use our platforms for their intended scientific and research purposes. You may not reverse engineer, resell, or redistribute our software or its outputs without written authorization.</p>
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Intellectual Property</h2>
-				<p>All SymNexus platforms, documentation, and associated intellectual property remain the exclusive property of SymNexus Ltd. Your data remains yours — we assert no ownership over data processed through our platforms.</p>
+				<p>All Symnexus platforms, documentation, and associated intellectual property remain the exclusive property of Symnexus Ltd. Your data remains yours — we assert no ownership over data processed through our platforms.</p>
 			</div>
 			<div>
 				<h2 class="font-display text-xl font-semibold text-brand-800 mb-3">Contact</h2>

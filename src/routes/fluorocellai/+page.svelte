@@ -1,10 +1,9 @@
 <script lang="ts">
 	import { IMG } from '$lib/images';
-	import FluorocellMock from '$lib/components/products/FluorocellMock.svelte';
 </script>
 
 <svelte:head>
-	<title>FluorocellAI — SymNexus</title>
+	<title>FluorocellAI — Symnexus</title>
 	<meta name="description" content="FluorocellAI: AI-automated cell identification, counting, and analysis for cell and cancer research labs. A same-day first pass, without changing how you prepare or image samples." />
 </svelte:head>
 
@@ -26,8 +25,9 @@
 			</div>
 		</div>
 		<div class="mt-12 max-w-2xl" style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.3s both;">
-			<FluorocellMock />
-			<p class="mt-3 font-body text-[0.68rem] text-white/25">Illustrative interface preview. Request an evaluation to see the live product.</p>
+			<div class="overflow-hidden rounded-2xl">
+				<img src={IMG.fluoroCells} alt="Fluorescence microscopy of cells, the kind FluorocellAI analyzes" class="h-72 w-full object-cover" loading="eager" />
+			</div>
 		</div>
 	</div>
 </section>
@@ -45,7 +45,7 @@
 					FluorocellAI slots into the workflow your lab already runs — slide prep and imaging stay unchanged. What used to be one to two days of manual counting and annotation, plus a further day each of manual QC and reporting, becomes minutes of automated segmentation and counting with an automatic QC and audit trail behind it. Manual counts also drift — between technicians, and within the same technician across a long session — which is exactly what a reviewer questions first; automated segmentation returns the same count on the same slide every time.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					Built on our proprietary machine learning models and validated by working cell biologists — not shipped generic and adapted after the fact. Every deployment adds annotated microscopy data back into our proprietary dataset, compounding accuracy over time.
+					We build it on our proprietary machine learning models, and working cell biologists validate it — we don't ship it generic and adapt it after the fact. Every deployment adds annotated microscopy data back into our proprietary dataset, compounding accuracy over time.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/demo" class="btn-primary">Request Evaluation</a>
@@ -99,8 +99,8 @@
 				{title:'Automatic QC & audit trail',  body:'Every result carries an automatic QC pass and a built-in audit trail — no separate manual re-count step required.'},
 				{title:'Same-day reporting',            body:'Write-up and reporting generate automatically, ready for downstream analysis the same day imaging completes.'},
 				{title:'Unchanged slide prep',            body:'FluorocellAI works with your existing imaging setup — slide prep and imaging are not disrupted by adoption.'},
-				{title:'Compounding proprietary data',         body:'Every deployment adds annotated microscopy data back into our proprietary dataset, a compounding advantage a generic AI tool cannot replicate.'},
-				{title:'Validated by working scientists',          body:'Built in close collaboration with cancer-research labs and academic cell-biology cores — not shipped generic and adapted after the fact.'},
+				{title:'Compounding proprietary data',         body:'Every deployment adds annotated microscopy data back into our proprietary dataset, a compounding advantage a generic tool cannot replicate.'},
+				{title:'Validated by working scientists',          body:'We build it in close collaboration with cancer-research labs and academic cell-biology cores, instead of shipping it generic and adapting it after the fact.'},
 			] as feat, i}
 				<div class="reveal rounded-2xl border border-slate-200/60 bg-white p-6 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*50}ms;">
 					<div class="mb-3 h-0.5 w-8 rounded-full" style="background:#40e0d0;"></div>
@@ -151,6 +151,7 @@
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Begin your FluorocellAI evaluation.</h2>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">We tailor every evaluation to your imaging modality, cell type, and existing pipeline. Our scientific team guides the process from installation to your first publication-quality output.</p>
+				<p class="mt-3 font-body text-xs leading-relaxed text-slate-500">Working in a different domain entirely? We build domain-native software systems well beyond imaging — <a href="/contact" class="text-slate-300 underline underline-offset-2 hover:text-white">reach out</a> to discuss a custom system.</p>
 			</div>
 			<div class="flex flex-wrap gap-4">
 				<a href="/demo" class="btn-hero-primary">Request Evaluation</a>

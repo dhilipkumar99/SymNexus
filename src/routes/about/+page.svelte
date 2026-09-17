@@ -3,8 +3,8 @@
 </script>
 
 <svelte:head>
-	<title>About — SymNexus</title>
-	<meta name="description" content="SymNexus designs and builds domain-native AI systems for regulated and technical industries — a team of Silicon Valley engineers proving AI across cell biology, pharmaceutical compliance, and beyond." />
+	<title>About — Symnexus</title>
+	<meta name="description" content="Symnexus designs and builds domain-native software systems for regulated and technical industries — a team of Silicon Valley engineers proving new technology across cell biology, pharmaceutical compliance, and beyond." />
 </svelte:head>
 
 <!-- Hero -->
@@ -14,12 +14,12 @@
 	<div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-slate-950/10"></div>
 	<div class="container-page relative z-10 flex h-full flex-col justify-end pb-20 md:pb-28">
 		<div style="animation: fade-up 0.9s cubic-bezier(0.23,1.01,0.32,1) 0.1s both;">
-			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">About SymNexus</p>
+			<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">About Symnexus</p>
 			<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl max-w-3xl">
-				The team building domain-native AI systems.
+				The team building domain-native software systems.
 			</h1>
 			<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
-				We're a small team of engineers and researchers building AI systems for regulated and technical industries — from cell image analysis and pharmaceutical compliance to monitoring and account intelligence for other fields entirely.
+				We're a Silicon Valley team of engineers and researchers building software systems for regulated and technical industries — from cell image analysis and pharmaceutical compliance to monitoring and account intelligence for other fields entirely, deployed for clients operating globally.
 			</p>
 		</div>
 	</div>
@@ -35,10 +35,10 @@
 					We build software domain experts actually use.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
-					Most AI vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly when precision and accountability matter — which is why we chose to prove our AI models first, and train businesses to manage these systems independently.
+					Most software vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly when precision and accountability matter — which is why we chose to prove our models first, and train businesses to manage these systems independently.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
-					At SymNexus, we begin with a deep operational understanding of the domain — a cancer-research lab's cell-analysis workflow, a pharmaceutical team's regulatory audit trail — and build software validated by the working scientists and compliance professionals who use it.
+					At Symnexus, we begin with a deep operational understanding of the domain — a cancer-research lab's cell-analysis workflow, a pharmaceutical team's regulatory audit trail — and build software validated by the working scientists and compliance professionals who use it.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-3">
 					<a href="/products" class="btn-primary">Explore our products</a>
@@ -71,11 +71,11 @@
 		</div>
 		<div class="grid gap-4 sm:grid-cols-2">
 			{#each [
-				{ num: '01', title: 'Team expertise',        body: 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers, led by a neuroscience Ph.D. researcher and a Berkeley-trained operator — built for both the hardware/deployment side and the regulated-science domain side of this problem.' },
-				{ num: '02', title: 'Unique wedge',    body: 'We build domain-native software, validated by the working scientists and compliance professionals who use it — not generic enterprise AI adapted after the fact for the lab.' },
-				{ num: '03', title: 'Proprietary data',body: 'Every deployment adds annotated microscopy data and mapped regulatory precedent across FDA — a compounding dataset a generic AI tool cannot replicate.' },
-				{ num: '04', title: 'Flexible architecture',          body: 'One modular AI stack — ingestion, data lake, fine-tuned models, agents, and copilot — powers both products today and lets us add new regulatory jurisdictions or imaging modalities without rebuilding from scratch.' },
-				{ num: '05', title: 'Compliance by design', body: 'Full audit-trail transparency is built into every SymNexus platform by design, not bolted on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.' },
+				{ num: '01', title: 'Team expertise',        body: 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers, led by a neuroscience Ph.D. researcher and a Berkeley-trained operator — built for both the hardware/deployment side and the regulated-science domain side of this problem, and for deploying that engineering to clients operating overseas.' },
+				{ num: '02', title: 'Unique wedge',    body: 'We build domain-native software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt generic enterprise technology after the fact for the lab.' },
+				{ num: '03', title: 'Proprietary data',body: 'Every deployment adds annotated microscopy data and mapped regulatory precedent across FDA — a compounding dataset a generic tool cannot replicate.' },
+				{ num: '04', title: 'Flexible architecture',          body: 'One modular software stack — ingestion, data lake, fine-tuned models, agents, and copilot — powers both products today and lets us add new regulatory jurisdictions or imaging modalities without rebuilding from scratch.' },
+				{ num: '05', title: 'Compliance by design', body: 'We build full audit-trail transparency into every Symnexus platform by design, rather than bolt it on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.' },
 			] as item, i}
 				<div class="reveal flex gap-5 rounded-2xl border border-slate-200/60 bg-white p-7 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md" style="transition-delay:{i*60}ms;">
 					<div class="flex-shrink-0 font-mono text-2xl font-medium text-slate-200 leading-none">{item.num}</div>
@@ -140,7 +140,7 @@
 		<div class="reveal grid gap-8 md:grid-cols-3">
 			<div class="md:col-span-2">
 				<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Ready to see the platforms in your context?</h2>
-				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 max-w-lg">Our scientific and engineering staff conduct demonstrations tailored to your specific workflow. We want to understand your process before we show you the software.</p>
+				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400 max-w-lg">Our scientific and engineering staff build every demonstration around your specific workflow. We want to understand your process before we show you the software.</p>
 			</div>
 			<div class="flex flex-col justify-center gap-3">
 				<a href="/demo"    class="btn-hero-primary text-center">Request a Demonstration</a>

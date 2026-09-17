@@ -4,7 +4,7 @@
 </script>
 
 <svelte:head>
-	<title>ComplianceCall — SymNexus</title>
+	<title>ComplianceCall — Symnexus</title>
 	<meta name="description" content="ComplianceCall: benchmarks pharmaceutical development against federal regulation. Full audit-trail transparency, built in by design for FDA-regulated teams." />
 </svelte:head>
 
@@ -42,7 +42,7 @@
 					The historical record your auditors ask for, generated automatically.
 				</h2>
 				<p class="mt-5 font-body text-base leading-relaxed text-slate-500">
-					ComplianceCall tracks not just a chemical's current hazard category, but what it used to be and why it changed — full audit-trail transparency built into the platform by design, not bolted on after the fact.
+					ComplianceCall tracks not just a chemical's current hazard category, but what it used to be and why it changed — we build full audit-trail transparency into the platform by design, rather than bolt it on after the fact.
 				</p>
 				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">
 					Built on the same modular AI stack as FluorocellAI — ingestion, data lake, fine-tuned models, agents, and copilot — letting us extend coverage to new regulatory jurisdictions without rebuilding from scratch.
@@ -146,7 +146,8 @@
 		<div class="reveal flex flex-wrap items-center justify-between gap-10">
 			<div class="max-w-xl">
 				<h2 class="font-display text-3xl font-normal text-white md:text-4xl">Speak with a compliance specialist.</h2>
-				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">ComplianceCall demonstrations are conducted by domain specialists, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your work.</p>
+				<p class="mt-4 font-body text-sm leading-relaxed text-slate-400">Domain specialists run every ComplianceCall demonstration, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your work.</p>
+				<p class="mt-3 font-body text-xs leading-relaxed text-slate-500">Not a regulatory workflow? We build domain-native software systems for many industries — <a href="/contact" class="text-slate-300 underline underline-offset-2 hover:text-white">reach out</a> to discuss a custom system.</p>
 			</div>
 			<div class="flex flex-wrap gap-4">
 				<a href="/demo" class="btn-hero-primary">Request Demonstration</a>

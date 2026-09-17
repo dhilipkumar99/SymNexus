@@ -5,25 +5,66 @@
 		firstName: '', lastName: '', email: '', phone: '',
 		organization: '', role: '', product: '', labType: '', message: '',
 	});
-	let status = $state<'idle' | 'submitting' | 'success' | 'error'>('idle');
+	let status = $state<'idle' | 'submitting' | 'success'>('idle');
 
-	async function handleSubmit() {
+	const contactFields: Array<{ id: string; label: string; type: string; key: keyof typeof form; req: boolean }> = [
+		{ id:'firstName', label:'First Name',    type:'text',  key:'firstName',    req:true },
+		{ id:'lastName',  label:'Last Name',     type:'text',  key:'lastName',     req:true },
+		{ id:'email',     label:'Email Address', type:'email', key:'email',        req:true },
+		{ id:'phone',     label:'Phone Number',  type:'tel',   key:'phone',        req:false },
+		{ id:'org',       label:'Organization',  type:'text',  key:'organization', req:true },
+		{ id:'role',      label:'Your Role',     type:'text',  key:'role',         req:false },
+	];
+
+	const productLabels: Record<string, string> = {
+		fluorocellai: 'FluorocellAI',
+		compliancecall: 'ComplianceCall',
+		both: 'Both products',
+		custom: 'Something else — custom system',
+	};
+	const labTypeLabels: Record<string, string> = {
+		cancer: 'Cancer-Research Institute',
+		academic: 'Academic Cell-Biology Core',
+		cro: 'Contract Research Organization',
+		pharma: 'Pharma / Biotech R&D',
+		regulatory: 'Regulatory Affairs Team',
+		other: 'Other',
+	};
+
+	function handleSubmit() {
 		status = 'submitting';
-		await new Promise(r => setTimeout(r, 800));
+
+		const subject = `Demonstration request — ${form.organization}`;
+		const bodyLines = [
+			`Name: ${form.firstName} ${form.lastName}`,
+			`Email: ${form.email}`,
+			form.phone && `Phone: ${form.phone}`,
+			`Organization: ${form.organization}`,
+			form.role && `Role: ${form.role}`,
+			`Product of interest: ${productLabels[form.product] ?? form.product}`,
+			form.labType && `Organization type: ${labTypeLabels[form.labType] ?? form.labType}`,
+			'',
+			'Workflow:',
+			form.message,
+		].filter(Boolean);
+
+		const mailto = `mailto:cell.ai.solutions@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+		window.location.href = mailto;
+
 		status = 'success';
 	}
 
 	const steps = [
 		{ num: '01', title: 'Submit this form',          body: 'Describe your organization type and the workflow you want to evaluate.' },
 		{ num: '02', title: 'Qualification call (15 min)',body: 'A member of our scientific team reviews your context and confirms a good fit.' },
-		{ num: '03', title: 'Tailored demonstration',    body: 'A domain specialist walks through the platform using your workflow as the basis — not a generic tour.' },
+		{ num: '03', title: 'Tailored demonstration',    body: 'A domain specialist walks through the platform using your workflow as the basis, skipping the generic tour.' },
 		{ num: '04', title: 'Evaluation access',         body: 'Qualified teams receive full platform access for a structured evaluation period. We support you through it.' },
 	];
 </script>
 
 <svelte:head>
-	<title>Request a Demonstration — SymNexus</title>
-	<meta name="description" content="Request a tailored demonstration of FluorocellAI or ComplianceCall. Conducted by domain specialists, not sales staff." />
+	<title>Request a Demonstration — Symnexus</title>
+	<meta name="description" content="Request a tailored demonstration of FluorocellAI or ComplianceCall. Domain specialists run every demonstration, not sales staff." />
 </svelte:head>
 
 <!-- Hero -->
@@ -38,6 +79,9 @@
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
 			Every demonstration is conducted by a domain specialist and built around your workflow — your imaging modality, your cell type, your regulatory structure. Not a scripted product walkthrough.
+		</p>
+		<p class="mt-3 max-w-lg font-body text-sm leading-relaxed text-slate-500">
+			Not evaluating FluorocellAI or ComplianceCall? We build domain-native software systems for many industries — tell us what you have in mind below.
 		</p>
 	</div>
 </section>
@@ -90,8 +134,8 @@
 				{#if status === 'success'}
 					<div class="flex flex-col items-center justify-center rounded-2xl border border-slate-200/60 bg-white p-16 text-center min-h-[400px]">
 						<div class="mb-4 h-1 w-10 rounded-full bg-crystal-rose mx-auto"></div>
-						<h2 class="font-display text-2xl font-normal text-slate-900">Thank you.</h2>
-						<p class="mt-3 max-w-sm font-body text-sm leading-relaxed text-slate-400">We've received your request. A member of our scientific team will reach out within one business day to schedule your qualification call.</p>
+						<h2 class="font-display text-2xl font-normal text-slate-900">Almost there.</h2>
+						<p class="mt-3 max-w-sm font-body text-sm leading-relaxed text-slate-400">Your email client should have opened with your request pre-filled — just hit send. If it didn't open, email us directly at <a href="mailto:cell.ai.solutions@gmail.com" class="text-crystal-rose hover:underline">cell.ai.solutions@gmail.com</a>.</p>
 						<a href="/" class="mt-8 btn-secondary">Back to home</a>
 					</div>
 				{:else}
@@ -99,14 +143,7 @@
 						<h2 class="font-display text-xl font-normal text-slate-900">Tell us about your work.</h2>
 
 						<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-							{#each [
-								{ id:'firstName', label:'First Name',    type:'text',  key:'firstName',    req:true },
-								{ id:'lastName',  label:'Last Name',     type:'text',  key:'lastName',     req:true },
-								{ id:'email',     label:'Email Address', type:'email', key:'email',        req:true },
-								{ id:'phone',     label:'Phone Number',  type:'tel',   key:'phone',        req:false },
-								{ id:'org',       label:'Organization',  type:'text',  key:'organization', req:true },
-								{ id:'role',      label:'Your Role',     type:'text',  key:'role',         req:false },
-							] as f}
+							{#each contactFields as f}
 								<div>
 									<label for={f.id} class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">{f.label}{f.req ? ' *' : ''}</label>
 									<input id={f.id} type={f.type} required={f.req} bind:value={form[f.key]}
@@ -124,6 +161,7 @@
 									<option value="fluorocellai">FluorocellAI</option>
 									<option value="compliancecall">ComplianceCall</option>
 									<option value="both">Both products</option>
+									<option value="custom">Something else — custom system</option>
 								</select>
 							</div>
 							<div>

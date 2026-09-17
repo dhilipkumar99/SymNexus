@@ -3,8 +3,9 @@
 	import Header from '$lib/components/nav/Header.svelte';
 	import Footer from '$lib/components/nav/Footer.svelte';
 	import { afterNavigate } from '$app/navigation';
+	import { onMount } from 'svelte';
 
-	afterNavigate(() => {
+	function observeReveals() {
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((e) => {
@@ -17,7 +18,17 @@
 			{ threshold: 0.1, rootMargin: '0px 0px -48px 0px' }
 		);
 		document.querySelectorAll('.reveal:not(.visible)').forEach((el) => observer.observe(el));
+		return observer;
+	}
+
+	onMount(() => {
+		const observer = observeReveals();
 		return () => observer.disconnect();
+	});
+
+	afterNavigate(() => {
+		// Re-scan after client-side route changes (onMount only covers first load)
+		observeReveals();
 	});
 </script>
 

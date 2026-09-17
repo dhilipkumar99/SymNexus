@@ -3,15 +3,15 @@
 
 	const values = [
 		{ title: 'Small, senior team',     body: 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers. We hire for depth, not headcount.' },
-		{ title: 'Domain-native, not generic', body: 'We build software validated by the working scientists and compliance professionals who use it — not adapted after the fact for the lab or the regulator.' },
-		{ title: 'Prove it, then teach it', body: 'We prove our AI models first, then train businesses to manage these systems independently. The same discipline applies to how we build internally.' },
+		{ title: 'Domain-native, not generic', body: 'We build software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt it after the fact for the lab or the regulator.' },
+		{ title: 'Prove it, then teach it', body: 'We prove our models first, then train businesses to manage these systems independently. The same discipline applies to how we build internally.' },
 		{ title: 'Compliance by design',   body: 'Full audit-trail transparency is built into everything we ship. That rigor extends to how we operate as a team.' },
 	];
 </script>
 
 <svelte:head>
-	<title>Careers — SymNexus</title>
-	<meta name="description" content="SymNexus is a small team of Silicon Valley engineers and domain researchers building AI systems for regulated industries. Get in touch if you think you'd be a fit." />
+	<title>Careers — Symnexus</title>
+	<meta name="description" content="Symnexus is a small team of Silicon Valley engineers and domain researchers building software systems for regulated industries. Get in touch if you think you'd be a fit." />
 </svelte:head>
 
 <!-- Hero -->
@@ -21,14 +21,14 @@
 	<div class="container-page relative z-10">
 		<p class="font-mono text-[0.68rem] font-medium uppercase tracking-[0.18em] text-crystal-rose/80">Careers</p>
 		<h1 class="mt-4 font-display text-5xl font-normal leading-[1.05] text-white md:text-6xl max-w-2xl">
-			Build AI that matters to the people who use it.
+			Build software that matters to the people who use it.
 		</h1>
 		<p class="mt-5 max-w-xl font-body text-base leading-relaxed text-slate-400">
-			We are a small, deep team of engineers and researchers. Every person here has meaningful impact on what we build and how we build it.
+			We are a small, deep team of Silicon Valley engineers and researchers, deploying software for clients operating around the world. Every person here has meaningful impact on what we build and how we build it.
 		</p>
 		<div class="mt-8 flex flex-wrap gap-4">
 			<a href="/contact" class="btn-hero-primary">Get in touch</a>
-			<a href="/about"  class="btn-ghost-dark">About SymNexus <span class="text-white/40">→</span></a>
+			<a href="/about"  class="btn-ghost-dark">About Symnexus <span class="text-white/40">→</span></a>
 		</div>
 	</div>
 </section>
@@ -43,7 +43,7 @@
 					Small team. Deep expertise. Domain-native discipline.
 				</h2>
 				<p class="mt-5 font-body text-sm leading-relaxed text-slate-500">
-					SymNexus is building AI infrastructure for regulated industries that need precision and accountability over convenience. The same is true of how we build our team.
+					Symnexus is building software infrastructure for regulated industries that need precision and accountability over convenience. The same is true of how we build our team.
 				</p>
 				<div class="mt-8 grid grid-cols-1 gap-4">
 					{#each values as v, i}

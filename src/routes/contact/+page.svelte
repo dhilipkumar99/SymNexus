@@ -6,6 +6,15 @@
 	let status = $state<'idle' | 'submitting' | 'success' | 'error'>('idle');
 	let errorMsg = $state('');
 
+	const contactFields: Array<{ id: string; label: string; type: string; key: keyof typeof form; req: boolean }> = [
+		{ id: 'firstName',    label: 'First Name',     type: 'text',  key: 'firstName',    req: true },
+		{ id: 'lastName',     label: 'Last Name',      type: 'text',  key: 'lastName',     req: true },
+		{ id: 'email',        label: 'Email Address',  type: 'email', key: 'email',        req: true },
+		{ id: 'phone',        label: 'Phone Number',   type: 'tel',   key: 'phone',        req: false },
+		{ id: 'organization', label: 'Organization',   type: 'text',  key: 'organization', req: true },
+		{ id: 'role',         label: 'Your Role',      type: 'text',  key: 'role',         req: false },
+	];
+
 	async function handleSubmit() {
 		status = 'submitting';
 		try {
@@ -27,8 +36,8 @@
 </script>
 
 <svelte:head>
-	<title>Contact — SymNexus</title>
-	<meta name="description" content="Contact SymNexus to request a product demonstration or discuss your requirements." />
+	<title>Contact — Symnexus</title>
+	<meta name="description" content="Contact Symnexus to request a product demonstration or discuss your requirements." />
 </svelte:head>
 
 <!-- Hero -->
@@ -41,7 +50,10 @@
 			Let's discuss your requirements.
 		</h1>
 		<p class="mt-5 max-w-lg font-body text-base leading-relaxed text-slate-400">
-			We provide structured evaluation access for qualified research and regulatory teams. Demonstrations are conducted by domain specialists, not sales staff.
+			We provide structured evaluation access for qualified research and regulatory teams. Domain specialists run every demonstration, not sales staff.
+		</p>
+		<p class="mt-3 max-w-lg font-body text-sm leading-relaxed text-slate-500">
+			We also build domain-native software systems well beyond FluorocellAI and ComplianceCall — if you have a custom solution in mind, tell us about it below.
 		</p>
 	</div>
 </section>
@@ -69,8 +81,8 @@
 					<ul class="space-y-3">
 						{#each [
 							'Scientific team responds within one business day',
-							'Demonstrations by domain specialists, not sales',
-							'Every demo tailored to your specific workflow',
+							'Domain specialists run every demonstration, not sales',
+							'We build every demo around your specific workflow',
 							'Evaluation access for qualified research teams',
 						] as item}
 							<li class="flex items-start gap-2.5">
@@ -93,14 +105,7 @@
 				{:else}
 					<form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="rounded-2xl border border-slate-200/60 bg-white p-8 space-y-5">
 						<div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-							{#each [
-								{ id: 'firstName',    label: 'First Name',     type: 'text',  key: 'firstName',    req: true },
-								{ id: 'lastName',     label: 'Last Name',      type: 'text',  key: 'lastName',     req: true },
-								{ id: 'email',        label: 'Email Address',  type: 'email', key: 'email',        req: true },
-								{ id: 'phone',        label: 'Phone Number',   type: 'tel',   key: 'phone',        req: false },
-								{ id: 'organization', label: 'Organization',   type: 'text',  key: 'organization', req: true },
-								{ id: 'role',         label: 'Your Role',      type: 'text',  key: 'role',         req: false },
-							] as f}
+							{#each contactFields as f}
 								<div>
 									<label for={f.id} class="mb-1.5 block font-mono text-[0.6rem] font-medium uppercase tracking-[0.14em] text-slate-400">
 										{f.label}{f.req ? ' *' : ''}
@@ -122,6 +127,7 @@
 								<option value="fluorocellai">FluorocellAI</option>
 								<option value="compliancecall">ComplianceCall</option>
 								<option value="multiple">Both products</option>
+								<option value="custom">Something else — custom system</option>
 							</select>
 						</div>
 
