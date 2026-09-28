@@ -1,0 +1,241 @@
+/**
+ * Site behaviour: theme toggle, header scroll states, mobile drawer, media
+ * carousels, lightbox and email-draft forms.
+ *
+ * Everything is bound once with event delegation on `document`, so it keeps
+ * working after the SPA router swaps page fragments in and out.
+ */
+(function () {
+    'use strict';
+
+    // ── Theme ────────────────────────────────────────────────────────────────
+    function setTheme(dark) {
+        document.documentElement.classList.toggle('dark', dark);
+        try {
+            localStorage.setItem('color-theme', dark ? 'dark' : 'light');
+        } catch (e) {
+            /* storage unavailable (private mode) — theme still applies for this page */
+        }
+    }
+
+    // ── Mobile drawer ────────────────────────────────────────────────────────
+    function setMenuOpen(open) {
+        var menu = document.getElementById('mobile-menu');
+        var btn = document.getElementById('mobile-menu-btn');
+        if (!menu || !btn) return;
+        menu.classList.toggle('hidden', !open);
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+
+    // ── Carousel ─────────────────────────────────────────────────────────────
+    function moveCarousel(root, direction) {
+        var track = root.querySelector('[data-carousel-track]');
+        if (!track) return;
+        var total = track.children.length;
+        var current = parseInt(track.getAttribute('data-current') || '0', 10);
+        current = (current + direction + total) % total;
+        track.setAttribute('data-current', String(current));
+        track.style.transform = 'translateX(-' + current * 100 + '%)';
+
+        var dots = root.querySelectorAll('[data-carousel-dot]');
+        dots.forEach(function (dot, i) {
+            dot.setAttribute('aria-current', i === current ? 'true' : 'false');
+        });
+    }
+
+    // ── Lightbox ─────────────────────────────────────────────────────────────
+    var lastFocus = null;
+
+    function openLightbox(trigger) {
+        var box = document.getElementById('global-lightbox');
+        var content = document.getElementById('lightbox-content');
+        if (!box || !content) return;
+
+        content.textContent = '';
+        var src = trigger.getAttribute('data-lightbox-src');
+        if (src) {
+            var img = document.createElement('img');
+            img.src = src;
+            img.alt = trigger.getAttribute('data-lightbox-alt') || '';
+            img.className = 'max-w-full max-h-[85vh] object-contain shadow-2xl rounded-lg';
+            content.appendChild(img);
+        } else {
+            // Illustrative HTML slides (product interface mock-ups) are cloned in.
+            var clone = trigger.cloneNode(true);
+            clone.removeAttribute('data-lightbox');
+            clone.removeAttribute('role');
+            clone.removeAttribute('tabindex');
+            clone.className = 'w-full max-w-3xl';
+            content.appendChild(clone);
+        }
+
+        lastFocus = document.activeElement;
+        box.classList.remove('hidden');
+        box.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+        var close = box.querySelector('[data-lightbox-close]');
+        if (close) close.focus();
+    }
+
+    function closeLightbox() {
+        var box = document.getElementById('global-lightbox');
+        if (!box || box.classList.contains('hidden')) return;
+        box.classList.add('hidden');
+        box.classList.remove('flex');
+        document.getElementById('lightbox-content').textContent = '';
+        document.body.style.overflow = '';
+        if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
+    }
+
+    // ── Email-draft forms ───────────────────────────────────────────────────
+    // Forms marked data-mailto-form open the visitor's email client with a
+    // pre-filled message to the company inbox — no backend or third party.
+    function submitMailtoForm(form) {
+        var to = form.getAttribute('data-mailto-form');
+        var subjectPrefix = form.getAttribute('data-subject') || 'Website enquiry';
+        var subjectField = form.getAttribute('data-subject-field');
+        var subjectValue = subjectField && form.elements[subjectField] ? form.elements[subjectField].value.trim() : '';
+        var subject = subjectValue ? subjectPrefix + ' — ' + subjectValue : subjectPrefix;
+
+        var lines = [];
+        Array.prototype.forEach.call(form.elements, function (field) {
+            if (!field.name || field.type === 'submit' || field.type === 'button') return;
+            var value = field.value.trim();
+            if (!value) return;
+            if (field.tagName === 'SELECT' && field.selectedIndex >= 0) {
+                value = field.options[field.selectedIndex].text;
+            }
+            var label = field.getAttribute('data-label') || field.name;
+            if (field.tagName === 'TEXTAREA') {
+                lines.push('', label + ':', value);
+            } else {
+                lines.push(label + ': ' + value);
+            }
+        });
+
+        window.location.href = 'mailto:' + to +
+            '?subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(lines.join('\n'));
+
+        var wrapper = form.closest('[data-form-root]');
+        var success = wrapper ? wrapper.querySelector('[data-form-success]') : null;
+        if (success) {
+            form.classList.add('hidden');
+            success.classList.remove('hidden');
+            success.focus();
+        }
+    }
+
+    // ── Delegated listeners ─────────────────────────────────────────────────
+    document.addEventListener('click', function (e) {
+        var target = e.target;
+        if (!(target instanceof Element)) return;
+
+        if (target.closest('#theme-toggle')) {
+            setTheme(!document.documentElement.classList.contains('dark'));
+            return;
+        }
+
+        if (target.closest('#mobile-menu-btn')) {
+            var menu = document.getElementById('mobile-menu');
+            setMenuOpen(menu ? menu.classList.contains('hidden') : false);
+            return;
+        }
+
+        if (target.closest('#mobile-menu a')) {
+            setMenuOpen(false);
+        }
+
+        var carouselBtn = target.closest('[data-carousel-prev], [data-carousel-next]');
+        if (carouselBtn) {
+            var root = carouselBtn.closest('[data-carousel]');
+            if (root) moveCarousel(root, carouselBtn.hasAttribute('data-carousel-next') ? 1 : -1);
+            return;
+        }
+
+        if (target.closest('[data-lightbox-close]') || target.id === 'global-lightbox') {
+            closeLightbox();
+            return;
+        }
+
+        var lightboxTrigger = target.closest('[data-lightbox]');
+        if (lightboxTrigger) {
+            openLightbox(lightboxTrigger);
+            return;
+        }
+
+        var formReset = target.closest('[data-form-reset]');
+        if (formReset) {
+            var formRoot = formReset.closest('[data-form-root]');
+            if (formRoot) {
+                formRoot.querySelector('[data-form-success]').classList.add('hidden');
+                formRoot.querySelector('form').classList.remove('hidden');
+            }
+        }
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            setMenuOpen(false);
+            return;
+        }
+        // Keyboard activation for lightbox triggers that are not buttons.
+        if ((e.key === 'Enter' || e.key === ' ') && e.target instanceof Element && e.target.matches('[data-lightbox][role="button"]')) {
+            e.preventDefault();
+            openLightbox(e.target);
+        }
+    });
+
+    document.addEventListener('submit', function (e) {
+        var form = e.target;
+        if (form instanceof HTMLFormElement && form.hasAttribute('data-mailto-form')) {
+            e.preventDefault();
+            submitMailtoForm(form);
+        }
+    });
+
+    document.addEventListener('spa:pageLoaded', function () {
+        setMenuOpen(false);
+        closeLightbox();
+    });
+
+    // ── Header: hide on scroll down, frosted logo pill once scrolled ────────
+    var lastScrollY = window.scrollY;
+    var ticking = false;
+
+    function onScroll() {
+        var y = window.scrollY;
+        var header = document.getElementById('main-header');
+        var logoPill = document.getElementById('logo-pill');
+
+        if (header) {
+            var hide = y > lastScrollY && y > 60;
+            header.classList.toggle('-translate-y-32', hide);
+            header.classList.toggle('opacity-0', hide);
+            if (hide) setMenuOpen(false);
+        }
+        if (logoPill) logoPill.classList.toggle('scrolled', y > 10);
+
+        lastScrollY = y;
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!ticking) {
+            window.requestAnimationFrame(onScroll);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    // Keyboard users tabbing into a hidden header should see it again.
+    document.addEventListener('focusin', function (e) {
+        var header = document.getElementById('main-header');
+        if (header && e.target instanceof Element && header.contains(e.target)) {
+            header.classList.remove('-translate-y-32', 'opacity-0');
+        }
+    });
+
+    onScroll();
+})();

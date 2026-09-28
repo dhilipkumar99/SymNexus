@@ -1,0 +1,18 @@
+# Apache / XAMPP hosting with this repository as the DocumentRoot.
+# (Vercel ignores this file — see vercel.json.)
+Options -Indexes +FollowSymLinks
+DirectorySlash Off
+RewriteEngine On
+
+# Never expose source, config or tooling.
+RewriteRule ^(src|node_modules|\.git|\.vercel)(/|$) - [F,L]
+RewriteRule ^(\.env.*|package(-lock)?\.json|tailwind\.config\.js|vercel\.json|README\.md)$ - [F,L]
+
+# Static files live in public/ but are served from the site root (/assets/..., /favicon.svg).
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ public/$1 [L]
+
+# Everything else goes through the front controller.
+RewriteCond %{REQUEST_URI} !^/api/index\.php$
+RewriteRule ^ api/index.php [L,QSA]

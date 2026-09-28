@@ -1,0 +1,79 @@
+<?php
+
+// Product catalogue shared by the home, products and pricing pages.
+const PRODUCTS = [
+    'fluorocellai' => [
+        'name'     => 'FluorocellAI',
+        'href'     => '/fluorocellai',
+        'category' => 'Imaging & Cell Analysis',
+        'icon'     => 'beaker',
+        'tagline'  => 'Cell counting and segmentation performed by vision AI, built for research labs.',
+        'summary'  => 'Upload your microscopy images. Get automated cell counts, segmentation, and a QC audit trail back the same day — instead of a week of manual review.',
+        'overview' => 'FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.',
+        'detail'   => 'A cell-analysis workflow that once took three to four days of manual cross-referencing — slide prep, manual counting, manual QC, and write-up — compresses to a same-day first pass. Slide prep and imaging stay unchanged; automated segmentation and counting run in minutes instead of days, with automatic QC and an audit trail behind every result.',
+        'features' => [
+            'Automated segmentation & counting, in minutes',
+            'Automatic QC / built-in audit trail',
+            'Same-day reporting, unchanged slide prep',
+            'Validated by working cell biologists',
+            'Fine-tuned models on proprietary annotated data',
+            'REST API for lab pipeline integration',
+        ],
+        'cta'      => 'Request Evaluation',
+        'pricing'  => [
+            'desc'     => 'AI-automated cell identification, counting, and analysis for cell and cancer research labs.',
+            'features' => [
+                'Automated segmentation & counting',
+                'Automatic QC and audit trail',
+                'Same-day reporting',
+                'Validated by working cell biologists',
+            ],
+        ],
+    ],
+    'compliancecall' => [
+        'name'     => 'ComplianceCall',
+        'href'     => '/compliancecall',
+        'category' => 'Regulatory Compliance',
+        'icon'     => 'shield-check',
+        'tagline'  => 'Pharmaceutical development tracked against federal regulation, in real time.',
+        'summary'  => 'A live dashboard that benchmarks your pharmaceutical development against current federal regulation, with full history and audit trail built in.',
+        'overview' => 'ComplianceCall benchmarks pharmaceutical development against federal regulation, unified in a single, continuously auditable platform — built for the teams who answer to FDA and other regulatory bodies.',
+        'detail'   => 'The platform tracks not just a chemical\'s current hazard category, but what it used to be and why it changed — the historical record regulatory and EHS auditors ask for. We build full audit-trail transparency in by design, rather than bolt it on after the fact.',
+        'features' => [
+            'Live federal regulatory benchmarking',
+            'Full audit-trail transparency by design',
+            'Historical hazard category tracking',
+            'Built for FDA-regulated development teams',
+            'One modular AI stack shared with FluorocellAI',
+            'REST API for compliance workflow integration',
+        ],
+        'cta'      => 'Request Demonstration',
+        'pricing'  => [
+            'desc'     => 'Benchmarks pharmaceutical development against federal regulation, with full audit-trail transparency.',
+            'features' => [
+                'Live federal regulatory benchmarking',
+                'Historical hazard-category tracking',
+                'Full audit-trail transparency by design',
+                'Built for FDA-regulated teams',
+            ],
+        ],
+    ],
+    'yashara' => [
+        'name'     => 'Yashara',
+        'href'     => 'https://yashara.org/',
+        'category' => 'Retail & Wholesale Operations',
+        'icon'     => 'globe',
+        'tagline'  => null,
+        'summary'  => 'Built for Yashara, an ethically-sourced South East Asian goods retailer — our Silicon Valley engineering team deployed the same domain-native approach we bring to regulated science, this time overseas, applied to retail operations.',
+        'overview' => 'Built for Yashara, an ethically-sourced South East Asian goods retailer — our Silicon Valley engineering team deployed the same domain-native approach we bring to regulated science, this time overseas, applied to retail operations.',
+        'detail'   => 'An AI monitoring system watches inventory and product quality across Yashara\'s handcrafted goods catalog, flagging inconsistencies before they reach a customer. A second AI layer handles interfacing for large wholesale accounts — routing orders, answering account-specific questions, and surfacing exceptions to a human when it matters.',
+        'features' => [
+            'Automated inventory & quality monitoring',
+            'Anomaly flagging across the goods catalog',
+            'AI-driven large-account interfacing',
+            'Exception routing to a human when needed',
+        ],
+        'cta'      => 'Discuss a Custom System',
+        'pricing'  => null,
+    ],
+];

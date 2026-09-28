@@ -1,0 +1,38 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"framework": null,
+	"installCommand": "npm ci",
+	"buildCommand": "npm run build",
+	"outputDirectory": "public",
+	"cleanUrls": false,
+	"trailingSlash": false,
+	"functions": {
+		"api/index.php": {
+			"runtime": "vercel-php@0.8.0",
+			"excludeFiles": "{node_modules/**,public/video/**,.git/**,vercel.json,.vercelignore,README.md,SymNexus.pdf}"
+		}
+	},
+	"rewrites": [
+		{ "source": "/(.*)", "destination": "/api/index.php" }
+	],
+	"headers": [
+		{
+			"source": "/assets/(.*)",
+			"headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+		},
+		{
+			"source": "/sw.js",
+			"headers": [
+				{ "key": "Cache-Control", "value": "no-cache" },
+				{ "key": "Service-Worker-Allowed", "value": "/" }
+			]
+		},
+		{
+			"source": "/(.*)",
+			"headers": [
+				{ "key": "X-Content-Type-Options", "value": "nosniff" },
+				{ "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+			]
+		}
+	]
+}
