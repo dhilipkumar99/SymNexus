@@ -78,7 +78,7 @@ require SRC_DIR . '/includes/header.php';
             'textarea'     => ['name' => 'message', 'label' => 'Message', 'rows' => 5, 'placeholder' => 'Describe your organization, current workflow, and what you\'d like to evaluate...'],
             'submitLabel'  => 'Send Enquiry',
             'footnote'     => null,
-            'successTitle' => 'Thank you.',
+            'successTitle' => 'Almost there.',
         ]); ?>
     </div>
 </div>

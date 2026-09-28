@@ -79,7 +79,6 @@ require SRC_DIR . '/includes/header.php';
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:-mx-8">
         <?php foreach (PRODUCTS as $slug => $p): ?>
-            <?php $external = str_starts_with($p['href'], 'http'); ?>
             <article class="card-ghost flex flex-col h-full group">
                 <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
                 <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"><?= e($p['name']) ?></h3>
@@ -94,10 +93,10 @@ require SRC_DIR . '/includes/header.php';
                             <a href="/contact" class="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
                         <?php endif; ?>
                     </div>
-                    <a href="<?= e($p['href']) ?>" <?= $external ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                    <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
                         class="text-teal-600 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center transition-colors">
-                        <?= $external ? 'Visit Yashara' : 'See how it works' ?>
-                        <?= icon($external ? 'arrow-up-right' : 'arrow-right', 'w-3.5 h-3.5 ml-1') ?>
+                        <?= e($p['link']) ?>
+                        <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-3.5 h-3.5 ml-1') ?>
                     </a>
                 </div>
             </article>

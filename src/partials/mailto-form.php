@@ -54,7 +54,7 @@
         <div>
             <label for="<?= e($id . '-' . $textarea['name']) ?>" class="form-label"><?= e($textarea['label']) ?> *</label>
             <textarea id="<?= e($id . '-' . $textarea['name']) ?>" name="<?= e($textarea['name']) ?>" data-label="<?= e($textarea['label']) ?>"
-                required rows="<?= (int) $textarea['rows'] ?>" maxlength="4000" placeholder="<?= e($textarea['placeholder']) ?>"
+                required rows="<?= (int) $textarea['rows'] ?>" maxlength="1500" placeholder="<?= e($textarea['placeholder']) ?>"
                 class="form-field resize-y"></textarea>
         </div>
 

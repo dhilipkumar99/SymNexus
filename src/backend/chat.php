@@ -19,6 +19,7 @@ const CHAT_MAX_HISTORY       = 10;
 const CHAT_MAX_BODY_BYTES    = 32768;
 const CHAT_RATE_LIMIT        = 20;   // requests…
 const CHAT_RATE_WINDOW       = 300;  // …per 5 minutes per IP (best effort, per instance)
+const CHAT_GLOBAL_LIMIT      = 300;  // total requests per window per instance
 
 function chat_respond(int $status, array $payload): void
 {
@@ -28,12 +29,17 @@ function chat_respond(int $status, array $payload): void
     echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
 
-/** Reject cross-site calls: browsers always send Origin on POST fetches. */
+/**
+ * Only accept calls from our own pages. Browsers always send Origin on POST
+ * fetches, so a missing Origin means a script, not the widget. (Origin can be
+ * forged by non-browser clients — the rate limits below are the backstop, and
+ * a Vercel Firewall rate-limit rule on /api/chat is recommended in production.)
+ */
 function chat_same_origin(): bool
 {
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? null;
-    if ($origin === null) {
-        return true; // non-browser clients; rate limiting still applies
+    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+    if ($origin === '') {
+        return false;
     }
     $originHost = (string) parse_url($origin, PHP_URL_HOST);
     $originPort = parse_url($origin, PHP_URL_PORT);
@@ -42,15 +48,54 @@ function chat_same_origin(): bool
     return $host !== '' && strcasecmp($authority, $host) === 0;
 }
 
+/**
+ * Client IP. Forwarding headers are only trusted on Vercel, where the edge
+ * overwrites them; elsewhere they are client-controlled, so REMOTE_ADDR is used.
+ */
+function chat_client_ip(): string
+{
+    if (env('VERCEL') !== null) {
+        $forwarded = $_SERVER['HTTP_X_VERCEL_FORWARDED_FOR'] ?? $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+        $ip = trim(explode(',', $forwarded)[0]);
+        if ($ip !== '') {
+            return $ip;
+        }
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
+}
+
+/** Increment a fixed-window counter; APCu when available, else a locked temp file. */
+function chat_hit(string $key): int
+{
+    if (function_exists('apcu_enabled') && apcu_enabled()) {
+        apcu_add($key, 0, CHAT_RATE_WINDOW);
+        return (int) apcu_inc($key);
+    }
+
+    $file = sys_get_temp_dir() . '/symnexus_' . $key;
+    $fh = @fopen($file, 'c+');
+    if ($fh === false) {
+        return 0;
+    }
+    flock($fh, LOCK_EX);
+    $data = json_decode((string) stream_get_contents($fh), true);
+    $now  = time();
+    if (!is_array($data) || ($data['start'] ?? 0) + CHAT_RATE_WINDOW < $now) {
+        $data = ['start' => $now, 'count' => 0];
+    }
+    $data['count']++;
+    ftruncate($fh, 0);
+    rewind($fh);
+    fwrite($fh, json_encode($data));
+    flock($fh, LOCK_UN);
+    fclose($fh);
+    return $data['count'];
+}
+
 function chat_rate_limited(): bool
 {
-    if (!function_exists('apcu_enabled') || !apcu_enabled()) {
-        return false;
-    }
-    $ip  = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown')[0]);
-    $key = 'chat_rl_' . md5($ip);
-    apcu_add($key, 0, CHAT_RATE_WINDOW);
-    return apcu_inc($key) > CHAT_RATE_LIMIT;
+    return chat_hit('rl_' . md5(chat_client_ip())) > CHAT_RATE_LIMIT
+        || chat_hit('rl_global') > CHAT_GLOBAL_LIMIT;
 }
 
 /** @return list<array{role: string, content: string}> */

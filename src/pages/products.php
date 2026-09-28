@@ -29,7 +29,6 @@ require SRC_DIR . '/includes/header.php';
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     <?php foreach (PRODUCTS as $slug => $p): ?>
-        <?php $external = str_starts_with($p['href'], 'http'); ?>
         <article id="<?= e($slug) ?>"
             class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800 flex flex-col justify-between transition-all duration-200 hover:shadow-lg <?= isset($media[$slug]) ? '' : 'md:col-span-2' ?>">
 
@@ -88,10 +87,10 @@ require SRC_DIR . '/includes/header.php';
                 <a href="/demo" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors">
                     <?= e($p['cta']) ?>
                 </a>
-                <a href="<?= e($p['href']) ?>" <?= $external ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
                     class="inline-flex items-center text-sm font-semibold text-brandPrimary hover:underline group">
-                    <?= $external ? 'Visit Yashara' : 'View ' . e($p['name']) ?>
-                    <?= icon($external ? 'arrow-up-right' : 'arrow-right', 'w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-0.5' . ($external ? ' group-hover:-translate-y-0.5' : '')) ?>
+                    <?= $p['external'] ? e($p['link']) : 'View ' . e($p['name']) ?>
+                    <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-0.5' . ($p['external'] ? ' group-hover:-translate-y-0.5' : '')) ?>
                 </a>
             </div>
         </article>

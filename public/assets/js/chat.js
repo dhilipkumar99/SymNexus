@@ -50,21 +50,35 @@
         });
     }
 
-    // Escape first, then turn emails, URLs and phone numbers into links.
+    // One pass over the raw text: URLs, site paths, emails and phone numbers become
+    // links, everything else is escaped. Matching once means links never nest.
+    var LINK_PATTERN = new RegExp([
+        '(https?:\\/\\/[^\\s<>"\']*[^\\s<>"\'.,;:!?)\\]])',                                           // 1: URL
+        '(?:^|(?<=[\\s(]))(\\/(?:demo|contact|pricing|products|about|research|careers|fluorocellai|compliancecall)\\b)', // 2: site path
+        '([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})',                                            // 3: email
+        '(\\+1 \\(\\d{3}\\) \\d{3}-\\d{4})',                                                           // 4: phone
+    ].join('|'), 'g');
+    var LINK_CLASS = 'text-brandPrimary hover:underline font-semibold';
+
     function formatReply(text) {
-        var html = escapeHtml(text);
-        html = html.replace(/\bhttps?:\/\/[^\s<]+[^\s<.,;:!?)\]'"]/g, function (url) {
-            return '<a href="' + url + '" target="_blank" rel="noopener noreferrer" class="text-brandPrimary hover:underline font-semibold break-all">' + url + '</a>';
+        var html = '';
+        var last = 0;
+        text.replace(LINK_PATTERN, function (match, url, path, email, phone, offset) {
+            html += escapeHtml(text.slice(last, offset));
+            last = offset + match.length;
+            var label = escapeHtml(match);
+            if (url) {
+                html += '<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer" class="' + LINK_CLASS + ' break-all">' + label + '</a>';
+            } else if (path) {
+                html += '<a href="' + path + '" class="' + LINK_CLASS + '">' + label + '</a>';
+            } else if (email) {
+                html += '<a href="mailto:' + escapeHtml(email) + '" class="' + LINK_CLASS + '">' + label + '</a>';
+            } else {
+                html += '<a href="tel:' + phone.replace(/[^\d+]/g, '') + '" class="' + LINK_CLASS + '">' + label + '</a>';
+            }
+            return match;
         });
-        html = html.replace(/(^|[\s(])(\/(?:demo|contact|pricing|products|about|research|careers|fluorocellai|compliancecall))\b/g, function (m, pre, path) {
-            return pre + '<a href="' + path + '" class="text-brandPrimary hover:underline font-semibold">' + path + '</a>';
-        });
-        html = html.replace(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g, function (email) {
-            return '<a href="mailto:' + email + '" class="text-brandPrimary hover:underline font-semibold">' + email + '</a>';
-        });
-        html = html.replace(/\+1 \(\d{3}\) \d{3}-\d{4}/g, function (phone) {
-            return '<a href="tel:' + phone.replace(/[^\d+]/g, '') + '" class="text-brandPrimary hover:underline font-semibold">' + phone + '</a>';
-        });
+        html += escapeHtml(text.slice(last));
         return html.replace(/\n/g, '<br>');
     }
 
@@ -152,6 +166,8 @@
             adjustForKeyboard();
             input.focus();
         } else {
+            var trigger = document.getElementById('chat-trigger-container');
+            if (trigger) trigger.style.bottom = '';
             windowEl.classList.remove('animate-apple-open');
             windowEl.classList.add('animate-apple-close');
             closeTimer = setTimeout(function () {

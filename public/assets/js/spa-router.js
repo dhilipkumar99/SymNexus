@@ -75,7 +75,9 @@
             credentials: 'same-origin',
         }).then(function (response) {
             // Only accept genuine fragments; anything else triggers a full load.
-            if (!response.ok || response.headers.get('X-SPA-Fragment') !== '1') {
+            // Redirects also go through a full load: fetch hides the target's #fragment,
+            // which the browser preserves (e.g. /fluorocellai/pricing → /pricing#fluorocellai).
+            if (!response.ok || response.redirected || response.headers.get('X-SPA-Fragment') !== '1') {
                 throw new Error('Not an SPA fragment (HTTP ' + response.status + ')');
             }
             var rawTitle = response.headers.get('X-SPA-Title');
@@ -188,6 +190,11 @@
             container.focus({ preventScroll: true });
 
             document.dispatchEvent(new CustomEvent('spa:pageLoaded', { detail: { url: finalUrl.href } }));
+
+            // Let the service worker store the full page too, so it is available offline.
+            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage({ type: 'cache-page', url: cacheKey(finalUrl.href) });
+            }
         }).catch(function (error) {
             if (token !== navToken) return;
             console.warn('[SPA Router] Falling back to full navigation:', error && error.message);

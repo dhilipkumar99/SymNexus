@@ -119,6 +119,17 @@ function handle_request(): ?bool
     $query  = parse_url($uri, PHP_URL_QUERY);
     $path   = is_string($path) && $path !== '' ? rawurldecode($path) : '/';
 
+    // vercel.json rewrites every path to /api/index.php?__path=/<original>. The runtime
+    // normally forwards the original URI; if it forwarded the rewritten one, recover it.
+    if ($path === '/api/index.php' && is_string($_GET['__path'] ?? null)) {
+        $path = '/' . ltrim($_GET['__path'], '/');
+    }
+    if (is_string($query)) {
+        parse_str($query, $params);
+        unset($params['__path']);
+        $query = http_build_query($params);
+    }
+
     // Local dev (`php -S ... -t public api/index.php`): let the server stream static files.
     if (PHP_SAPI === 'cli-server' && $path !== '/') {
         $file = realpath(PUBLIC_DIR . $path);
@@ -139,7 +150,10 @@ function handle_request(): ?bool
         $canonical = '/';
     }
     if ($canonical !== $path) {
-        redirect_to($canonical . (is_string($query) && $query !== '' ? '?' . $query : ''), 301);
+        // Re-encode each segment so decoded characters (e.g. "\" from %5C) can never
+        // turn the Location into a protocol-relative, off-site URL.
+        $location = implode('/', array_map('rawurlencode', explode('/', $canonical)));
+        redirect_to($location . (is_string($query) && $query !== '' ? '?' . $query : ''), 301);
         return null;
     }
 

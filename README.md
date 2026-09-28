@@ -63,6 +63,10 @@ Environment Variables (or in a local `.env`, see `.env.example`):
 Any OpenAI-compatible chat-completions endpoint works. Edit what the assistant knows in
 `src/ai/instructions.md`.
 
+`/api/chat` only accepts same-origin browser requests and applies a per-IP and per-instance rate limit
+(20 requests / 5 min per IP). Serverless instances don't share memory, so for production also add a
+Vercel Firewall rate-limit rule on `/api/chat` and set a spend cap with your AI provider.
+
 ## Deploying
 
 **Vercel** (current host): `vercel.json` builds the CSS, serves `public/` statically, and routes all
