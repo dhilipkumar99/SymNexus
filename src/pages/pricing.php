@@ -39,8 +39,8 @@ require SRC_DIR . '/includes/header.php';
 <section class="py-8" aria-labelledby="plans-title">
     <div class="mb-6 md:mb-8 max-w-2xl">
         <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Currently Offering</p>
-        <h2 id="plans-title" class="section-title">Two regulated workflows, and counting.</h2>
-        <p class="section-lead text-base">Pricing for the systems we've already built for research labs and pharmaceutical teams. If your field isn't listed, that's the point — we build custom.</p>
+        <h2 id="plans-title" class="section-title">Custom Built AI Tools</h2>
+        <p class="section-lead text-base">Check with us for further details on pricing, as well as demo opportunities, product development ideas, and consultation with AI tools.</p>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
