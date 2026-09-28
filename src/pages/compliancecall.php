@@ -59,12 +59,17 @@ require SRC_DIR . '/includes/header.php';
     <a href="/pricing#compliancecall" class="btn-secondary">View Pricing</a>
 </div>
 
-<div class="max-w-3xl mb-16">
-    <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-200/60 dark:border-white/5">
-        <?php partial('compliance-mock'); ?>
+<figure class="max-w-4xl mb-16">
+    <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-200/60 dark:border-white/10 bg-slate-950">
+        <img src="<?= e(asset('images/compliancecall-dashboard.webp')) ?>"
+            data-lightbox role="button" tabindex="0" data-lightbox-src="<?= e(asset('images/compliancecall-dashboard.webp')) ?>"
+            data-lightbox-alt="ComplianceCall dashboard"
+            srcset="<?= e(asset('images/compliancecall-dashboard-900.webp')) ?> 900w, <?= e(asset('images/compliancecall-dashboard.webp')) ?> 1952w"
+            sizes="(min-width: 1024px) 896px, 92vw" width="1952" height="1008" fetchpriority="high" decoding="async"
+            alt="ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels"
+            class="w-full h-auto cursor-zoom-in">
     </div>
-    <p class="mt-3 font-body text-xs text-gray-600 dark:text-gray-300">Illustrative interface preview. Request a demonstration to see the live product.</p>
-</div>
+</figure>
 
 <!-- Overview -->
 <section id="overview" class="grid grid-cols-1 lg:grid-cols-5 gap-12 py-12" aria-labelledby="overview-title">

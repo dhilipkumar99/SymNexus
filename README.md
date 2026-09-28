@@ -46,7 +46,7 @@ to a normal page load, so the site works fully without JavaScript.
 ## Forms
 
 The contact and demo forms open the visitor's email client with a pre-filled message to
-`cell.ai.solutions@gmail.com` (no third-party form service, nothing to configure). Without
+`info@symnexus.com` (set in `src/bootstrap.php`) (no third-party form service, nothing to configure). Without
 JavaScript they fall back to a plain `mailto:` submission.
 
 ## AI assistant (optional)

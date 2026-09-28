@@ -7,12 +7,14 @@ $pageMeta  = [
 
 $media = [
     'fluorocellai' => [
-        ['partial' => 'fluorocell-mock'],
+        ['asset' => 'images/fluorocellai-segmentation.webp', 'small' => 'images/fluorocellai-segmentation-800.webp', 'width' => 1494, 'smallWidth' => 800,
+         'alt' => 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary'],
         ['img' => 'fluoroCells', 'alt' => 'Fluorescence microscopy of cells, the kind FluorocellAI analyzes'],
         ['img' => 'fluoroHero',  'alt' => 'Fluorescent-stained cells under a microscope'],
     ],
     'compliancecall' => [
-        ['partial' => 'compliance-mock'],
+        ['asset' => 'images/compliancecall-dashboard.webp', 'small' => 'images/compliancecall-dashboard-900.webp', 'width' => 1952, 'smallWidth' => 900, 'fit' => 'object-contain',
+         'alt' => 'ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels'],
         ['img' => 'complianceDesk', 'alt' => 'Compliance documents and data reviewed at a desk'],
     ],
 ];
@@ -24,7 +26,7 @@ require SRC_DIR . '/includes/header.php';
     'eyebrow' => 'Products',
     'title'   => 'AI Agents to',
     'highlight' => 'Maximize Efficiency',
-    'lead'    => 'FluorocellAI automates cell image analysis for research labs. ComplianceCall tracks pharmaceutical development against federal regulation.',
+    'lead'    => 'SymNexus employs a team of Silicon Valley educated and trained machine learning engineers to develop custom AI solutions for high-throughput industries, using the latest AI/ML models produced in the Bay Area. SymNexus has built two large-scale products for industries in the United States and Canada; it is now building out solutions globally.',
 ]); ?>
 
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -97,7 +99,6 @@ require SRC_DIR . '/includes/header.php';
     <?php endforeach; ?>
 </div>
 
-<p class="mt-6 font-body text-xs text-gray-600 dark:text-gray-300">Illustrative interface previews. Request a demonstration to see the live product.</p>
 
 <?php partial('cta', [
     'title'     => 'Ready to see these on your own data?',

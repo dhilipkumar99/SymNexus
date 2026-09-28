@@ -13,8 +13,14 @@ $count = count($slides);
     <div class="flex h-full w-full transition-transform duration-300 ease-out" data-carousel-track data-current="0">
         <?php foreach ($slides as $i => $slide): ?>
             <div class="w-full h-full flex-shrink-0 relative select-none" role="group" aria-roledescription="slide" aria-label="<?= $i + 1 ?> of <?= $count ?>">
-                <?php if (isset($slide['img'])): ?>
-                    <img src="<?= e(img($slide['img'], 1000)) ?>" alt="<?= e($slide['alt']) ?>" loading="lazy" decoding="async"
+                <?php if (isset($slide['asset'])): ?>
+                    <img src="<?= e(asset($slide['asset'])) ?>"
+                        <?php if (isset($slide['small'])): ?>srcset="<?= e(asset($slide['small'])) ?> <?= (int) $slide['smallWidth'] ?>w, <?= e(asset($slide['asset'])) ?> <?= (int) $slide['width'] ?>w" sizes="(min-width: 768px) 560px, 92vw"<?php endif; ?>
+                        alt="<?= e($slide['alt']) ?>" loading="<?= $i === 0 ? 'eager' : 'lazy' ?>" decoding="async"
+                        class="w-full h-full <?= e($slide['fit'] ?? 'object-cover') ?> bg-black cursor-zoom-in" data-lightbox role="button" tabindex="0"
+                        data-lightbox-src="<?= e(asset($slide['asset'])) ?>" data-lightbox-alt="<?= e($slide['alt']) ?>">
+                <?php elseif (isset($slide['img'])): ?>
+                    <img src="<?= e(img($slide['img'], 1000)) ?>" alt="<?= e($slide['alt']) ?>" loading="<?= $i === 0 ? 'eager' : 'lazy' ?>" decoding="async"
                         class="w-full h-full object-cover cursor-zoom-in" data-lightbox role="button" tabindex="0"
                         data-lightbox-src="<?= e(img($slide['img'], 1800)) ?>" data-lightbox-alt="<?= e($slide['alt']) ?>">
                 <?php else: ?>

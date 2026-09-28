@@ -9,7 +9,7 @@
 	"functions": {
 		"api/index.php": {
 			"runtime": "vercel-php@0.8.0",
-			"excludeFiles": "{node_modules/**,public/video/**,.git/**,vercel.json,.vercelignore,README.md,SymNexus.pdf}"
+			"excludeFiles": "{node_modules/**,public/video/**,public/assets/video/**,.git/**,vercel.json,.vercelignore,README.md,SymNexus.pdf}"
 		}
 	},
 	"rewrites": [

@@ -127,6 +127,41 @@
         }
     }
 
+    // ── Motion videos (hero logo) ───────────────────────────────────────────
+    // Videos marked data-motion-video play only while on screen and never for
+    // visitors who prefer reduced motion (they see the poster frame instead).
+    var reducedMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    var videoObserver = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            var video = entry.target;
+            if (entry.isIntersecting && !(reducedMotion && reducedMotion.matches)) {
+                video.muted = true; // required for autoplay policies
+                var playing = video.play();
+                if (playing && playing.catch) playing.catch(function () { /* autoplay blocked: poster stays */ });
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.15 }) : null;
+
+    // Called on load and after every SPA swap: drops videos from the previous page.
+    function initMotionVideos() {
+        if (videoObserver) videoObserver.disconnect();
+        document.querySelectorAll('video[data-motion-video]').forEach(function (video) {
+            if (videoObserver) videoObserver.observe(video);
+            else if (!(reducedMotion && reducedMotion.matches)) video.play();
+        });
+    }
+
+    if (reducedMotion && reducedMotion.addEventListener) {
+        reducedMotion.addEventListener('change', function () {
+            document.querySelectorAll('video[data-motion-video]').forEach(function (video) {
+                if (reducedMotion.matches) video.pause();
+                else if (videoObserver) { videoObserver.unobserve(video); videoObserver.observe(video); }
+            });
+        });
+    }
+
     // ── Delegated listeners ─────────────────────────────────────────────────
     document.addEventListener('click', function (e) {
         var target = e.target;
@@ -199,6 +234,7 @@
     document.addEventListener('spa:pageLoaded', function () {
         setMenuOpen(false);
         closeLightbox();
+        initMotionVideos();
     });
 
     // ── Header: hide on scroll down, frosted logo pill once scrolled ────────
@@ -238,4 +274,5 @@
     });
 
     onScroll();
+    initMotionVideos();
 })();

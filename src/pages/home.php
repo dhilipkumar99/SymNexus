@@ -22,12 +22,7 @@ require SRC_DIR . '/includes/header.php';
 ?>
 
 <!-- HERO -->
-<div class="mb-8">
-    <img src="/favicon.svg" alt="" width="64" height="64"
-        class="w-16 h-16 rounded-full object-cover border-2 border-brandPrimary/30">
-</div>
-
-<p class="font-mono text-[11px] uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-4">Symnexus Ltd. — Software</p>
+<?php partial('logo-frame'); ?>
 
 <h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight transition-colors duration-300">
     Domain-native software<br class="hidden sm:block"> systems, built to fit.
@@ -74,7 +69,6 @@ require SRC_DIR . '/includes/header.php';
 <section class="py-12" aria-labelledby="offering-title">
     <div class="mb-6 md:mb-8">
         <h2 id="offering-title" class="section-title">Currently Offering</h2>
-        <p class="section-lead">FluorocellAI and ComplianceCall — two regulated workflows, covered.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:-mx-8">
@@ -104,8 +98,8 @@ require SRC_DIR . '/includes/header.php';
     </div>
 
     <p class="mt-10 body-copy text-sm max-w-2xl">
-        We build domain-native software systems for many industries beyond these two —
-        <a href="/contact" class="link-inline">reach out</a> if you have a custom solution in mind.
+        We build domain-native software systems for many industries —
+        <a href="/contact" class="link-inline">reach out</a> if you&rsquo;re seeking AI development services.
     </p>
 
     <div class="mt-6">
@@ -119,9 +113,9 @@ require SRC_DIR . '/includes/header.php';
 <!-- APPROACH -->
 <section class="py-16" aria-labelledby="approach-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
-        <h2 id="approach-title" class="section-title">Domain-native software systems, not generic tools bent to fit.</h2>
+        <h2 id="approach-title" class="section-title">Domain-native software systems.</h2>
         <p class="section-lead">
-            FluorocellAI turns a 3–4 day manual review into a same-day first pass — because the system is built around
+            For cell researchers, FluorocellAI turned a 3–4 day manual review into a same-day first pass — because the system is built around
             how a lab already works, not the other way around.
         </p>
     </div>

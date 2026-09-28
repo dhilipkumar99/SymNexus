@@ -6,7 +6,7 @@
  *   ('cache-page' message), since the router itself only fetches fragments.
  * - Versioned assets (/assets/*?v=hash, favicon): cache-first; older versions of
  *   the same file are pruned when a new one is stored.
- * - SPA fragment requests, the chat API, video (range requests) and all
+ * - SPA fragment requests, the chat API, video files (range requests) and all
  *   cross-origin requests are never touched.
  */
 const CACHE_NAME = 'symnexus-v1';
@@ -73,7 +73,7 @@ self.addEventListener('fetch', (event) => {
 
     if (request.method !== 'GET' || url.origin !== self.location.origin) return;
     if (request.headers.get('X-SPA-Request') === 'true') return;
-    if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/video/')) return;
+    if (url.pathname.startsWith('/api/') || url.pathname.startsWith('/video/') || url.pathname.startsWith('/assets/video/')) return;
 
     if (request.mode === 'navigate') {
         event.respondWith(

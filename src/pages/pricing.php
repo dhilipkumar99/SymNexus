@@ -43,37 +43,71 @@ require SRC_DIR . '/includes/header.php';
         <p class="section-lead text-base">Pricing for the systems we've already built for research labs and pharmaceutical teams. If your field isn't listed, that's the point — we build custom.</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <?php foreach (PRODUCTS as $slug => $p): ?>
-            <?php if ($p['pricing'] === null) continue; ?>
-            <article id="<?= e($slug) ?>" class="card flex flex-col">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="icon-badge"><?= icon($p['icon'], 'w-5 h-5') ?></div>
-                    <p class="font-sans text-sm font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400"><?= e($p['name']) ?></p>
-                </div>
-                <p class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Contact us for pricing</p>
-                <p class="mt-3 body-copy text-sm"><?= e($p['pricing']['desc']) ?></p>
-                <ul class="mt-6 flex-1 space-y-2.5 font-sans text-sm font-medium text-gray-700 dark:text-gray-300">
-                    <?php foreach ($p['pricing']['features'] as $feature): ?>
-                        <li class="flex items-start"><span class="w-2 h-2 mt-1.5 rounded-full bg-brandPrimary mr-2.5 flex-shrink-0" aria-hidden="true"></span><?= e($feature) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-                <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40 flex flex-wrap items-center justify-between gap-4">
-                    <a href="/demo" class="btn-primary"><?= e($p['cta']) ?></a>
-                    <a href="<?= e($p['href']) ?>" class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center group transition-colors">
-                        Learn more <?= icon('arrow-right', 'w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5') ?>
-                    </a>
-                </div>
-            </article>
-        <?php endforeach; ?>
-    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-    <div class="mt-6 flex flex-col items-start gap-4 rounded-2xl border border-dashed border-gray-300 dark:border-gray-600 bg-white/60 dark:bg-transparent p-8 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-            <p class="font-sans text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-300">Not on this list?</p>
-            <p class="mt-2 max-w-xl body-copy text-sm">We design and build domain-native software systems for other technical and regulated fields too — imaging, laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.</p>
-        </div>
-        <a href="/contact" class="btn-secondary flex-shrink-0">Discuss a custom system</a>
+        <!-- Current products -->
+        <article id="current-products" class="card flex flex-col">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="icon-badge"><?= icon('cube', 'w-5 h-5') ?></div>
+                <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">Current Products</h3>
+            </div>
+            <p class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Contact us for pricing</p>
+
+            <div class="mt-6 flex-1 divide-y divide-gray-100 dark:divide-gray-700/40">
+                <?php foreach (PRODUCTS as $slug => $p): ?>
+                    <?php if ($p['pricing'] === null) continue; ?>
+                    <section id="<?= e($slug) ?>" class="py-5 first:pt-0 last:pb-0" aria-labelledby="<?= e($slug) ?>-title">
+                        <div class="flex items-baseline justify-between gap-4">
+                            <h4 id="<?= e($slug) ?>-title" class="font-sans text-base font-bold text-gray-900 dark:text-white"><?= e($p['name']) ?></h4>
+                            <a href="<?= e($p['href']) ?>" class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center group transition-colors flex-shrink-0">
+                                Learn more <?= icon('arrow-right', 'w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5') ?>
+                            </a>
+                        </div>
+                        <p class="mt-2 body-copy text-sm"><?= e($p['pricing']['desc']) ?></p>
+                        <ul class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 font-sans text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <?php foreach ($p['pricing']['features'] as $feature): ?>
+                                <li class="flex items-start"><span class="w-2 h-2 mt-1.5 rounded-full bg-brandPrimary mr-2.5 flex-shrink-0" aria-hidden="true"></span><?= e($feature) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </section>
+                <?php endforeach; ?>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40">
+                <a href="/demo" class="btn-primary">Request a Demonstration</a>
+            </div>
+        </article>
+
+        <!-- Custom-built AI tools -->
+        <article id="custom" class="card flex flex-col">
+            <div class="flex items-center gap-3 mb-6">
+                <div class="icon-badge"><?= icon('squares', 'w-5 h-5') ?></div>
+                <h3 class="font-sans text-sm font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400">Custom Built AI Tools</h3>
+            </div>
+            <p class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Contact us for pricing</p>
+            <p class="mt-3 body-copy text-sm">
+                We design and build domain-native software systems for other technical and regulated fields too — imaging,
+                laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.
+            </p>
+            <ul class="mt-6 flex-1 space-y-2.5 font-sans text-sm font-medium text-gray-700 dark:text-gray-300">
+                <?php foreach ([
+                    'Built around how your team already works',
+                    'Proven on your own data before we talk pricing',
+                    'Validated by the domain experts who use it',
+                    'Full audit-trail transparency by design',
+                    'Your team trained to run the system independently',
+                ] as $feature): ?>
+                    <li class="flex items-start"><span class="w-2 h-2 mt-1.5 rounded-full bg-brandPrimary mr-2.5 flex-shrink-0" aria-hidden="true"></span><?= e($feature) ?></li>
+                <?php endforeach; ?>
+            </ul>
+            <p class="mt-6 text-sm text-gray-600 dark:text-gray-300">
+                Recent example: AI inventory monitoring and wholesale-account automation for
+                <a href="/products#yashara" class="link-inline">Yashara</a>.
+            </p>
+            <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40">
+                <a href="/contact" class="btn-primary">Discuss a custom system</a>
+            </div>
+        </article>
     </div>
 </section>
 

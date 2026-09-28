@@ -6,7 +6,7 @@ declare(strict_types=1);
 const SITE_NAME       = 'Symnexus';
 const SITE_LEGAL_NAME = 'Symnexus Ltd.';
 const SITE_URL        = 'https://symnexus.co';
-const SITE_EMAIL      = 'cell.ai.solutions@gmail.com';
+const SITE_EMAIL      = 'info@symnexus.com';
 const SITE_PHONE      = '+1 (858) 905-4826';
 const SITE_PHONE_TEL  = '+18589054826';
 
