@@ -1,0 +1,8 @@
+# Local-only files that must never be uploaded to Vercel
+.git
+node_modules
+.env
+.env.*
+*.pdf
+Screenshot*
+README.md
