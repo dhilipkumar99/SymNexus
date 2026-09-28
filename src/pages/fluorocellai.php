@@ -41,7 +41,7 @@ $useCases = [
 require SRC_DIR . '/includes/header.php';
 ?>
 
-<a href="/products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
+<a href="/products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
     <?= icon('arrow-left', 'w-4 h-4 mr-2 transform group-hover:-translate-x-0.5 transition-transform') ?>
     All products
 </a>
@@ -65,7 +65,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- Overview -->
 <section id="overview" class="grid grid-cols-1 lg:grid-cols-5 gap-12 py-12" aria-labelledby="overview-title">
     <div class="lg:col-span-3 space-y-5 body-copy">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400">Platform Overview</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400">Platform Overview</p>
         <h2 id="overview-title" class="section-title">The accuracy you couldn't achieve manually, at same-day turnaround.</h2>
         <p>
             FluorocellAI slots into the workflow your lab already runs — slide prep and imaging stay unchanged. What used
@@ -82,7 +82,7 @@ require SRC_DIR . '/includes/header.php';
         </p>
     </div>
 
-    <aside class="lg:col-span-2 card-inset h-fit">
+    <div class="lg:col-span-2 card-inset h-fit">
         <div class="flex items-center gap-3 mb-6">
             <div class="text-gray-500 dark:text-teal-400"><?= icon('squares', 'w-5 h-5') ?></div>
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wide">Analysis Pipeline</h3>
@@ -90,15 +90,15 @@ require SRC_DIR . '/includes/header.php';
         <ol class="space-y-5">
             <?php foreach ($pipeline as [$step, $title, $detail]): ?>
                 <li class="flex items-start gap-4">
-                    <span class="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brandPrimary text-[0.65rem] font-bold text-white"><?= e($step) ?></span>
+                    <span class="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brandPrimary text-[0.65rem] font-bold text-white dark:text-slate-950"><?= e($step) ?></span>
                     <div>
                         <p class="text-sm font-semibold text-gray-900 dark:text-white"><?= e($title) ?></p>
-                        <p class="mt-0.5 text-xs leading-relaxed text-gray-500 dark:text-gray-400"><?= e($detail) ?></p>
+                        <p class="mt-0.5 text-xs leading-relaxed text-gray-500 dark:text-gray-300"><?= e($detail) ?></p>
                     </div>
                 </li>
             <?php endforeach; ?>
         </ol>
-    </aside>
+    </div>
 </section>
 
 <!-- Pull quote -->
@@ -106,13 +106,13 @@ require SRC_DIR . '/includes/header.php';
     <blockquote class="font-headline text-xl md:text-2xl font-medium leading-relaxed text-gray-900 dark:text-white">
         &ldquo;A workflow that took roughly three to four days manually compresses to same-day turnaround — without changing how the lab prepares or images its samples.&rdquo;
     </blockquote>
-    <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-400">Cancer-research lab — FluorocellAI pilot customer</figcaption>
+    <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-300">Cancer-research lab — FluorocellAI pilot customer</figcaption>
 </figure>
 
 <!-- Capabilities -->
 <section class="py-16" aria-labelledby="capabilities-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Capabilities</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Capabilities</p>
         <h2 id="capabilities-title" class="section-title">Built for every fluorescence microscopy workflow.</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -120,7 +120,7 @@ require SRC_DIR . '/includes/header.php';
             <div class="card flex flex-col h-full">
                 <div class="icon-badge mb-6"><?= icon($c['icon'], 'w-5 h-5') ?></div>
                 <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white mb-2"><?= e($c['title']) ?></h3>
-                <p class="font-body text-gray-600 dark:text-gray-400 text-sm leading-relaxed"><?= e($c['body']) ?></p>
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed"><?= e($c['body']) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
@@ -129,7 +129,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- Use cases -->
 <section class="py-12" aria-labelledby="usecases-title">
     <div class="mb-6 md:mb-8">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Use Cases</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Use Cases</p>
         <h2 id="usecases-title" class="section-title">Who uses FluorocellAI.</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -141,7 +141,7 @@ require SRC_DIR . '/includes/header.php';
                 </div>
                 <div class="p-5">
                     <h3 class="font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($uc['role']) ?></h3>
-                    <p class="mt-2 text-xs leading-relaxed text-gray-600 dark:text-gray-400"><?= e($uc['desc']) ?></p>
+                    <p class="mt-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300"><?= e($uc['desc']) ?></p>
                 </div>
             </article>
         <?php endforeach; ?>

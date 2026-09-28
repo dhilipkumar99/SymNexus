@@ -125,9 +125,8 @@ function handle_request(): ?bool
         $path = '/' . ltrim($_GET['__path'], '/');
     }
     if (is_string($query)) {
-        parse_str($query, $params);
-        unset($params['__path']);
-        $query = http_build_query($params);
+        // Strip only our internal parameter; everything else passes through byte-for-byte.
+        $query = trim((string) preg_replace('/(?:^|&)__path=[^&]*/', '', $query), '&');
     }
 
     // Local dev (`php -S ... -t public api/index.php`): let the server stream static files.

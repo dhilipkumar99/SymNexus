@@ -25,14 +25,14 @@ require SRC_DIR . '/includes/header.php';
 <div class="w-full max-w-3xl mx-auto py-4">
 
     <div class="mb-8">
-        <a href="/research" class="inline-flex items-center text-sm font-sans font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors group">
+        <a href="/research" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group">
             <?= icon('arrow-left', 'w-4 h-4 mr-2 transform group-hover:-translate-x-0.5 transition-transform') ?>
             Back to Research
         </a>
     </div>
 
     <div class="mb-8 border-b border-gray-200 dark:border-gray-700/60 pb-8">
-        <div class="mb-4 flex flex-wrap items-center gap-2 text-xs font-sans text-gray-500 dark:text-gray-400 font-medium">
+        <div class="mb-4 flex flex-wrap items-center gap-2 text-xs font-sans text-gray-600 dark:text-gray-300 font-medium">
             <span class="flex items-center pl-3.5 relative">
                 <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
                     <span class="h-3 w-0.5 rounded-full bg-teal-500"></span>
@@ -51,7 +51,7 @@ require SRC_DIR . '/includes/header.php';
         <img src="<?= e(img('fluoroCells', 1600)) ?>" alt="Fluorescence microscopy of cells, the kind FluorocellAI analyzes" class="w-full h-full object-cover" fetchpriority="high">
     </div>
 
-    <article class="font-body text-base leading-relaxed text-gray-600 dark:text-gray-400 space-y-6">
+    <article class="font-body text-base leading-relaxed text-gray-600 dark:text-gray-300 space-y-6">
         <p>
             A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual
             review of cells from a week of manual cross-referencing to a same-day first pass.
@@ -61,7 +61,7 @@ require SRC_DIR . '/includes/header.php';
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <?php foreach ($before as [$label, $value]): ?>
                 <div class="rounded-xl bg-white dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/50 p-4 text-center">
-                    <p class="text-[0.7rem] text-gray-500 dark:text-gray-400"><?= e($label) ?></p>
+                    <p class="text-[0.7rem] text-gray-500 dark:text-gray-300"><?= e($label) ?></p>
                     <p class="mt-1 font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($value) ?></p>
                 </div>
             <?php endforeach; ?>
@@ -71,7 +71,7 @@ require SRC_DIR . '/includes/header.php';
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <?php foreach ($after as [$label, $value]): ?>
                 <div class="rounded-xl bg-brandPrimary/10 border border-brandPrimary/30 p-4 text-center">
-                    <p class="text-[0.7rem] text-teal-700 dark:text-teal-300"><?= e($label) ?></p>
+                    <p class="text-[0.7rem] text-teal-800 dark:text-teal-300"><?= e($label) ?></p>
                     <p class="mt-1 font-sans text-sm font-bold text-teal-900 dark:text-white"><?= e($value) ?></p>
                 </div>
             <?php endforeach; ?>

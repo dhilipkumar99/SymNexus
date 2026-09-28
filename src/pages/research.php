@@ -25,7 +25,7 @@ require SRC_DIR . '/includes/header.php';
         <h1 class="font-headline text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
             What changed for one small research lab.
         </h1>
-        <p class="font-body text-gray-600 dark:text-gray-400 text-sm md:text-base leading-relaxed max-w-2xl">
+        <p class="font-body text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed max-w-2xl">
             A before-and-after look at FluorocellAI in production.
         </p>
     </div>
@@ -40,7 +40,7 @@ require SRC_DIR . '/includes/header.php';
                 </div>
 
                 <div class="relative z-10 w-full flex flex-col justify-center">
-                    <div class="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-500 font-body">
+                    <div class="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-600 dark:text-gray-300 font-body">
                         <span class="flex items-center pl-3.5 relative">
                             <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
                                 <span class="h-3 w-0.5 rounded-full bg-gray-300 dark:bg-gray-600"></span>
@@ -58,9 +58,9 @@ require SRC_DIR . '/includes/header.php';
                         </a>
                     </h2>
 
-                    <p class="font-body text-xs md:text-sm text-gray-600 dark:text-gray-400 leading-relaxed mb-4 max-w-3xl"><?= e($entry['excerpt']) ?></p>
+                    <p class="font-body text-xs md:text-sm text-gray-600 dark:text-gray-300 leading-relaxed mb-4 max-w-3xl"><?= e($entry['excerpt']) ?></p>
 
-                    <div aria-hidden="true" class="flex items-center text-xs md:text-sm font-medium text-teal-600 dark:text-teal-500 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
+                    <div aria-hidden="true" class="flex items-center text-xs md:text-sm font-medium text-teal-700 dark:text-teal-500 group-hover:text-teal-500 dark:group-hover:text-teal-400 transition-colors">
                         Read case study
                         <?= icon('arrow-up-right', 'ml-1 h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200') ?>
                     </div>

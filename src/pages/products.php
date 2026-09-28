@@ -51,7 +51,7 @@ require SRC_DIR . '/includes/header.php';
                     <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4"><?= e($p['overview']) ?></p>
 
                     <div class="mb-5 bg-gray-50 dark:bg-slate-800/40 p-3 rounded-lg border-l-4 border-brandPrimary">
-                        <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed"><?= e($p['detail']) ?></p>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed"><?= e($p['detail']) ?></p>
                     </div>
 
                     <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-medium text-gray-700 dark:text-gray-300">
@@ -63,15 +63,15 @@ require SRC_DIR . '/includes/header.php';
                     <?php if ($slug === 'fluorocellai'): ?>
                         <div class="mt-6 grid grid-cols-2 rounded-lg border border-gray-100 dark:border-slate-800 divide-x divide-gray-100 dark:divide-slate-800 text-xs">
                             <div class="p-4">
-                                <p class="font-mono text-[10px] uppercase tracking-wider text-gray-400 mb-3">Before</p>
-                                <ul class="space-y-2 text-gray-500 dark:text-gray-400">
+                                <p class="font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-3">Before</p>
+                                <ul class="space-y-2 text-gray-500 dark:text-gray-300">
                                     <li>Manual counting: 1–2 days</li>
                                     <li>Manual QC / re-count: ~1 day</li>
                                     <li>Reporting: ~1 day</li>
                                 </ul>
                             </div>
                             <div class="p-4">
-                                <p class="font-mono text-[10px] uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-3">With FluorocellAI</p>
+                                <p class="font-mono text-[10px] uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-3">With FluorocellAI</p>
                                 <ul class="space-y-2 text-gray-700 dark:text-gray-200">
                                     <li>Automated counting: minutes</li>
                                     <li>QC / audit trail: automatic</li>
@@ -97,7 +97,7 @@ require SRC_DIR . '/includes/header.php';
     <?php endforeach; ?>
 </div>
 
-<p class="mt-6 font-body text-xs text-gray-500 dark:text-gray-500">Illustrative interface previews. Request a demonstration to see the live product.</p>
+<p class="mt-6 font-body text-xs text-gray-600 dark:text-gray-300">Illustrative interface previews. Request a demonstration to see the live product.</p>
 
 <?php partial('cta', [
     'title'     => 'Ready to see these on your own data?',

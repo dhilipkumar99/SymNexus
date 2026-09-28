@@ -121,7 +121,7 @@ header('Content-Type: text/html; charset=utf-8');
                 <?php foreach (NAV_LINKS as $link): ?>
                     <a href="<?= e($link['href']) ?>" data-match="<?= e(implode(' ', $link['match'])) ?>"
                         <?= nav_is_active($link) ? 'aria-current="page"' : '' ?>
-                        class="px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 text-gray-600 dark:text-gray-400 hover:text-brandPrimary dark:hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
+                        class="px-3 py-1 rounded-full text-sm font-medium transition-colors duration-200 text-gray-600 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
                 <?php endforeach; ?>
             </nav>
 
@@ -133,7 +133,7 @@ header('Content-Type: text/html; charset=utf-8');
                     Request a demo
                 </a>
                 <button id="theme-toggle" type="button"
-                    class="text-gray-500 dark:text-gray-400 hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary rounded-full text-sm p-2 transition-all"
+                    class="text-gray-500 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary rounded-full text-sm p-2 transition-all"
                     aria-label="Toggle dark mode">
                     <!-- Sun (shown in dark mode) -->
                     <svg class="hidden dark:block h-5 w-5 fill-current" viewBox="0 0 20 20" aria-hidden="true">
@@ -162,7 +162,7 @@ header('Content-Type: text/html; charset=utf-8');
                 <?php foreach (NAV_LINKS as $link): ?>
                     <a href="<?= e($link['href']) ?>" data-match="<?= e(implode(' ', $link['match'])) ?>"
                         <?= nav_is_active($link) ? 'aria-current="page"' : '' ?>
-                        class="block text-sm font-medium px-4 py-2.5 rounded-xl transition-colors text-gray-600 dark:text-gray-400 hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold aria-[current=page]:bg-gray-100 dark:aria-[current=page]:bg-white/5 dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
+                        class="block text-sm font-medium px-4 py-2.5 rounded-xl transition-colors text-gray-600 dark:text-gray-300 hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold aria-[current=page]:bg-gray-100 dark:aria-[current=page]:bg-white/5 dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
                 <?php endforeach; ?>
                 <a href="/demo"
                     class="block text-sm font-semibold px-4 py-2.5 rounded-xl text-brandPrimary hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Request a demonstration</a>

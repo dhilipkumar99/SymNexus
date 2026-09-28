@@ -43,7 +43,7 @@ $roles = [
 require SRC_DIR . '/includes/header.php';
 ?>
 
-<a href="/products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-600 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
+<a href="/products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
     <?= icon('arrow-left', 'w-4 h-4 mr-2 transform group-hover:-translate-x-0.5 transition-transform') ?>
     All products
 </a>
@@ -63,13 +63,13 @@ require SRC_DIR . '/includes/header.php';
     <div class="rounded-2xl overflow-hidden shadow-2xl border border-gray-200/60 dark:border-white/5">
         <?php partial('compliance-mock'); ?>
     </div>
-    <p class="mt-3 font-body text-xs text-gray-500 dark:text-gray-500">Illustrative interface preview. Request a demonstration to see the live product.</p>
+    <p class="mt-3 font-body text-xs text-gray-600 dark:text-gray-300">Illustrative interface preview. Request a demonstration to see the live product.</p>
 </div>
 
 <!-- Overview -->
 <section id="overview" class="grid grid-cols-1 lg:grid-cols-5 gap-12 py-12" aria-labelledby="overview-title">
     <div class="lg:col-span-3 space-y-5 body-copy">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400">Platform Overview</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400">Platform Overview</p>
         <h2 id="overview-title" class="section-title">The historical record your auditors ask for, generated automatically.</h2>
         <p>
             ComplianceCall tracks not just a chemical's current hazard category, but what it used to be and why it
@@ -82,7 +82,7 @@ require SRC_DIR . '/includes/header.php';
         </p>
     </div>
 
-    <aside class="lg:col-span-2 card-inset h-fit">
+    <div class="lg:col-span-2 card-inset h-fit">
         <div class="flex items-center gap-3 mb-6">
             <div class="text-gray-500 dark:text-teal-400"><?= icon('shield-check', 'w-5 h-5') ?></div>
             <h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wide">Platform Coverage</h3>
@@ -95,7 +95,7 @@ require SRC_DIR . '/includes/header.php';
                 </li>
             <?php endforeach; ?>
         </ul>
-    </aside>
+    </div>
 </section>
 
 <!-- Pull quote -->
@@ -103,13 +103,13 @@ require SRC_DIR . '/includes/header.php';
     <blockquote class="font-headline text-xl md:text-2xl font-medium leading-relaxed text-gray-900 dark:text-white">
         &ldquo;It tells us not just what a chemical's current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.&rdquo;
     </blockquote>
-    <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-400">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University · ComplianceCall pilot customer</figcaption>
+    <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-300">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University · ComplianceCall pilot customer</figcaption>
 </figure>
 
 <!-- Capabilities -->
 <section class="py-16" aria-labelledby="capabilities-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Key Capabilities</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Key Capabilities</p>
         <h2 id="capabilities-title" class="section-title">Designed for every role in the pharmaceutical compliance chain.</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -117,7 +117,7 @@ require SRC_DIR . '/includes/header.php';
             <div class="card flex flex-col h-full">
                 <div class="icon-badge mb-6"><?= icon($c['icon'], 'w-5 h-5') ?></div>
                 <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white mb-2"><?= e($c['title']) ?></h3>
-                <p class="font-body text-gray-600 dark:text-gray-400 text-sm leading-relaxed"><?= e($c['body']) ?></p>
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed"><?= e($c['body']) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
@@ -126,7 +126,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- Who uses it -->
 <section class="py-12" aria-labelledby="roles-title">
     <div class="mb-6 md:mb-8">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Who Uses ComplianceCall</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Who Uses ComplianceCall</p>
         <h2 id="roles-title" class="section-title">Built for every pharmaceutical compliance role.</h2>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:-mx-8">
@@ -134,7 +134,7 @@ require SRC_DIR . '/includes/header.php';
             <article class="card-ghost p-6 flex flex-col">
                 <div class="mb-4 h-1 w-8 rounded-full bg-brandPrimary" aria-hidden="true"></div>
                 <h3 class="font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($r['role']) ?></h3>
-                <p class="mt-2 text-xs leading-relaxed text-gray-600 dark:text-gray-400"><?= e($r['desc']) ?></p>
+                <p class="mt-2 text-xs leading-relaxed text-gray-600 dark:text-gray-300"><?= e($r['desc']) ?></p>
             </article>
         <?php endforeach; ?>
     </div>

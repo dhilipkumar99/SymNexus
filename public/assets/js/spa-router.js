@@ -86,7 +86,7 @@
                 try { title = decodeURIComponent(rawTitle); } catch (e) { title = null; }
             }
             return response.text().then(function (html) {
-                return { html: html, title: title, url: response.url || key };
+                return { html: html, title: title };
             });
         });
 
@@ -132,22 +132,40 @@
         });
     }
 
+    /**
+     * Scroll to the element named by a #hash and move focus to it, as the browser
+     * would natively (this is what makes "Skip to content" work). Returns false
+     * when there is no such element.
+     */
     function scrollToHash(hash, smooth) {
         var target = null;
         if (hash && hash.length > 1) {
             try { target = document.getElementById(decodeURIComponent(hash.slice(1))); } catch (e) { target = null; }
         }
-        if (target) {
-            target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
-        } else {
-            window.scrollTo(0, 0);
+        if (!target) return false;
+        target.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+        if (!target.matches('a[href], button, input, select, textarea, [tabindex]')) {
+            target.setAttribute('tabindex', '-1');
         }
+        target.focus({ preventScroll: true });
+        return true;
     }
 
     function saveScrollPosition() {
         var state = Object.assign({}, history.state || {}, { spaScrollY: window.scrollY });
         history.replaceState(state, '');
     }
+
+    // Keep the current entry's scroll position up to date, so Back *and* Forward
+    // can restore it (with manual scrollRestoration the browser won't).
+    var scrollSaveTimer = null;
+    window.addEventListener('scroll', function () {
+        clearTimeout(scrollSaveTimer);
+        scrollSaveTimer = setTimeout(saveScrollPosition, 150);
+    }, { passive: true });
+
+    // Pages the service worker has already been asked to store for offline use.
+    var offlineQueued = new Set();
 
     function loadPage(url, options) {
         options = options || {};
@@ -164,9 +182,7 @@
         fetchPage(requested.href).then(function (result) {
             if (token !== navToken) return; // a newer navigation won
 
-            // Honour server-side redirects (e.g. legacy URLs) in the address bar.
-            var finalUrl = new URL(result.url, window.location.href);
-            finalUrl.hash = requested.hash;
+            var finalUrl = requested;
 
             if (options.push) {
                 saveScrollPosition();
@@ -179,21 +195,24 @@
             executeScripts(container);
             updateActiveNavigation(finalUrl.href);
 
+            // Restore scroll, or jump to the #hash target (which also takes focus);
+            // otherwise move focus to the new content for keyboard/screen-reader users.
             if (typeof options.restoreY === 'number') {
                 window.scrollTo(0, options.restoreY);
-            } else {
-                scrollToHash(finalUrl.hash, false);
             }
-
-            // Move focus to the new content for keyboard and screen-reader users.
-            container.setAttribute('tabindex', '-1');
-            container.focus({ preventScroll: true });
+            if (typeof options.restoreY === 'number' || !scrollToHash(finalUrl.hash, false)) {
+                if (typeof options.restoreY !== 'number') window.scrollTo(0, 0);
+                container.setAttribute('tabindex', '-1');
+                container.focus({ preventScroll: true });
+            }
 
             document.dispatchEvent(new CustomEvent('spa:pageLoaded', { detail: { url: finalUrl.href } }));
 
-            // Let the service worker store the full page too, so it is available offline.
-            if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage({ type: 'cache-page', url: cacheKey(finalUrl.href) });
+            // Ask the service worker to store the full page for offline use — once per
+            // page per session; the worker skips pages it already holds.
+            if (navigator.serviceWorker && navigator.serviceWorker.controller && !offlineQueued.has(renderedKey)) {
+                offlineQueued.add(renderedKey);
+                navigator.serviceWorker.controller.postMessage({ type: 'cache-page', url: renderedKey });
             }
         }).catch(function (error) {
             if (token !== navToken) return;
@@ -225,7 +244,8 @@
             if (target.pathname === here.pathname && target.search === here.search) {
                 if (target.hash) {
                     e.preventDefault();
-                    history.pushState(history.state, '', target.href);
+                    saveScrollPosition();
+                    history.pushState({ spa: true }, '', target.href);
                     scrollToHash(target.hash, true);
                 }
                 return;
@@ -258,11 +278,12 @@
 
         window.addEventListener('popstate', function (e) {
             // Back/forward between anchors of the page already on screen: no fetch.
+            var state = e.state || {};
             if (cacheKey(window.location.href) === renderedKey) {
-                scrollToHash(window.location.hash, true);
+                if (typeof state.spaScrollY === 'number') window.scrollTo(0, state.spaScrollY);
+                else if (!scrollToHash(window.location.hash, true)) window.scrollTo(0, 0);
                 return;
             }
-            var state = e.state || {};
             loadPage(window.location.href, {
                 push: false,
                 restoreY: typeof state.spaScrollY === 'number' ? state.spaScrollY : undefined,

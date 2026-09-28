@@ -16,7 +16,7 @@
     </button>
 </div>
 
-<div id="ai-chat-window" role="dialog" aria-label="Symnexus AI assistant"
+<div id="ai-chat-window" role="dialog" aria-label="Symnexus AI assistant" data-contact-email="<?= e(SITE_EMAIL) ?>"
     class="hidden fixed bottom-0 left-0 right-0 sm:left-auto sm:right-4 sm:bottom-24 w-full sm:w-[380px] h-[60vh] sm:h-[520px] bg-white/70 dark:bg-slate-950/80 backdrop-blur-md border-t sm:border border-white/40 dark:border-slate-800/60 rounded-t-xl sm:rounded-xl flex-col overflow-hidden origin-bottom-right shadow-[0_8px_32px_0_rgba(15,23,42,0.12)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-[9999]">
 
     <div class="px-5 py-4 border-b border-gray-200/50 dark:border-slate-800/60 flex items-center justify-between bg-white/30 dark:bg-slate-950/40 flex-shrink-0">
@@ -25,7 +25,7 @@
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-emerald-400"></span>
             </span>
-            <span class="font-mono text-[11px] uppercase tracking-widest text-slate-600 dark:text-slate-400 font-semibold dark:font-normal">
+            <span class="font-mono text-[11px] uppercase tracking-widest text-slate-600 dark:text-slate-300 font-semibold dark:font-normal">
                 Symnexus AI
             </span>
         </div>

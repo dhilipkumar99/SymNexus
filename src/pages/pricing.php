@@ -38,7 +38,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- Products -->
 <section class="py-8" aria-labelledby="plans-title">
     <div class="mb-6 md:mb-8 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Currently Offering</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Currently Offering</p>
         <h2 id="plans-title" class="section-title">Two regulated workflows, and counting.</h2>
         <p class="section-lead text-base">Pricing for the systems we've already built for research labs and pharmaceutical teams. If your field isn't listed, that's the point — we build custom.</p>
     </div>
@@ -49,7 +49,7 @@ require SRC_DIR . '/includes/header.php';
             <article id="<?= e($slug) ?>" class="card flex flex-col">
                 <div class="flex items-center gap-3 mb-6">
                     <div class="icon-badge"><?= icon($p['icon'], 'w-5 h-5') ?></div>
-                    <p class="font-sans text-sm font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400"><?= e($p['name']) ?></p>
+                    <p class="font-sans text-sm font-bold uppercase tracking-wider text-teal-700 dark:text-teal-400"><?= e($p['name']) ?></p>
                 </div>
                 <p class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">Contact us for pricing</p>
                 <p class="mt-3 body-copy text-sm"><?= e($p['pricing']['desc']) ?></p>
@@ -60,7 +60,7 @@ require SRC_DIR . '/includes/header.php';
                 </ul>
                 <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40 flex flex-wrap items-center justify-between gap-4">
                     <a href="/demo" class="btn-primary"><?= e($p['cta']) ?></a>
-                    <a href="<?= e($p['href']) ?>" class="text-teal-600 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center group transition-colors">
+                    <a href="<?= e($p['href']) ?>" class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center group transition-colors">
                         Learn more <?= icon('arrow-right', 'w-3.5 h-3.5 ml-1 transition-transform group-hover:translate-x-0.5') ?>
                     </a>
                 </div>
@@ -70,7 +70,7 @@ require SRC_DIR . '/includes/header.php';
 
     <div class="mt-6 flex flex-col items-start gap-4 rounded-2xl border border-dashed border-gray-300 dark:border-gray-600 bg-white/60 dark:bg-transparent p-8 sm:flex-row sm:items-center sm:justify-between">
         <div>
-            <p class="font-sans text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Not on this list?</p>
+            <p class="font-sans text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-300">Not on this list?</p>
             <p class="mt-2 max-w-xl body-copy text-sm">We design and build domain-native software systems for other technical and regulated fields too — imaging, laboratory workflows, compliance, and beyond. Tell us what you're working on and we'll size a system to fit.</p>
         </div>
         <a href="/contact" class="btn-secondary flex-shrink-0">Discuss a custom system</a>
@@ -80,7 +80,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- FAQ -->
 <section class="py-16" aria-labelledby="faq-title">
     <div class="mb-6 md:mb-8">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Common Questions</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Common Questions</p>
         <h2 id="faq-title" class="section-title">Pricing FAQ.</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl">

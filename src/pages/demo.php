@@ -38,7 +38,7 @@ require SRC_DIR . '/includes/header.php';
                         <span class="flex-shrink-0 font-mono text-xs font-bold text-brandPrimary mt-0.5"><?= e($num) ?></span>
                         <div>
                             <p class="text-sm font-semibold text-gray-900 dark:text-white"><?= e($title) ?></p>
-                            <p class="mt-1 text-xs leading-relaxed text-gray-500 dark:text-gray-400"><?= e($body) ?></p>
+                            <p class="mt-1 text-xs leading-relaxed text-gray-500 dark:text-gray-300"><?= e($body) ?></p>
                         </div>
                     </li>
                 <?php endforeach; ?>

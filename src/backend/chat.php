@@ -64,38 +64,53 @@ function chat_client_ip(): string
     return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 }
 
-/** Increment a fixed-window counter; APCu when available, else a locked temp file. */
-function chat_hit(string $key): int
+/**
+ * Increment fixed-window counters for the given keys and return their new values.
+ * Uses APCu when available, else a single locked JSON file whose expired windows
+ * are pruned on every write (so it never grows beyond the active window).
+ *
+ * @param list<string> $keys
+ * @return array<string, int>
+ */
+function chat_hit(array $keys): array
 {
     if (function_exists('apcu_enabled') && apcu_enabled()) {
-        apcu_add($key, 0, CHAT_RATE_WINDOW);
-        return (int) apcu_inc($key);
+        $counts = [];
+        foreach ($keys as $key) {
+            apcu_add('symnexus_' . $key, 0, CHAT_RATE_WINDOW);
+            $counts[$key] = (int) apcu_inc('symnexus_' . $key);
+        }
+        return $counts;
     }
 
-    $file = sys_get_temp_dir() . '/symnexus_' . $key;
-    $fh = @fopen($file, 'c+');
+    $fh = @fopen(sys_get_temp_dir() . '/symnexus_chat_ratelimit.json', 'c+');
     if ($fh === false) {
-        return 0;
+        return array_fill_keys($keys, 0);
     }
     flock($fh, LOCK_EX);
-    $data = json_decode((string) stream_get_contents($fh), true);
     $now  = time();
-    if (!is_array($data) || ($data['start'] ?? 0) + CHAT_RATE_WINDOW < $now) {
-        $data = ['start' => $now, 'count' => 0];
+    $data = json_decode((string) stream_get_contents($fh), true);
+    $data = array_filter(is_array($data) ? $data : [], static fn($w) => is_array($w) && ($w['start'] ?? 0) + CHAT_RATE_WINDOW >= $now);
+
+    $counts = [];
+    foreach ($keys as $key) {
+        $data[$key] ??= ['start' => $now, 'count' => 0];
+        $counts[$key] = ++$data[$key]['count'];
     }
-    $data['count']++;
+
     ftruncate($fh, 0);
     rewind($fh);
-    fwrite($fh, json_encode($data));
+    fwrite($fh, (string) json_encode($data));
     flock($fh, LOCK_UN);
     fclose($fh);
-    return $data['count'];
+    return $counts;
 }
 
 function chat_rate_limited(): bool
 {
-    return chat_hit('rl_' . md5(chat_client_ip())) > CHAT_RATE_LIMIT
-        || chat_hit('rl_global') > CHAT_GLOBAL_LIMIT;
+    $ipKey  = 'ip_' . md5(chat_client_ip());
+    $counts = chat_hit([$ipKey, 'global']);
+    return $counts[$ipKey] > CHAT_RATE_LIMIT || $counts['global'] > CHAT_GLOBAL_LIMIT;
 }
 
 /** @return list<array{role: string, content: string}> */
@@ -165,8 +180,9 @@ function handle_chat(): void
 
     $instructions = @file_get_contents(SRC_DIR . '/ai/instructions.md');
     if ($instructions === false) {
-        $instructions = 'You are the assistant for Symnexus, a software company. Answer briefly and direct visitors to ' . SITE_EMAIL . '.';
+        $instructions = 'You are the assistant for Symnexus, a software company. Answer briefly and direct visitors to {{EMAIL}}.';
     }
+    $instructions = str_replace(['{{EMAIL}}', '{{PHONE}}'], [SITE_EMAIL, SITE_PHONE], $instructions);
 
     $messages = array_merge(
         [['role' => 'system', 'content' => trim($instructions)]],

@@ -5,7 +5,8 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				brandPrimary: '#009688',
+				// Theme-aware teal (see --brand-primary in src/css/app.css): the reference #009688, adjusted per theme for WCAG AA text contrast
+				brandPrimary: 'rgb(var(--brand-primary) / <alpha-value>)',
 				brandNeutral: '#0F172A',
 			},
 			fontFamily: {

@@ -27,13 +27,13 @@ require SRC_DIR . '/includes/header.php';
         class="w-16 h-16 rounded-full object-cover border-2 border-brandPrimary/30">
 </div>
 
-<p class="font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-500 mb-4">Symnexus Ltd. — Software</p>
+<p class="font-mono text-[11px] uppercase tracking-widest text-gray-600 dark:text-gray-300 mb-4">Symnexus Ltd. — Software</p>
 
 <h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight transition-colors duration-300">
     Domain-native software<br class="hidden sm:block"> systems, built to fit.
 </h1>
 
-<p class="text-gray-600 dark:text-gray-400 text-base sm:text-lg leading-relaxed max-w-2xl mb-10 transition-colors duration-300">
+<p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl mb-10 transition-colors duration-300">
     We design and build software systems for regulated, technical industries — we engineer them around how your
     team already works, instead of bending your team to fit a generic tool.
     <a href="/about" class="link-inline">A Silicon Valley engineering team</a>, deployed for clients operating globally.
@@ -54,7 +54,7 @@ require SRC_DIR . '/includes/header.php';
 
 <!-- GALLERY -->
 <div class="relative w-screen left-1/2 -translate-x-1/2 overflow-visible my-6">
-    <div class="flex flex-row items-center lg:justify-center gap-10 overflow-x-auto overflow-y-visible py-10 w-full px-6 sm:px-8 no-scrollbar">
+    <div tabindex="0" role="region" aria-label="Photo gallery" class="focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary flex flex-row items-center lg:justify-center gap-10 overflow-x-auto overflow-y-visible py-10 w-full px-6 sm:px-8 no-scrollbar">
         <?php foreach ($gallery as $i => [$key, $alt, $rotate]): ?>
             <div class="group relative w-64 h-80 shadow-2xl border border-white/5 flex-shrink-0 transform <?= $rotate ?>">
                 <div class="w-full h-full rounded-3xl overflow-hidden relative">
@@ -74,27 +74,27 @@ require SRC_DIR . '/includes/header.php';
 <section class="py-12" aria-labelledby="offering-title">
     <div class="mb-6 md:mb-8">
         <h2 id="offering-title" class="section-title">Currently Offering</h2>
-        <p class="section-lead">FluorocellAI and ComplianceCall.</p>
+        <p class="section-lead">FluorocellAI and ComplianceCall — two regulated workflows, covered.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:-mx-8">
         <?php foreach (PRODUCTS as $slug => $p): ?>
             <article class="card-ghost flex flex-col h-full group">
-                <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
                 <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"><?= e($p['name']) ?></h3>
-                <p class="font-body text-gray-600 dark:text-gray-400 text-sm leading-relaxed mb-6 flex-grow transition-colors duration-300">
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 flex-grow transition-colors duration-300">
                     <?= e($p['summary']) ?>
                 </p>
                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
                     <div>
                         <?php if ($p['pricing'] !== null): ?>
-                            <a href="/pricing#<?= e($slug) ?>" class="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 text-sm font-medium transition-colors">Pricing</a>
+                            <a href="/pricing#<?= e($slug) ?>" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Pricing</a>
                         <?php else: ?>
-                            <a href="/contact" class="text-gray-600 dark:text-gray-400 hover:text-teal-600 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
+                            <a href="/contact" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
                         <?php endif; ?>
                     </div>
                     <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
-                        class="text-teal-600 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center transition-colors">
+                        class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center transition-colors">
                         <?= e($p['link']) ?>
                         <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-3.5 h-3.5 ml-1') ?>
                     </a>
@@ -133,11 +133,11 @@ require SRC_DIR . '/includes/header.php';
                 <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300"><?= e($card['title']) ?></h3>
                 <div class="font-body text-sm font-medium mb-4 flex flex-wrap gap-1.5 items-center">
                     <?php foreach ($card['tags'] as $t => $tag): ?>
-                        <?php if ($t > 0): ?><span class="text-emerald-600/50 dark:text-emerald-500/50 font-bold" aria-hidden="true">·</span><?php endif; ?>
-                        <span class="text-teal-600 dark:text-teal-400"><?= e($tag) ?></span>
+                        <?php if ($t > 0): ?><span class="text-emerald-700/50 dark:text-emerald-500/50 font-bold" aria-hidden="true">·</span><?php endif; ?>
+                        <span class="text-teal-700 dark:text-teal-400"><?= e($tag) ?></span>
                     <?php endforeach; ?>
                 </div>
-                <p class="font-body text-gray-600 dark:text-gray-400 text-sm leading-relaxed flex-grow transition-colors duration-300"><?= e($card['body']) ?></p>
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed flex-grow transition-colors duration-300"><?= e($card['body']) ?></p>
             </div>
         <?php endforeach; ?>
     </div>
@@ -177,7 +177,7 @@ require SRC_DIR . '/includes/header.php';
                     A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses
                     manual review of cells from a week of manual cross-referencing to a same-day first pass.
                 </p>
-                <div aria-hidden="true" class="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-500">
+                <div aria-hidden="true" class="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-700">
                     Read case study
                     <?= icon('arrow-up-right', 'ml-1 h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200') ?>
                 </div>
@@ -205,13 +205,13 @@ require SRC_DIR . '/includes/header.php';
                         </div>
                         <div class="flex flex-col">
                             <span class="text-sm font-semibold text-gray-900 dark:text-white leading-tight"><?= e($name) ?></span>
-                            <span class="text-xs text-teal-600 dark:text-teal-400 mt-0.5 font-medium"><?= e($role) ?></span>
+                            <span class="text-xs text-teal-700 dark:text-teal-400 mt-0.5 font-medium"><?= e($role) ?></span>
                         </div>
                     </div>
                 <?php endforeach; ?>
             </div>
 
-            <p class="text-xs leading-relaxed text-gray-500 dark:text-gray-400 mb-6">
+            <p class="text-xs leading-relaxed text-gray-500 dark:text-gray-300 mb-6">
                 Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and
                 Stanford-trained researchers.
             </p>

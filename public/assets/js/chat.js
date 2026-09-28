@@ -20,6 +20,7 @@
     if (!windowEl || !screenEl || !form || !input || !toggleBtn) return;
 
     var sendBtn = form.querySelector('button[type="submit"]');
+    var CONTACT_EMAIL = windowEl.getAttribute('data-contact-email') || '';
     var pending = false;
     var closeTimer = null;
 
@@ -53,17 +54,22 @@
     // One pass over the raw text: URLs, site paths, emails and phone numbers become
     // links, everything else is escaped. Matching once means links never nest.
     var LINK_PATTERN = new RegExp([
-        '(https?:\\/\\/[^\\s<>"\']*[^\\s<>"\'.,;:!?)\\]])',                                           // 1: URL
-        '(?:^|(?<=[\\s(]))(\\/(?:demo|contact|pricing|products|about|research|careers|fluorocellai|compliancecall)\\b)', // 2: site path
-        '([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})',                                            // 3: email
-        '(\\+1 \\(\\d{3}\\) \\d{3}-\\d{4})',                                                           // 4: phone
+        '(https?:\\/\\/[^\\s<>"\']*[^\\s<>"\'.,;:!?)\\]])',                                  // 1: URL
+        '(^|[\\s(])(\\/(?:demo|contact|pricing|products|about|research|careers|fluorocellai|compliancecall)\\b)', // 2: lead char, 3: site path
+        '([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})',                                   // 4: email
+        '(\\+1 \\(\\d{3}\\) \\d{3}-\\d{4})',                                                  // 5: phone
     ].join('|'), 'g');
     var LINK_CLASS = 'text-brandPrimary hover:underline font-semibold';
 
     function formatReply(text) {
         var html = '';
         var last = 0;
-        text.replace(LINK_PATTERN, function (match, url, path, email, phone, offset) {
+        text.replace(LINK_PATTERN, function (match, url, lead, path, email, phone, offset) {
+            // A site path match includes its leading space/bracket; keep that as text.
+            if (path) {
+                offset += lead.length;
+                match = path;
+            }
             html += escapeHtml(text.slice(last, offset));
             last = offset + match.length;
             var label = escapeHtml(match);
@@ -90,7 +96,7 @@
 
         var avatar = document.createElement('div');
         avatar.className = 'w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0 shadow-sm text-[10px] font-bold ' +
-            (isUser ? 'bg-white border border-gray-200/80 text-slate-600' : 'bg-brandPrimary text-white');
+            (isUser ? 'bg-white border border-gray-200/80 text-slate-600' : 'bg-brandPrimary text-white dark:text-slate-950');
         avatar.textContent = isUser ? 'You' : 'AI';
         avatar.setAttribute('aria-hidden', 'true');
 
@@ -234,7 +240,14 @@
             screenEl.scrollTop = screenEl.scrollHeight;
         }).catch(function (err) {
             hideTyping();
-            showError((err && err.message ? err.message : 'Something went wrong.') + ' You can always email us at cell.ai.solutions@gmail.com.');
+            // Drop the unanswered turn so it isn't replayed as context or shown as sent after a reload.
+            var lastMsg = messages[messages.length - 1];
+            if (lastMsg && lastMsg.role === 'user' && lastMsg.content === text) {
+                messages.pop();
+                saveHistory();
+            }
+            showError((err && err.message ? err.message : 'Something went wrong.') +
+                (CONTACT_EMAIL ? ' You can always email us at ' + CONTACT_EMAIL + '.' : ''));
         }).then(function () {
             pending = false;
             sendBtn.disabled = false;

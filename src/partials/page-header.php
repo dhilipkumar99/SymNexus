@@ -17,7 +17,7 @@
         <?= e($title) ?><?php if (!empty($highlight)): ?> <span class="text-brandPrimary"><?= e($highlight) ?></span><?php endif; ?>
     </h1>
     <?php if (!empty($lead)): ?>
-        <p class="font-sans text-lg font-medium text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl transition-colors duration-300"><?= e($lead) ?></p>
+        <p class="font-sans text-lg font-medium text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl transition-colors duration-300"><?= e($lead) ?></p>
     <?php endif; ?>
     <?php if (!empty($sublead)): ?>
         <p class="mt-3 body-copy text-sm max-w-3xl"><?= $sublead /* trusted template HTML */ ?></p>

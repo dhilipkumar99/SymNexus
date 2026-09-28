@@ -9,14 +9,14 @@ require SRC_DIR . '/includes/header.php';
 ?>
 
 <div class="w-full max-w-2xl mx-auto py-16 flex flex-col items-center justify-center text-center">
-    <p class="font-mono text-[11px] uppercase tracking-widest text-teal-600 dark:text-teal-400 mb-6">Error <?= e($status) ?></p>
+    <p class="font-mono text-[11px] uppercase tracking-widest text-teal-700 dark:text-teal-400 mb-6">Error <?= e($status) ?></p>
 
-    <p class="font-sans text-7xl md:text-8xl font-bold text-gray-300 dark:text-gray-600 mb-4" aria-hidden="true"><?= e($status) ?></p>
+    <p class="font-sans text-7xl md:text-8xl font-bold text-gray-500 dark:text-gray-300 mb-4" aria-hidden="true"><?= e($status) ?></p>
 
     <h1 class="font-headline text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
         <?= $isMissing ? 'This page doesn&rsquo;t exist.' : 'Something went wrong.' ?>
     </h1>
-    <p class="font-body text-gray-600 dark:text-gray-400 text-base md:text-lg leading-relaxed max-w-md mb-10">
+    <p class="font-body text-gray-600 dark:text-gray-300 text-base md:text-lg leading-relaxed max-w-md mb-10">
         <?php if ($isMissing): ?>
             The page you&rsquo;re looking for may have moved or never existed. Let&rsquo;s get you back to familiar ground.
         <?php else: ?>

@@ -11,8 +11,8 @@ RewriteRule ^(\.env.*|package(-lock)?\.json|tailwind\.config\.js|vercel\.json|RE
 # Static files live in public/ but are served from the site root (/assets/..., /favicon.svg).
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
-RewriteRule ^(.*)$ public/$1 [L]
+RewriteRule ^(.*)$ public/$1 [END]
 
-# Everything else goes through the front controller.
-RewriteCond %{REQUEST_URI} !^/api/index\.php$
-RewriteRule ^ api/index.php [L,QSA]
+# Everything else goes through the front controller. [END] stops mod_rewrite from
+# re-processing the rewritten URL (plain [L] would loop static files back to PHP).
+RewriteRule ^ api/index.php [END,QSA]

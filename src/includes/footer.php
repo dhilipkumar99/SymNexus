@@ -16,9 +16,9 @@
         <div class="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <?php foreach (LEGAL_LINKS as $link): ?>
                 <a href="<?= e($link['href']) ?>"
-                    class="text-gray-400 dark:text-zinc-500 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200"><?= e($link['label']) ?></a>
+                    class="text-gray-600 dark:text-zinc-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200"><?= e($link['label']) ?></a>
             <?php endforeach; ?>
-            <span class="text-gray-400 dark:text-zinc-500">&copy; <?= date('Y') ?> <?= e(SITE_LEGAL_NAME) ?></span>
+            <span class="text-gray-600 dark:text-zinc-400">&copy; <?= date('Y') ?> <?= e(SITE_LEGAL_NAME) ?></span>
         </div>
 
     </div>

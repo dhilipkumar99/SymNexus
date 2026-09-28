@@ -60,7 +60,11 @@ self.addEventListener('message', (event) => {
     const url = new URL(data.url, self.location.origin);
     if (url.origin !== self.location.origin) return;
     const request = new Request(url.href, { credentials: 'same-origin' });
-    event.waitUntil(fetch(request).then((response) => store(request, response)).catch(() => {}));
+    event.waitUntil(
+        caches.match(request, { ignoreVary: true })
+            .then((cached) => cached || fetch(request).then((response) => store(request, response)))
+            .catch(() => {})
+    );
 });
 
 self.addEventListener('fetch', (event) => {

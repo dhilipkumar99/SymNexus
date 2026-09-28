@@ -15,7 +15,7 @@
             <h2 class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight mb-3"><?= e($title) ?></h2>
             <p class="body-copy text-sm md:text-base"><?= e($body) ?></p>
             <?php if (!empty($note)): ?>
-                <p class="mt-3 body-copy text-xs md:text-sm text-gray-500 dark:text-gray-500"><?= $note ?></p>
+                <p class="mt-3 body-copy text-xs md:text-sm text-gray-600 dark:text-gray-300"><?= $note ?></p>
             <?php endif; ?>
         </div>
         <div class="flex flex-wrap gap-3 flex-shrink-0">

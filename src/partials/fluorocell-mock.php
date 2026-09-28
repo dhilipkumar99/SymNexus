@@ -18,7 +18,7 @@ $audit = [
         <span class="h-2 w-2 rounded-full bg-white/15"></span>
         <span class="h-2 w-2 rounded-full bg-white/15"></span>
         <span class="h-2 w-2 rounded-full bg-white/15"></span>
-        <span class="ml-3 font-mono text-[0.6rem] text-white/30">fluorocellai — segmentation view</span>
+        <span class="ml-3 font-mono text-[0.6rem] text-white/60">fluorocellai — segmentation view</span>
     </div>
     <div class="grid grid-cols-[1fr,150px] sm:grid-cols-[1fr,190px] h-[calc(100%-33px)] min-h-[220px]">
         <div class="relative bg-[radial-gradient(ellipse_at_30%_20%,rgba(0,150,136,0.18),transparent_60%)]">
@@ -36,13 +36,13 @@ $audit = [
             </div>
         </div>
         <div class="border-l border-white/5 bg-slate-900/70 p-4">
-            <p class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/40 mb-3">Audit Trail</p>
+            <p class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-white/60 mb-3">Audit Trail</p>
             <ul class="space-y-2.5">
                 <?php foreach ($audit as [$t, $label, $ok]): ?>
                     <li class="flex items-start gap-2">
                         <span class="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full <?= $ok ? 'bg-teal-400' : 'bg-rose-400' ?>"></span>
                         <div>
-                            <p class="font-mono text-[0.58rem] text-white/30"><?= e($t) ?></p>
+                            <p class="font-mono text-[0.58rem] text-white/60"><?= e($t) ?></p>
                             <p class="text-[0.68rem] text-white/70 leading-tight"><?= e($label) ?></p>
                         </div>
                     </li>

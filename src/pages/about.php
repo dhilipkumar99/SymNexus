@@ -54,14 +54,14 @@ require SRC_DIR . '/includes/header.php';
         </div>
     </div>
 
-    <aside class="md:col-span-1 card-inset h-fit">
+    <div class="md:col-span-1 card-inset h-fit">
         <h3 class="font-headline font-semibold text-xl text-gray-900 dark:text-white mb-4">What makes us different</h3>
         <ul class="space-y-2 font-sans text-sm font-medium text-gray-700 dark:text-gray-300">
             <?php foreach ($differentiators as $d): ?>
                 <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-brandPrimary mr-2 flex-shrink-0" aria-hidden="true"></span><?= e($d['title']) ?></li>
             <?php endforeach; ?>
         </ul>
-    </aside>
+    </div>
 </section>
 
 <!-- Image strip -->
@@ -76,16 +76,16 @@ require SRC_DIR . '/includes/header.php';
 <!-- Differentiators -->
 <section class="py-16" aria-labelledby="different-title">
     <div class="mb-6 md:mb-8 max-w-2xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Why Teams Choose Us</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Why Teams Choose Us</p>
         <h2 id="different-title" class="section-title">What makes our software different.</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <?php foreach ($differentiators as $d): ?>
             <div class="card flex gap-5">
-                <div class="flex-shrink-0 font-mono text-2xl font-medium text-gray-300 dark:text-gray-500 leading-none"><?= e($d['num']) ?></div>
+                <div class="flex-shrink-0 font-mono text-2xl font-medium text-gray-500 dark:text-gray-300 leading-none"><?= e($d['num']) ?></div>
                 <div>
                     <h3 class="font-sans text-base font-bold text-gray-900 dark:text-white"><?= e($d['title']) ?></h3>
-                    <p class="mt-2 font-body text-sm leading-relaxed text-gray-600 dark:text-gray-400"><?= e($d['body']) ?></p>
+                    <p class="mt-2 font-body text-sm leading-relaxed text-gray-600 dark:text-gray-300"><?= e($d['body']) ?></p>
                 </div>
             </div>
         <?php endforeach; ?>
@@ -95,22 +95,22 @@ require SRC_DIR . '/includes/header.php';
 <!-- Team -->
 <section class="py-12" aria-labelledby="team-title">
     <div class="mb-6 md:mb-8">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Team</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Team</p>
         <h2 id="team-title" class="section-title">Leadership</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <article class="card">
             <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Dhilip Raman</h3>
-            <p class="text-xs text-teal-600 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Executive Officer</p>
+            <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Executive Officer</p>
             <p class="mt-4 body-copy text-sm">Ph.D. student, Neuroscience. Leads operations, contracts, and market entry.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-400">Previously: Clinical Research Coordinator (Stanford); Clinical Data Manager; Catalent Pharma Solutions.</p>
+            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Previously: Clinical Research Coordinator (Stanford); Clinical Data Manager; Catalent Pharma Solutions.</p>
         </article>
         <article class="card">
             <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Jacob Matthew Rajesh</h3>
-            <p class="text-xs text-teal-600 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Technical Officer</p>
+            <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Technical Officer</p>
             <p class="mt-4 body-copy text-sm">Leads technical design and engineering teams.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-400">Currently: NXP Semiconductor Engineer.</p>
+            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Currently: NXP Semiconductor Engineer.</p>
         </article>
     </div>
 
@@ -118,7 +118,7 @@ require SRC_DIR . '/includes/header.php';
         <?php foreach ($team as $member): ?>
             <div class="card-ghost p-6">
                 <h4 class="font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($member['name']) ?></h4>
-                <p class="mt-1 font-body text-sm text-gray-600 dark:text-gray-400"><?= e($member['role']) ?></p>
+                <p class="mt-1 font-body text-sm text-gray-600 dark:text-gray-300"><?= e($member['role']) ?></p>
                 <?php if ($member['note'] !== ''): ?>
                     <p class="mt-3"><span class="bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 text-xs px-2.5 py-0.5 rounded font-mono border border-gray-200/40 dark:border-slate-700/40"><?= e($member['note']) ?></span></p>
                 <?php endif; ?>

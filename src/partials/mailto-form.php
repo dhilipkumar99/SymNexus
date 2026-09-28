@@ -63,7 +63,7 @@
             <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
         </button>
 
-        <p class="font-body text-xs text-center text-gray-500 dark:text-gray-400">
+        <p class="font-body text-xs text-center text-gray-500 dark:text-gray-300">
             <?= e($footnote ?? 'Submitting opens your email app with your message ready to send.') ?>
         </p>
     </form>

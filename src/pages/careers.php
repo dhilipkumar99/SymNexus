@@ -30,7 +30,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- How we work -->
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-8" aria-labelledby="how-title">
     <div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">How We Work</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">How We Work</p>
         <h2 id="how-title" class="section-title">Small team. Deep expertise. Domain-native discipline.</h2>
         <p class="section-lead text-base mb-8">
             Symnexus is building software infrastructure for regulated industries that need precision and accountability
@@ -39,10 +39,10 @@ require SRC_DIR . '/includes/header.php';
         <div class="grid grid-cols-1 gap-4">
             <?php foreach ($values as $i => $v): ?>
                 <div class="card p-6 flex gap-4">
-                    <div class="flex-shrink-0 font-mono text-xl font-medium text-gray-300 dark:text-gray-500 leading-none mt-0.5">0<?= $i + 1 ?></div>
+                    <div class="flex-shrink-0 font-mono text-xl font-medium text-gray-500 dark:text-gray-300 leading-none mt-0.5">0<?= $i + 1 ?></div>
                     <div>
                         <h3 class="font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($v['title']) ?></h3>
-                        <p class="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400"><?= e($v['body']) ?></p>
+                        <p class="mt-1 text-sm leading-relaxed text-gray-600 dark:text-gray-300"><?= e($v['body']) ?></p>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -65,7 +65,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- Open roles -->
 <section id="roles" class="py-16" aria-labelledby="roles-title">
     <div class="mb-6 md:mb-8">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Open Roles</p>
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Open Roles</p>
         <h2 id="roles-title" class="section-title">No open roles listed right now.</h2>
     </div>
     <div class="rounded-2xl border border-dashed border-gray-300 dark:border-gray-600 bg-white/60 dark:bg-transparent p-8 sm:p-10 text-center">

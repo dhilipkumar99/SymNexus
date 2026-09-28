@@ -18,7 +18,7 @@ require SRC_DIR . '/includes/header.php';
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 pb-8">
 
     <!-- Sidebar -->
-    <aside class="space-y-8">
+    <div class="space-y-8">
         <div class="card-inset">
             <div class="flex items-center gap-3 mb-6">
                 <div class="text-gray-500 dark:text-teal-400"><?= icon('mail', 'w-5 h-5') ?></div>
@@ -26,11 +26,11 @@ require SRC_DIR . '/includes/header.php';
             </div>
             <div class="space-y-5">
                 <div>
-                    <p class="font-mono text-[10px] uppercase tracking-widest text-gray-400 mb-1">Email</p>
-                    <a href="<?= e(mailto()) ?>" class="text-sm font-semibold text-teal-600 dark:text-teal-400 hover:underline break-all"><?= e(SITE_EMAIL) ?></a>
+                    <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-300 mb-1">Email</p>
+                    <a href="<?= e(mailto()) ?>" class="text-sm font-semibold text-teal-700 dark:text-teal-400 hover:underline break-all"><?= e(SITE_EMAIL) ?></a>
                 </div>
                 <div>
-                    <p class="font-mono text-[10px] uppercase tracking-widest text-gray-400 mb-1">Phone</p>
+                    <p class="font-mono text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-300 mb-1">Phone</p>
                     <a href="tel:<?= e(SITE_PHONE_TEL) ?>" class="text-sm font-semibold text-gray-800 dark:text-gray-200 hover:text-brandPrimary"><?= e(SITE_PHONE) ?></a>
                 </div>
             </div>
@@ -49,7 +49,7 @@ require SRC_DIR . '/includes/header.php';
                 <?php endforeach; ?>
             </ul>
         </div>
-    </aside>
+    </div>
 
     <!-- Form -->
     <div class="lg:col-span-2">
