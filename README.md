@@ -13,7 +13,7 @@ npm run build        # compile Tailwind → public/assets/css/app.css (npm run w
 npm run dev          # php -S localhost:8000 -t public api/index.php  (needs PHP ≥ 8.1)
 ```
 
-No local PHP? `docker run --rm -p 8000:8000 -v "$PWD":/app -w /app php:8.4-cli php -S 0.0.0.0:8000 -t public api/index.php`
+No local PHP? Use `npm run dev:docker` (Docker Desktop must be running), or install PHP with `brew install php`.
 
 ## Layout
 
