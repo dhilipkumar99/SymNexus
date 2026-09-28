@@ -51,8 +51,7 @@ header('Content-Type: text/html; charset=utf-8');
     <meta name="description" content="<?= e($meta_description) ?>">
     <meta name="robots" content="<?= e($meta_robots) ?>">
     <link rel="canonical" href="<?= e($canonical) ?>">
-    <meta name="theme-color" content="#f0f2f5" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#22242a" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#f0f2f5">
 
     <!-- Open Graph -->
     <meta property="og:type" content="<?= e($meta_og_type) ?>">
@@ -76,12 +75,12 @@ header('Content-Type: text/html; charset=utf-8');
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-    <!-- Theme is resolved before first paint to avoid a light/dark flash -->
+    <!-- Light by default; dark only if the visitor chose it with the toggle. Resolved before first paint to avoid a flash. -->
     <script>
         (function () {
             var stored = null;
             try { stored = localStorage.getItem('color-theme'); } catch (e) {}
-            var dark = stored === 'dark' || (stored === null && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            var dark = stored === 'dark';
             document.documentElement.classList.toggle('dark', dark);
         })();
     </script>
