@@ -66,12 +66,12 @@ require SRC_DIR . '/includes/header.php';
 </div>
 
 <!-- CURRENTLY OFFERING -->
-<section class="py-12" aria-labelledby="offering-title">
+<section class="panel mt-6" aria-labelledby="offering-title">
     <div class="mb-6 md:mb-8">
         <h2 id="offering-title" class="section-title">Currently Offering</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:-mx-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <?php foreach (PRODUCTS as $slug => $p): ?>
             <article class="card-ghost flex flex-col h-full group">
                 <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
@@ -111,7 +111,7 @@ require SRC_DIR . '/includes/header.php';
 </section>
 
 <!-- APPROACH -->
-<section class="py-16" aria-labelledby="approach-title">
+<section class="panel mt-10" aria-labelledby="approach-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
         <h2 id="approach-title" class="section-title">Domain-native software systems.</h2>
         <p class="section-lead">
@@ -145,7 +145,7 @@ require SRC_DIR . '/includes/header.php';
 </section>
 
 <!-- RESEARCH + LEADERSHIP -->
-<section class="w-full py-12" aria-labelledby="research-title">
+<section class="panel mt-10" aria-labelledby="research-title">
     <div class="mb-6 md:mb-8">
         <h2 id="research-title" class="section-title">Latest Research</h2>
     </div>

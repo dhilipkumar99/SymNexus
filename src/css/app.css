@@ -45,6 +45,17 @@
         @apply bg-white dark:bg-[#343742]/40 border border-gray-200/80 dark:border-gray-700/40 p-6 rounded-3xl shadow-sm dark:shadow-inner transition-colors duration-300;
     }
 
+    /* Section-level container ("background box") that groups a heading and its cards */
+    .panel {
+        @apply bg-white/80 dark:bg-[#33353d] border border-gray-200/80 dark:border-gray-700/40 rounded-3xl shadow-sm dark:shadow-none p-6 sm:p-10 transition-colors duration-300;
+    }
+
+    /* Cards nested in a panel take a subtly different surface so they stay distinct */
+    .panel .card,
+    .panel .card-inset {
+        @apply bg-[#f7f8fa] dark:bg-[#424552];
+    }
+
     .icon-badge {
         @apply w-12 h-12 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-center bg-gray-50 dark:bg-transparent text-gray-500 dark:text-gray-300 transition-colors duration-300;
     }

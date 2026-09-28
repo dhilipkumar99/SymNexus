@@ -21,7 +21,7 @@ $logoVideo = '/assets/video/symnexus-logo.b28f544554.mp4';
 $industries = 'Life sciences, pharmaceuticals, healthcare, food safety, chemicals, clinical research, biotechnology, '
     . 'regulatory, compliance, legal, finance, telecom, environment, manufacturing, energy, aerospace, logistics and automotive';
 ?>
-<figure class="relative w-full max-w-5xl aspect-[1792/1008] mb-10 overflow-hidden rounded-2xl bg-white shadow-xl border border-gray-200/70 dark:border-white/10"
+<figure class="relative w-full max-w-5xl mx-auto aspect-[1792/1008] mb-10 overflow-hidden rounded-2xl bg-white shadow-xl border border-gray-200/70 dark:border-white/10"
     role="img" aria-label="Symnexus — building AI for <?= e(strtolower($industries)) ?>.">
     <img src="<?= e(asset('images/industries-frame.webp')) ?>"
         srcset="<?= e(asset('images/industries-frame-900.webp')) ?> 900w, <?= e(asset('images/industries-frame.webp')) ?> 1792w"
