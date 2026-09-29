@@ -7,8 +7,8 @@ const SITE_NAME       = 'Symnexus';
 const SITE_LEGAL_NAME = 'Symnexus Ltd.';
 const SITE_URL        = 'https://symnexus.co';
 const SITE_EMAIL      = 'info@symnexus.co';
-const SITE_PHONE      = '+1 (858) 905-4826';
-const SITE_PHONE_TEL  = '+18589054826';
+const SITE_PHONE      = '+1 (408) 508-4718';
+const SITE_PHONE_TEL  = '+14085084718';
 
 const ROOT_DIR   = __DIR__ . '/..';
 const SRC_DIR    = __DIR__;
