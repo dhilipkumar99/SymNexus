@@ -16,7 +16,7 @@
  *     -movflags +faststart symnexus-logo.mp4
  * and rename it with its content hash (the /assets/ path is cached immutably).
  */
-$logoVideo = '/assets/video/symnexus-logo.b28f544554.mp4';
+$logoVideo = '/assets/video/symnexus-logo.4d89a46b6f.mp4';
 
 $industries = 'Life sciences, pharmaceuticals, healthcare, food safety, chemicals, clinical research, biotechnology, '
     . 'regulatory, compliance, legal, finance, telecom, environment, manufacturing, energy, aerospace, logistics and automotive';
