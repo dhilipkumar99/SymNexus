@@ -6,7 +6,7 @@ declare(strict_types=1);
 const SITE_NAME       = 'Symnexus';
 const SITE_LEGAL_NAME = 'Symnexus Ltd.';
 const SITE_URL        = 'https://symnexus.co';
-const SITE_EMAIL      = 'info@symnexus.com';
+const SITE_EMAIL      = 'info@symnexus.co';
 const SITE_PHONE      = '+1 (858) 905-4826';
 const SITE_PHONE_TEL  = '+18589054826';
 
@@ -17,6 +17,7 @@ const PUBLIC_DIR = ROOT_DIR . '/public';
 require_once SRC_DIR . '/data/images.php';
 require_once SRC_DIR . '/data/nav.php';
 require_once SRC_DIR . '/data/products.php';
+require_once SRC_DIR . '/data/forms.php';
 require_once SRC_DIR . '/includes/icons.php';
 
 /**

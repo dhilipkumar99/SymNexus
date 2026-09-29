@@ -53,11 +53,10 @@ require SRC_DIR . '/includes/header.php';
 
     <!-- Form -->
     <div class="lg:col-span-2">
-        <?php partial('mailto-form', [
-            'id'           => 'contact',
+        <?php partial('contact-form', [
+            'form'         => 'contact',
+            'withSubject'  => true,
             'heading'      => null,
-            'subject'      => 'Website enquiry',
-            'subjectField' => 'organization',
             'inputs'       => [
                 ['firstName',    'First Name',    'text',  true,  'given-name'],
                 ['lastName',     'Last Name',     'text',  true,  'family-name'],
@@ -67,18 +66,11 @@ require SRC_DIR . '/includes/header.php';
                 ['role',         'Your Role',     'text',  false, 'organization-title'],
             ],
             'selects'      => [
-                ['name' => 'product', 'label' => 'Product of Interest', 'required' => false, 'options' => [
-                    ''               => 'Select a product',
-                    'fluorocellai'   => 'FluorocellAI',
-                    'compliancecall' => 'ComplianceCall',
-                    'multiple'       => 'Both products',
-                    'custom'         => 'Something else — custom system',
-                ]],
+                ['name' => 'product', 'label' => 'Product of Interest', 'required' => false, 'options' => ['' => 'Select a product'] + CONTACT_PRODUCTS],
             ],
             'textarea'     => ['name' => 'message', 'label' => 'Message', 'rows' => 5, 'placeholder' => 'Describe your organization, current workflow, and what you\'d like to evaluate...'],
             'submitLabel'  => 'Send Enquiry',
-            'footnote'     => null,
-            'successTitle' => 'Almost there.',
+            'footnote'     => 'We reply within one business day.',
         ]); ?>
     </div>
 </div>

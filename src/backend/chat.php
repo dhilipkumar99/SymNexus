@@ -14,6 +14,8 @@ declare(strict_types=1);
  *   AI_MODEL                      default llama-3.3-70b-versatile
  */
 
+require_once __DIR__ . '/http.php';
+
 const CHAT_MAX_MESSAGE_CHARS = 1000;
 const CHAT_MAX_HISTORY       = 10;
 const CHAT_MAX_BODY_BYTES    = 32768;
@@ -21,96 +23,9 @@ const CHAT_RATE_LIMIT        = 20;   // requests…
 const CHAT_RATE_WINDOW       = 300;  // …per 5 minutes per IP (best effort, per instance)
 const CHAT_GLOBAL_LIMIT      = 300;  // total requests per window per instance
 
-function chat_respond(int $status, array $payload): void
-{
-    http_response_code($status);
-    header('Content-Type: application/json; charset=utf-8');
-    header('Cache-Control: no-store');
-    echo json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-}
-
-/**
- * Only accept calls from our own pages. Browsers always send Origin on POST
- * fetches, so a missing Origin means a script, not the widget. (Origin can be
- * forged by non-browser clients — the rate limits below are the backstop, and
- * a Vercel Firewall rate-limit rule on /api/chat is recommended in production.)
- */
-function chat_same_origin(): bool
-{
-    $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-    if ($origin === '') {
-        return false;
-    }
-    $originHost = (string) parse_url($origin, PHP_URL_HOST);
-    $originPort = parse_url($origin, PHP_URL_PORT);
-    $authority  = $originHost . ($originPort !== null ? ':' . $originPort : '');
-    $host       = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'] ?? '';
-    return $host !== '' && strcasecmp($authority, $host) === 0;
-}
-
-/**
- * Client IP. Forwarding headers are only trusted on Vercel, where the edge
- * overwrites them; elsewhere they are client-controlled, so REMOTE_ADDR is used.
- */
-function chat_client_ip(): string
-{
-    if (env('VERCEL') !== null) {
-        $forwarded = $_SERVER['HTTP_X_VERCEL_FORWARDED_FOR'] ?? $_SERVER['HTTP_X_REAL_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
-        $ip = trim(explode(',', $forwarded)[0]);
-        if ($ip !== '') {
-            return $ip;
-        }
-    }
-    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
-}
-
-/**
- * Increment fixed-window counters for the given keys and return their new values.
- * Uses APCu when available, else a single locked JSON file whose expired windows
- * are pruned on every write (so it never grows beyond the active window).
- *
- * @param list<string> $keys
- * @return array<string, int>
- */
-function chat_hit(array $keys): array
-{
-    if (function_exists('apcu_enabled') && apcu_enabled()) {
-        $counts = [];
-        foreach ($keys as $key) {
-            apcu_add('symnexus_' . $key, 0, CHAT_RATE_WINDOW);
-            $counts[$key] = (int) apcu_inc('symnexus_' . $key);
-        }
-        return $counts;
-    }
-
-    $fh = @fopen(sys_get_temp_dir() . '/symnexus_chat_ratelimit.json', 'c+');
-    if ($fh === false) {
-        return array_fill_keys($keys, 0);
-    }
-    flock($fh, LOCK_EX);
-    $now  = time();
-    $data = json_decode((string) stream_get_contents($fh), true);
-    $data = array_filter(is_array($data) ? $data : [], static fn($w) => is_array($w) && ($w['start'] ?? 0) + CHAT_RATE_WINDOW >= $now);
-
-    $counts = [];
-    foreach ($keys as $key) {
-        $data[$key] ??= ['start' => $now, 'count' => 0];
-        $counts[$key] = ++$data[$key]['count'];
-    }
-
-    ftruncate($fh, 0);
-    rewind($fh);
-    fwrite($fh, (string) json_encode($data));
-    flock($fh, LOCK_UN);
-    fclose($fh);
-    return $counts;
-}
-
 function chat_rate_limited(): bool
 {
-    $ipKey  = 'ip_' . md5(chat_client_ip());
-    $counts = chat_hit([$ipKey, 'global']);
-    return $counts[$ipKey] > CHAT_RATE_LIMIT || $counts['global'] > CHAT_GLOBAL_LIMIT;
+    return rate_limited('chat', CHAT_RATE_LIMIT, CHAT_GLOBAL_LIMIT, CHAT_RATE_WINDOW);
 }
 
 /** @return list<array{role: string, content: string}> */
@@ -141,40 +56,40 @@ function handle_chat(): void
 {
     if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
         header('Allow: POST');
-        chat_respond(405, ['error' => 'Method not allowed.']);
+        json_respond(405, ['error' => 'Method not allowed.']);
         return;
     }
 
     $apiKey = env('AI_API_KEY') ?? env('GROQ_API_KEY');
     if ($apiKey === null) {
-        chat_respond(503, ['error' => 'The assistant is not configured.']);
+        json_respond(503, ['error' => 'The assistant is not configured.']);
         return;
     }
 
-    if (!chat_same_origin()) {
-        chat_respond(403, ['error' => 'Forbidden.']);
+    if (!request_is_same_origin()) {
+        json_respond(403, ['error' => 'Forbidden.']);
         return;
     }
 
     if (chat_rate_limited()) {
-        chat_respond(429, ['error' => "You're sending messages quickly — please wait a moment."]);
+        json_respond(429, ['error' => "You're sending messages quickly — please wait a moment."]);
         return;
     }
 
     $raw = file_get_contents('php://input', false, null, 0, CHAT_MAX_BODY_BYTES + 1);
     if ($raw === false || strlen($raw) > CHAT_MAX_BODY_BYTES) {
-        chat_respond(413, ['error' => 'Message too long.']);
+        json_respond(413, ['error' => 'Message too long.']);
         return;
     }
 
     $input   = json_decode($raw, true);
     $message = is_array($input) && is_string($input['message'] ?? null) ? trim($input['message']) : '';
     if ($message === '') {
-        chat_respond(422, ['error' => 'Please type a question.']);
+        json_respond(422, ['error' => 'Please type a question.']);
         return;
     }
     if (mb_strlen($message) > CHAT_MAX_MESSAGE_CHARS) {
-        chat_respond(422, ['error' => 'Please keep questions under ' . CHAT_MAX_MESSAGE_CHARS . ' characters.']);
+        json_respond(422, ['error' => 'Please keep questions under ' . CHAT_MAX_MESSAGE_CHARS . ' characters.']);
         return;
     }
 
@@ -221,9 +136,9 @@ function handle_chat(): void
     if ($status !== 200 || !is_string($reply) || trim($reply) === '') {
         // Log the upstream detail server-side; never echo provider errors to visitors.
         error_log(sprintf('[symnexus chat] upstream failure: HTTP %d %s %s', $status, $curlErr, is_string($response) ? mb_substr($response, 0, 500) : ''));
-        chat_respond(502, ['error' => 'The assistant is unavailable right now.']);
+        json_respond(502, ['error' => 'The assistant is unavailable right now.']);
         return;
     }
 
-    chat_respond(200, ['reply' => trim($reply)]);
+    json_respond(200, ['reply' => trim($reply)]);
 }

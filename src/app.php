@@ -162,6 +162,12 @@ function handle_request(): ?bool
         return null;
     }
 
+    if ($path === '/api/contact') {
+        require_once SRC_DIR . '/backend/contact.php';
+        handle_contact();
+        return null;
+    }
+
     if ($path === '/api/chat') {
         require_once SRC_DIR . '/backend/chat.php';
         handle_chat();

@@ -66,11 +66,10 @@ require SRC_DIR . '/includes/header.php';
 
     <!-- Form -->
     <div class="lg:col-span-3">
-        <?php partial('mailto-form', [
-            'id'           => 'demo',
+        <?php partial('contact-form', [
+            'form'         => 'demo',
+            'withSubject'  => false,
             'heading'      => 'Tell us about your work.',
-            'subject'      => 'Demonstration request',
-            'subjectField' => 'organization',
             'inputs'       => [
                 ['firstName',    'First Name',    'text',  true,  'given-name'],
                 ['lastName',     'Last Name',     'text',  true,  'family-name'],
@@ -80,27 +79,12 @@ require SRC_DIR . '/includes/header.php';
                 ['role',         'Your Role',     'text',  false, 'organization-title'],
             ],
             'selects'      => [
-                ['name' => 'product', 'label' => 'Product of Interest', 'required' => true, 'options' => [
-                    ''               => 'Select a product',
-                    'fluorocellai'   => 'FluorocellAI',
-                    'compliancecall' => 'ComplianceCall',
-                    'both'           => 'Both products',
-                    'custom'         => 'Something else — custom system',
-                ]],
-                ['name' => 'labType', 'label' => 'Organization Type', 'required' => false, 'options' => [
-                    ''           => 'Select type',
-                    'cancer'     => 'Cancer-Research Institute',
-                    'academic'   => 'Academic Cell-Biology Core',
-                    'cro'        => 'Contract Research Organization',
-                    'pharma'     => 'Pharma / Biotech R&D',
-                    'regulatory' => 'Regulatory Affairs Team',
-                    'other'      => 'Other',
-                ]],
+                ['name' => 'product', 'label' => 'Product of Interest', 'required' => true, 'options' => ['' => 'Select a product'] + CONTACT_PRODUCTS],
+                ['name' => 'labType', 'label' => 'Organization Type', 'required' => false, 'options' => ['' => 'Select type'] + CONTACT_ORG_TYPES],
             ],
             'textarea'     => ['name' => 'message', 'label' => 'Describe your workflow', 'rows' => 4, 'placeholder' => 'What are you imaging / what regulatory challenges are you facing? The more specific, the more useful our demonstration will be.'],
             'submitLabel'  => 'Request Demonstration',
             'footnote'     => 'We respond within one business day. No automated sales sequences.',
-            'successTitle' => 'Almost there.',
         ]); ?>
     </div>
 </div>

@@ -1,6 +1,6 @@
 /**
  * Site behaviour: theme toggle, header scroll states, mobile drawer, media
- * carousels, lightbox and email-draft forms.
+ * carousels, lightbox, enquiry forms and hero video.
  *
  * Everything is bound once with event delegation on `document`, so it keeps
  * working after the SPA router swaps page fragments in and out.
@@ -88,43 +88,60 @@
         if (lastFocus && typeof lastFocus.focus === 'function') lastFocus.focus();
     }
 
-    // ── Email-draft forms ───────────────────────────────────────────────────
-    // Forms marked data-mailto-form open the visitor's email client with a
-    // pre-filled message to the company inbox — no backend or third party.
-    function submitMailtoForm(form) {
-        var to = form.getAttribute('data-mailto-form');
-        var subjectPrefix = form.getAttribute('data-subject') || 'Website enquiry';
-        var subjectField = form.getAttribute('data-subject-field');
-        var subjectValue = subjectField && form.elements[subjectField] ? form.elements[subjectField].value.trim() : '';
-        var subject = subjectValue ? subjectPrefix + ' — ' + subjectValue : subjectPrefix;
+    // ── Enquiry forms ───────────────────────────────────────────────────────
+    // Forms marked data-contact-form are posted to /api/contact, which emails
+    // the company inbox. Without JavaScript they still work as a plain form post.
+    function showFormError(form, message) {
+        var box = form.querySelector('[data-form-error]');
+        if (!box) return;
+        box.textContent = message;
+        box.classList.remove('hidden');
+        box.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
 
-        var lines = [];
-        Array.prototype.forEach.call(form.elements, function (field) {
-            if (!field.name || field.type === 'submit' || field.type === 'button') return;
-            var value = field.value.trim();
-            if (!value) return;
-            if (field.tagName === 'SELECT' && field.selectedIndex >= 0) {
-                value = field.options[field.selectedIndex].text;
-            }
-            var label = field.getAttribute('data-label') || field.name;
-            if (field.tagName === 'TEXTAREA') {
-                lines.push('', label + ':', value);
-            } else {
-                lines.push(label + ': ' + value);
-            }
+    function submitContactForm(form) {
+        if (form.dataset.sending === '1') return; // ignore double-submits
+        var button = form.querySelector('button[type="submit"]');
+        var label = form.querySelector('[data-submit-label]');
+        var idleLabel = label ? label.textContent : '';
+        var errorBox = form.querySelector('[data-form-error]');
+        if (errorBox) errorBox.classList.add('hidden');
+
+        var payload = {};
+        new FormData(form).forEach(function (value, key) {
+            payload[key] = typeof value === 'string' ? value : '';
         });
 
-        window.location.href = 'mailto:' + to +
-            '?subject=' + encodeURIComponent(subject) +
-            '&body=' + encodeURIComponent(lines.join('\n'));
+        form.dataset.sending = '1';
+        if (button) button.disabled = true;
+        if (label) label.textContent = 'Sending…';
 
-        var wrapper = form.closest('[data-form-root]');
-        var success = wrapper ? wrapper.querySelector('[data-form-success]') : null;
-        if (success) {
-            form.classList.add('hidden');
-            success.classList.remove('hidden');
-            success.focus();
-        }
+        fetch(form.getAttribute('action') || '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            credentials: 'same-origin',
+            body: JSON.stringify(payload),
+        }).then(function (res) {
+            return res.json().catch(function () { return {}; }).then(function (data) {
+                if (!res.ok || !data.ok) throw new Error(data.error || 'We couldn\u2019t send your message. Please try again.');
+            });
+        }).then(function () {
+            var root = form.closest('[data-form-root]');
+            var success = root ? root.querySelector('[data-form-success]') : null;
+            form.reset();
+            if (success) {
+                form.classList.add('hidden');
+                success.classList.remove('hidden');
+                success.focus();
+                success.scrollIntoView({ block: 'center', behavior: 'smooth' });
+            }
+        }).catch(function (err) {
+            showFormError(form, err && err.message ? err.message : 'We couldn\u2019t send your message. Please try again.');
+        }).then(function () {
+            delete form.dataset.sending;
+            if (button) button.disabled = false;
+            if (label) label.textContent = idleLabel;
+        });
     }
 
     // ── Motion videos (hero logo) ───────────────────────────────────────────
@@ -200,14 +217,6 @@
             return;
         }
 
-        var formReset = target.closest('[data-form-reset]');
-        if (formReset) {
-            var formRoot = formReset.closest('[data-form-root]');
-            if (formRoot) {
-                formRoot.querySelector('[data-form-success]').classList.add('hidden');
-                formRoot.querySelector('form').classList.remove('hidden');
-            }
-        }
     });
 
     document.addEventListener('keydown', function (e) {
@@ -225,9 +234,9 @@
 
     document.addEventListener('submit', function (e) {
         var form = e.target;
-        if (form instanceof HTMLFormElement && form.hasAttribute('data-mailto-form')) {
+        if (form instanceof HTMLFormElement && form.hasAttribute('data-contact-form')) {
             e.preventDefault();
-            submitMailtoForm(form);
+            submitContactForm(form);
         }
     });
 

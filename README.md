@@ -45,9 +45,19 @@ to a normal page load, so the site works fully without JavaScript.
 
 ## Forms
 
-The contact and demo forms open the visitor's email client with a pre-filled message to
-`info@symnexus.com` (set in `src/bootstrap.php`) (no third-party form service, nothing to configure). Without
-JavaScript they fall back to a plain `mailto:` submission.
+The contact and demo forms post to `/api/contact` (`src/backend/contact.php`), which validates the
+submission and emails it to **info@symnexus.co** through [Resend](https://resend.com), with the
+visitor's address as Reply-To. Spam protection: same-origin check, hidden honeypot field and a
+per-IP rate limit (5 per 10 minutes). Without JavaScript the forms still work as a normal post.
+
+| Variable | Required | Default |
+| --- | :---: | --- |
+| `RESEND_API_KEY` | yes | — (added by the Vercel Marketplace Resend integration) |
+| `CONTACT_TO_EMAIL` | no | `info@symnexus.co` (`SITE_EMAIL` in `src/bootstrap.php`) |
+| `CONTACT_FROM_EMAIL` | no | `Symnexus Website <website@symnexus.co>` — its domain must be verified in Resend |
+
+If the key is missing or Resend rejects a message, visitors see an error with the email address
+to write to instead, and the detail is written to the Vercel function logs.
 
 ## AI assistant (optional)
 
