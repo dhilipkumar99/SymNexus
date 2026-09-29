@@ -25,7 +25,7 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('logo-frame'); ?>
 
 <h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight transition-colors duration-300">
-    Domain-native software<br class="hidden sm:block"> systems, built to fit.
+    Domain-native AI software<br class="hidden sm:block"> systems, built to fit.
 </h1>
 
 <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl mb-10 transition-colors duration-300">

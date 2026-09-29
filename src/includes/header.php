@@ -31,7 +31,7 @@ $ld = $pageMeta['jsonld'] ?? [
     'name'        => SITE_NAME,
     'legalName'   => SITE_LEGAL_NAME,
     'url'         => SITE_URL,
-    'logo'        => SITE_URL . '/favicon.svg',
+    'logo'        => SITE_URL . '/android-chrome-512x512.png',
     'email'       => SITE_EMAIL,
     'telephone'   => SITE_PHONE_TEL,
     'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries, deployed for clients operating globally.',
@@ -73,7 +73,11 @@ header('Content-Type: text/html; charset=utf-8');
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json"><?= json_encode($ld, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
 
     <!-- Light by default; dark only if the visitor chose it with the toggle. Resolved before first paint to avoid a flash. -->
     <script>
@@ -108,9 +112,9 @@ header('Content-Type: text/html; charset=utf-8');
 
             <!-- Logo pill: naked at the top, glass once scrolled -->
             <div id="logo-pill" class="flex-shrink-0 flex items-center rounded-full px-5 py-2">
-                <a href="/"
-                    class="font-headline font-bold text-gray-900 dark:text-white text-base sm:text-lg tracking-wide transition-colors">
-                    Symnexus
+                <a href="/" class="block transition-opacity hover:opacity-80">
+                    <img src="<?= e(asset('images/symnexus-wordmark.webp')) ?>" alt="Symnexus — home" width="1067" height="124"
+                        class="block h-4 sm:h-5 w-auto dark:brightness-0 dark:invert">
                 </a>
             </div>
 

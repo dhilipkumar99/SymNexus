@@ -9,9 +9,9 @@
  * - SPA fragment requests, the chat API, video files (range requests) and all
  *   cross-origin requests are never touched.
  */
-const CACHE_NAME = 'symnexus-v1';
+const CACHE_NAME = 'symnexus-v2';
 const OFFLINE_URL = '/offline';
-const PRECACHE = [OFFLINE_URL, '/favicon.svg'];
+const PRECACHE = [OFFLINE_URL, '/favicon-32x32.png'];
 const MAX_PAGES = 40;
 
 self.addEventListener('install', (event) => {
@@ -85,7 +85,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (url.pathname.startsWith('/assets/') || url.pathname === '/favicon.svg') {
+    if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/favicon')) {
         event.respondWith(
             caches.match(request).then((cached) => cached || fetch(request).then((response) => cacheAndReturn(event, request, response)))
         );
