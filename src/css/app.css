@@ -92,7 +92,7 @@
         @apply w-full bg-white/80 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 text-sm rounded-lg px-4 py-2.5 border border-gray-200 dark:border-slate-700/80 focus:outline-none focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-colors shadow-inner;
     }
 
-    /* ── SymNexus(x) product colours (/solutions) ───────────────────────────
+    /* ── SymNexus(x) product colours (/products) ────────────────────────────
        The site theme stays teal; each product element sets --mc-light, --mc-dark and
        --mc-accent inline, and --mc-primary is derived here so dark mode can switch it. */
     .mc-product {

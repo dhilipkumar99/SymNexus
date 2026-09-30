@@ -12,8 +12,6 @@ const ROUTES = [
     '/'                                        => ['page' => 'home',                'priority' => '1.0'],
     '/about'                                   => ['page' => 'about',               'priority' => '0.8'],
     '/products'                                => ['page' => 'products',            'priority' => '0.9'],
-    // Kept out of the sitemap until the product sites are deployed (SYMNEXUS_<WORD>_URL set).
-    '/solutions'                               => ['page' => 'solutions',           'priority' => null],
     '/fluorocellai'                            => ['page' => 'fluorocellai',        'priority' => '0.9'],
     '/compliancecall'                          => ['page' => 'compliancecall',      'priority' => '0.9'],
     '/pricing'                                 => ['page' => 'pricing',             'priority' => '0.7'],
@@ -34,6 +32,8 @@ const REDIRECTS = [
     '/fluorocellai/pricing'   => ['/pricing#fluorocellai', 307],
     '/compliancecall/pricing' => ['/pricing#compliancecall', 307],
     '/index.php'              => ['/', 301],
+    // The catalog moved to /products; the SymNexus(x) product sites still link here.
+    '/solutions'              => ['/products', 301],
 ];
 
 function send_common_headers(): void

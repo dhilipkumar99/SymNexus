@@ -59,9 +59,9 @@ per-IP rate limit (5 per 10 minutes). Without JavaScript the forms still work as
 If the key is missing or Resend rejects a message, visitors see an error with the email address
 to write to instead, and the detail is written to the Vercel function logs.
 
-## Solutions page (SymNexus product sites)
+## Products page (SymNexus product sites)
 
-`/solutions` lists the nine SymNexus(x) products and their tasks. Each task button links to that
+`/products` lists the nine SymNexus(x) products and their tasks. Each task button links to that
 task's page on the product's own site (`<base>/tasks/<slug>`), which opens the project questionnaire.
 The product sites live in the separate ModelsCore repo; they are plain Node apps, not part of this
 deployment.
@@ -71,7 +71,10 @@ deployment.
   if ModelsCore isn't next to this repo), then `npm run build`, and commit both. Never hand-edit them.
 - **Links.** Set `SYMNEXUS_PREDICT_URL` … `SYMNEXUS_VOICE_URL` (see `.env.example`) to the deployed
   product sites. Unset, links fall back to `http://localhost:3101…3109`, which only works for local
-  demos. The page is kept out of `/sitemap.xml` until then (`priority => null` in `src/app.php`).
+  demos. The product sites link back to `/solutions`, which now 301-redirects to `/products`.
+
+FluorocellAI, ComplianceCall and the custom-systems cards (`src/data/products.php`) are shown at the
+top of `/about`.
 
 ## AI assistant (optional)
 

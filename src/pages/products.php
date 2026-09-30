@@ -1,123 +1,143 @@
 <?php
+/**
+ * Products: the nine SymNexus(x) products and their tasks, with the same task buttons as the
+ * product sites. Each task links to its page on the product site (<base>/tasks/<slug>), which
+ * opens the project questionnaire.
+ *
+ * The catalog is GENERATED from ModelsCore. When ModelsCore tasks change, run
+ * `npm run sync:modelscore` (re-exports src/data/modelscore.php and the icons in
+ * public/assets/images/tasks/), then `npm run build`. Don't edit the task list here.
+ * Production links need SYMNEXUS_<WORD>_URL set (see .env.example); unset, they go to localhost.
+ * Never render a product's `repo`: it names model types.
+ *
+ * Every section is rendered server-side, so the page works without JavaScript; site.js only
+ * narrows it to one product and filters tasks ([data-solutions]).
+ */
+require_once SRC_DIR . '/includes/modelscore.php';
+
+$products  = modelscore_products();
+$taskCount = array_sum(array_map(static fn (array $p): int => count($p['tasks']), $products));
+
+$depts = [];
+foreach ($products as $p) {
+    foreach ($p['tasks'] as $t) {
+        $depts[$t['dept']] = ($depts[$t['dept']] ?? 0) + 1;
+    }
+}
+arsort($depts);
+
 $pageTitle = 'Products — Symnexus';
 $pageMeta  = [
-    'description' => 'FluorocellAI: AI-automated cell image analysis. ComplianceCall: live pharmaceutical compliance tracking against federal regulation. Plus custom systems built for other fields, like Yashara\'s retail operations.',
-    'og_image'    => img('fluoroCells', 1200),
-];
-
-$media = [
-    'fluorocellai' => [
-        ['asset' => 'images/fluorocellai-segmentation.webp', 'small' => 'images/fluorocellai-segmentation-800.webp', 'width' => 1494, 'smallWidth' => 800,
-         'alt' => 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary'],
-        ['img' => 'fluoroCells', 'alt' => 'Fluorescence microscopy of cells, the kind FluorocellAI analyzes'],
-        ['img' => 'fluoroHero',  'alt' => 'Fluorescent-stained cells under a microscope'],
-    ],
-    'compliancecall' => [
-        ['asset' => 'images/compliancecall-dashboard.webp', 'small' => 'images/compliancecall-dashboard-900.webp', 'width' => 1952, 'smallWidth' => 900, 'fit' => 'object-contain',
-         'alt' => 'ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels'],
-        ['img' => 'complianceDesk', 'alt' => 'Compliance documents and data reviewed at a desk'],
-    ],
+    'description' => 'Browse the nine SymNexus products and ' . $taskCount . ' ready-made tasks, from customer churn to document extraction, and start a project questionnaire for the one that fits.',
 ];
 
 require SRC_DIR . '/includes/header.php';
 ?>
 
 <?php partial('page-header', [
-    'eyebrow' => 'Products',
-    'title'   => 'AI Agents to',
-    'highlight' => 'Maximize Efficiency',
-    'lead'    => 'SymNexus employs a team of Silicon Valley educated and trained machine learning engineers to develop custom AI solutions for high-throughput industries, using the latest AI/ML models produced in the Bay Area. SymNexus has built two large-scale products for industries in the United States and Canada; it is now building out solutions globally.',
+    'eyebrow'   => 'Products',
+    'title'     => 'Find the right',
+    'highlight' => 'SymNexus product',
+    'lead'      => 'Pick a product, then the task closest to your work and see how it runs on data like yours.',
 ]); ?>
 
-<a href="/solutions"
-    class="group mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-inset hover:border-brandPrimary/60 transition-colors">
-    <span>
-        <span class="pill mb-2">SymNexus product family</span>
-        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">Nine products, ready-made tasks for every department</span>
-        <span class="block body-copy text-sm mt-1">Predict, Forecast, Sentinel, Extract, Gen, Vision, Match, Decide and Voice. Find the task that fits your work and plan a project in minutes.</span>
-    </span>
-    <span class="btn-primary flex-shrink-0">
-        Browse solutions
-        <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
-    </span>
-</a>
+<div id="solutions-browser" data-solutions class="mb-8">
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-    <?php foreach (PRODUCTS as $slug => $p): ?>
-        <article id="<?= e($slug) ?>"
-            class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800 flex flex-col justify-between transition-all duration-200 hover:shadow-lg <?= isset($media[$slug]) ? '' : 'md:col-span-2' ?>">
+    <nav aria-label="SymNexus products" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
+        <a href="#solutions-browser" data-product-pill data-product="all"
+            class="mc-pill mc-focus flex flex-col items-center justify-center text-center rounded-xl border-2 px-3 py-3 min-h-[64px] bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-all duration-200">
+            <span class="font-sans font-semibold text-sm sm:text-base leading-tight">All products</span>
+            <span class="mt-0.5 text-xs opacity-75"><?= e($taskCount) ?> tasks</span>
+        </a>
+        <?php foreach ($products as $p): ?>
+            <a href="#<?= e($p['key']) ?>" data-product-pill data-product="<?= e($p['key']) ?>"
+                style="--mc-light: <?= e(mc_rgb($p['colors']['primary'])) ?>; --mc-dark: <?= e(mc_rgb($p['colors']['primary_dark'])) ?>; --mc-accent: <?= e(mc_rgb($p['colors']['accent'])) ?>;"
+                class="mc-product mc-pill mc-focus flex flex-col items-center justify-center text-center rounded-xl border-2 px-3 py-3 min-h-[64px] bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-all duration-200">
+                <span class="font-sans font-semibold text-sm sm:text-base leading-tight">SymNexus<span class="mc-text-gradient"><?= e($p['word']) ?></span></span>
+                <span class="mt-0.5 text-xs opacity-75"><?= e(count($p['tasks'])) ?> tasks</span>
+            </a>
+        <?php endforeach; ?>
+    </nav>
 
-            <?php if (isset($media[$slug])): ?>
-                <?php partial('carousel', ['label' => $p['name'] . ' media', 'slides' => $media[$slug]]); ?>
-            <?php endif; ?>
+    <!-- Search and department filters: shown only once site.js is running. -->
+    <div data-solutions-controls class="hidden mb-8">
+        <label for="solutions-search" class="sr-only">Search tasks</label>
+        <div class="relative max-w-xl mb-3">
+            <?= icon('magnifying-glass', 'w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none') ?>
+            <input id="solutions-search" type="search" data-solutions-search autocomplete="off" spellcheck="false"
+                placeholder="Search tasks, e.g. churn, invoices, defects"
+                class="form-field pl-10">
+        </div>
+        <div role="group" aria-label="Filter by department" class="flex flex-wrap gap-2">
+            <?php foreach ($depts as $dept => $n): ?>
+                <button type="button" data-dept-chip="<?= e($dept) ?>" aria-pressed="false"
+                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-colors bg-white dark:bg-[#3a3d48] text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-600 hover:border-brandPrimary hover:text-brandPrimary aria-pressed:bg-teal-700 aria-pressed:text-white aria-pressed:border-teal-700 aria-pressed:hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary">
+                    <?= e($dept) ?> <span class="opacity-60 font-medium"><?= e($n) ?></span>
+                </button>
+            <?php endforeach; ?>
+        </div>
+        <p data-solutions-status class="mt-4 text-sm text-gray-500 dark:text-gray-400" aria-live="polite"></p>
+    </div>
 
-            <div class="p-6 sm:p-8 flex-grow flex flex-col justify-between">
-                <div>
-                    <div class="flex justify-between items-center gap-3 mb-3">
-                        <span class="pill"><?= e($p['category']) ?></span>
-                        <?php if ($p['pricing'] !== null): ?>
-                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 dark:text-emerald-400 dark:bg-emerald-950/40 rounded border border-emerald-500/20">Currently offering</span>
-                        <?php else: ?>
-                            <span class="px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-slate-800 rounded border border-gray-300/40 dark:border-slate-700/40">Custom system</span>
-                        <?php endif; ?>
-                    </div>
+    <?php foreach ($products as $p):
+        $base = modelscore_base($p); ?>
+        <section id="<?= e($p['key']) ?>" data-product-section aria-labelledby="<?= e($p['key']) ?>-title"
+            class="mc-product mb-16 last:mb-0"
+            style="--mc-light: <?= e(mc_rgb($p['colors']['primary'])) ?>; --mc-dark: <?= e(mc_rgb($p['colors']['primary_dark'])) ?>; --mc-accent: <?= e(mc_rgb($p['colors']['accent'])) ?>;">
 
-                    <h2 class="text-2xl font-bold text-brandNeutral dark:text-white mb-3 font-headline"><?= e($p['name']) ?></h2>
-                    <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4"><?= e($p['overview']) ?></p>
-
-                    <div class="mb-5 bg-gray-50 dark:bg-slate-800/40 p-3 rounded-lg border-l-4 border-brandPrimary">
-                        <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed"><?= e($p['detail']) ?></p>
-                    </div>
-
-                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 font-sans text-xs font-medium text-gray-700 dark:text-gray-300">
-                        <?php foreach ($p['features'] as $feature): ?>
-                            <li class="flex items-start"><span class="w-1.5 h-1.5 mt-1.5 rounded-full bg-brandPrimary mr-2 flex-shrink-0" aria-hidden="true"></span><?= e($feature) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
-
-                    <?php if ($slug === 'fluorocellai'): ?>
-                        <div class="mt-6 grid grid-cols-2 rounded-lg border border-gray-100 dark:border-slate-800 divide-x divide-gray-100 dark:divide-slate-800 text-xs">
-                            <div class="p-4">
-                                <p class="font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-3">Before</p>
-                                <ul class="space-y-2 text-gray-500 dark:text-gray-300">
-                                    <li>Manual counting: 1–2 days</li>
-                                    <li>Manual QC / re-count: ~1 day</li>
-                                    <li>Reporting: ~1 day</li>
-                                </ul>
-                            </div>
-                            <div class="p-4">
-                                <p class="font-mono text-[10px] uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-3">With FluorocellAI</p>
-                                <ul class="space-y-2 text-gray-700 dark:text-gray-200">
-                                    <li>Automated counting: minutes</li>
-                                    <li>QC / audit trail: automatic</li>
-                                    <li>Reporting: same day</li>
-                                </ul>
-                            </div>
-                        </div>
-                    <?php endif; ?>
+            <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-6">
+                <div class="max-w-3xl">
+                    <h2 id="<?= e($p['key']) ?>-title" class="font-headline font-bold text-3xl text-gray-900 dark:text-white mb-2">SymNexus<span class="mc-text-gradient"><?= e($p['word']) ?></span></h2>
+                    <p class="font-sans text-lg font-medium text-gray-800 dark:text-gray-100 mb-2"><?= e($p['tagline']) ?></p>
+                    <p class="body-copy text-sm"><?= e($p['lead']) ?></p>
+                </div>
+                <div class="flex flex-wrap gap-2 flex-shrink-0">
+                    <a href="<?= e($base . '/consult') ?>" target="_blank" rel="noopener" data-consult
+                        class="mc-gradient mc-focus inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white shadow-md hover:shadow-lg transition-shadow">
+                        Plan a project
+                        <?= icon('arrow-up-right', 'w-4 h-4') ?>
+                    </a>
+                    <a href="<?= e($base . '/') ?>"
+                        class="mc-task mc-focus inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 text-sm font-semibold bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-colors">
+                        Visit <?= e($p['name']) ?>
+                        <?= icon('arrow-right', 'w-4 h-4') ?>
+                    </a>
                 </div>
             </div>
 
-            <div class="px-6 sm:px-8 py-4 bg-gray-50 dark:bg-slate-800/20 border-t border-gray-100 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4">
-                <a href="/demo" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors">
-                    <?= e($p['cta']) ?>
-                </a>
-                <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
-                    class="inline-flex items-center text-sm font-semibold text-brandPrimary hover:underline group">
-                    <?= $p['external'] ? e($p['link']) : 'View ' . e($p['name']) ?>
-                    <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-0.5' . ($p['external'] ? ' group-hover:-translate-y-0.5' : '')) ?>
-                </a>
+            <div class="rounded-2xl bg-gray-100/80 dark:bg-white/5 border border-gray-200 dark:border-gray-700/50 p-3 sm:p-4">
+                <div class="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    <?php foreach ($p['tasks'] as $i => $t): ?>
+                        <a href="<?= e($base . $t['path']) ?>" data-task data-dept="<?= e($t['dept']) ?>"
+                            data-search="<?= e(mb_strtolower($t['title'] . ' ' . $t['dept'] . ' ' . $t['sub'] . ' ' . $p['word'])) ?>"
+                            class="<?= $i === 0 ? 'mc-gradient text-white border-transparent shadow-md' : 'mc-task bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white' ?> mc-focus group flex flex-col items-center justify-center text-center rounded-xl border-2 px-4 py-4 min-h-[88px] transition-all duration-200">
+                            <span class="mb-2 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white shadow-sm ring-1 ring-black/5">
+                                <img src="<?= e(asset('images/tasks/' . $t['icon'])) ?>" alt="" width="40" height="40" class="w-9 h-9 object-contain" loading="lazy" decoding="async">
+                            </span>
+                            <span class="font-sans font-semibold text-base sm:text-lg leading-snug"><?= e($t['title']) ?></span>
+                            <span class="mt-1 text-xs sm:text-sm <?= $i === 0 ? 'text-white/85' : 'text-gray-500 dark:text-gray-400' ?>"><?= e($t['dept']) ?> · <?= e($t['sub']) ?></span>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
             </div>
-        </article>
+        </section>
     <?php endforeach; ?>
+
+    <div data-solutions-empty class="hidden card text-center">
+        <p class="font-sans font-semibold text-gray-900 dark:text-white mb-2" data-solutions-empty-text>No tasks match.</p>
+        <p class="body-copy text-sm mb-5">Try another word, or tell us about your project and we'll point you to the right product.</p>
+        <div class="flex flex-wrap justify-center gap-3">
+            <button type="button" data-solutions-all class="btn-primary hidden">Search all products</button>
+            <button type="button" data-solutions-clear class="btn-secondary">Clear filters</button>
+        </div>
+    </div>
 </div>
 
-
 <?php partial('cta', [
-    'title'     => 'Ready to see these on your own data?',
-    'body'      => 'Our scientific and engineering staff build every demonstration around your specific workflow, skipping the generic product tour.',
+    'title'     => 'Not sure which task fits?',
+    'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right product and walk you through it on your own data.',
     'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
-    'secondary' => ['label' => 'View Pricing', 'href' => '/pricing'],
+    'secondary' => ['label' => 'Contact Us', 'href' => '/contact'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

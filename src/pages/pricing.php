@@ -102,7 +102,7 @@ require SRC_DIR . '/includes/header.php';
             </ul>
             <p class="mt-6 text-sm text-gray-600 dark:text-gray-300">
                 Recent example: AI inventory monitoring and wholesale-account automation for
-                <a href="/products#yashara" class="link-inline">Yashara</a>.
+                <a href="/about#yashara" class="link-inline">Yashara</a>.
             </p>
             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40">
                 <a href="/contact" class="btn-primary">Discuss a custom system</a>

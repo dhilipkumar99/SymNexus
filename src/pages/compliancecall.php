@@ -43,9 +43,9 @@ $roles = [
 require SRC_DIR . '/includes/header.php';
 ?>
 
-<a href="/products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
+<a href="/about#products" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group mb-8">
     <?= icon('arrow-left', 'w-4 h-4 mr-2 transform group-hover:-translate-x-0.5 transition-transform') ?>
-    All products
+    Back to About
 </a>
 
 <?php partial('page-header', [

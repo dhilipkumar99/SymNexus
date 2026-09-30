@@ -179,7 +179,7 @@
         });
     }
 
-    // ── Solutions browser (/solutions) ─────────────────────────────────────
+    // ── Product catalog (/products) ─────────────────────────────────────────
     // The server renders every product section, so the page works without JS. This
     // narrows it to one product (or all) and filters tasks by text and department.
     // The selected product lives in the URL hash (#predict…) so it can be linked to.

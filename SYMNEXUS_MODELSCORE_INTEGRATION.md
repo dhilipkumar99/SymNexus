@@ -146,7 +146,7 @@ When ModelsCore tasks change, re-run the export and re-copy both the PHP file an
    `prod_url`. Each product site is its own Vercel project (`symnexus<word>`), deployed by
    `ModelsCore/site_builder/deploy_sites.sh`. With `SET_MAIN_ENV=1`, that script also sets these nine vars on this
    repo's Vercel project (`symnexus`); a redeploy of this project is then needed. The product sites link back to
-   `https://symnexus.co/solutions`, so keep that route name.
+   `https://symnexus.co/solutions`, which now redirects to `/products` (the catalog's current home), so keep that redirect.
    Before this, the product sites only ran locally. For production they must be deployed. Each is a plain Node 18 app (`node server.js`, port hard-coded in `server.js`), so a small VM, Render or Fly works, and the env vars then point at those hosts. They are not Vercel-PHP apps. Until the vars are set, links go to localhost, which is fine for local demos only. Consider hiding the page from the sitemap (`priority => null`) until the product sites are public.
 4. **Route.** Add to `ROUTES` in `src/app.php`, e.g. `'/solutions' => ['page' => 'solutions', 'priority' => '0.8'],`. Name it as the owner prefers; "Solutions" fits the products page.
 5. **Nav.** Either add `['label' => 'Solutions', 'href' => '/solutions', 'match' => ['/solutions']]` to `NAV_LINKS` and `FOOTER_LINKS`, or add `'/solutions'` to the Products link's `match` list and link to it from `src/pages/products.php`. Keep the nav short on mobile, and check `src/includes/header.php` for how many items fit.
