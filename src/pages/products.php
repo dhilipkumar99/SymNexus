@@ -92,11 +92,6 @@ require SRC_DIR . '/includes/header.php';
                     <p class="body-copy text-sm"><?= e($p['lead']) ?></p>
                 </div>
                 <div class="flex flex-wrap gap-2 flex-shrink-0">
-                    <a href="<?= e($base . '/consult') ?>" target="_blank" rel="noopener" data-consult
-                        class="mc-gradient mc-focus inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold text-white shadow-md hover:shadow-lg transition-shadow">
-                        Plan a project
-                        <?= icon('arrow-up-right', 'w-4 h-4') ?>
-                    </a>
                     <a href="<?= e($base . '/') ?>"
                         class="mc-task mc-focus inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border-2 text-sm font-semibold bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-colors">
                         Visit <?= e($p['name']) ?>
