@@ -223,7 +223,7 @@
         var status = root.querySelector('[data-solutions-status]');
         if (status) {
             status.textContent = !filtering ? '' : shown === 0 ? 'No matching tasks.'
-                : shown + (shown === 1 ? ' task' : ' tasks') + (products > 1 ? ' across ' + products + ' products' : '');
+                : shown + (shown === 1 ? ' task' : ' tasks') + (products > 1 ? ' across ' + products + ' task groups' : '');
         }
 
         var empty = root.querySelector('[data-solutions-empty]');
@@ -234,8 +234,8 @@
             var text = empty.querySelector('[data-solutions-empty-text]');
             if (text) {
                 text.textContent = elsewhere > 0
-                    ? 'No tasks in this product match, but ' + elsewhere
-                        + (elsewhere === 1 ? ' task in another product does.' : ' tasks in other products do.')
+                    ? 'No tasks in this group match, but ' + elsewhere
+                        + (elsewhere === 1 ? ' task in another group does.' : ' tasks in other groups do.')
                     : 'No tasks match.';
             }
         }

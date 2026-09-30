@@ -49,12 +49,12 @@ require SRC_DIR . '/includes/header.php';
 <a href="/products"
     class="group mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-inset hover:border-brandPrimary/60 transition-colors">
     <span>
-        <span class="pill mb-2">SymNexus product family</span>
-        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">Nine products, ready-made tasks for every department</span>
+        <span class="pill mb-2">SymNexus tasks</span>
+        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">108 ready-made tasks for every department</span>
         <span class="block body-copy text-sm mt-1">Predict, Forecast, Sentinel, Extract, Gen, Vision, Match, Decide and Voice. Find the task that fits your work and plan a project in minutes.</span>
     </span>
     <span class="btn-primary flex-shrink-0">
-        Browse products
+        Browse tasks
         <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
     </span>
 </a>
@@ -155,7 +155,7 @@ require SRC_DIR . '/includes/header.php';
             working scientists and compliance professionals who use it.
         </p>
         <div class="flex flex-wrap gap-3 pt-2">
-            <a href="/products" class="btn-primary">Explore our products</a>
+            <a href="/products" class="btn-primary">Explore SymNexus tasks</a>
             <a href="/research" class="btn-secondary">Our research</a>
         </div>
     </div>

@@ -103,7 +103,7 @@ require SRC_DIR . '/includes/header.php';
     </p>
 
     <div class="mt-6">
-        <a href="/products" class="link-arrow group">
+        <a href="/about#products" class="link-arrow group">
             View all products
             <?= icon('chevron-right', 'w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform') ?>
         </a>

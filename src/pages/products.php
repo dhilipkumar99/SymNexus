@@ -26,27 +26,36 @@ foreach ($products as $p) {
 }
 arsort($depts);
 
-$pageTitle = 'Products — Symnexus';
+$pageTitle = 'SymNexus Tasks — Symnexus';
 $pageMeta  = [
-    'description' => 'Browse the nine SymNexus products and ' . $taskCount . ' ready-made tasks, from customer churn to document extraction, and start a project questionnaire for the one that fits.',
+    'description' => 'Browse ' . $taskCount . ' ready-made SymNexus tasks, from customer churn to document extraction, and start a project questionnaire for the one that fits.',
 ];
 
 require SRC_DIR . '/includes/header.php';
 ?>
 
 <?php partial('page-header', [
-    'eyebrow'   => 'Products',
+    'eyebrow'   => 'SymNexus Tasks',
     'title'     => 'Find the right',
-    'highlight' => 'SymNexus product',
-    'lead'      => 'Pick a product, then the task closest to your work and see how it runs on data like yours.',
+    'highlight' => 'SymNexus task',
+    'lead'      => 'Pick the task closest to your work and see how our SymNexus AI models run on data like yours.',
 ]); ?>
+
+<section class="mb-10 max-w-4xl" aria-label="Our offering">
+    <p class="body-copy">
+        Cloud-based AI tools are our domain. We develop and implement natively for our clients text, vision, and video
+        models hand-designed by our Silicon Valley engineering team. To design and configure our models to most closely
+        match your task, take a look at the list of tasks below or search for tasks within different business sectors to
+        identify where SymNexus can assist you most.
+    </p>
+</section>
 
 <div id="solutions-browser" data-solutions class="mb-8">
 
-    <nav aria-label="SymNexus products" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
+    <nav aria-label="SymNexus tasks" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
         <a href="#solutions-browser" data-product-pill data-product="all"
             class="mc-pill mc-focus flex flex-col items-center justify-center text-center rounded-xl border-2 px-3 py-3 min-h-[64px] bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-all duration-200">
-            <span class="font-sans font-semibold text-sm sm:text-base leading-tight">All products</span>
+            <span class="font-sans font-semibold text-sm sm:text-base leading-tight">All tasks</span>
             <span class="mt-0.5 text-xs opacity-75"><?= e($taskCount) ?> tasks</span>
         </a>
         <?php foreach ($products as $p): ?>
@@ -120,9 +129,9 @@ require SRC_DIR . '/includes/header.php';
 
     <div data-solutions-empty class="hidden card text-center">
         <p class="font-sans font-semibold text-gray-900 dark:text-white mb-2" data-solutions-empty-text>No tasks match.</p>
-        <p class="body-copy text-sm mb-5">Try another word, or tell us about your project and we'll point you to the right product.</p>
+        <p class="body-copy text-sm mb-5">Try another word, or tell us about your project and we'll point you to the right task.</p>
         <div class="flex flex-wrap justify-center gap-3">
-            <button type="button" data-solutions-all class="btn-primary hidden">Search all products</button>
+            <button type="button" data-solutions-all class="btn-primary hidden">Search all tasks</button>
             <button type="button" data-solutions-clear class="btn-secondary">Clear filters</button>
         </div>
     </div>
@@ -130,7 +139,7 @@ require SRC_DIR . '/includes/header.php';
 
 <?php partial('cta', [
     'title'     => 'Not sure which task fits?',
-    'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right product and walk you through it on your own data.',
+    'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right task and walk you through it on your own data.',
     'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
     'secondary' => ['label' => 'Contact Us', 'href' => '/contact'],
 ]); ?>
