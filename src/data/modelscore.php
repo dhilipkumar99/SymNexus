@@ -17,6 +17,7 @@ return [
         "env_var" => 'SYMNEXUS_PREDICT_URL',
         "dev_url" => 'http://localhost:3101',
         "port" => 3101,
+        "prod_url" => 'https://predict.symnexus.co',
         "repo" => 'GradientBoostedDecisionTrees_TabularPrediction',
         "colors" => [
             "primary" => '#4f46e5',
@@ -269,6 +270,7 @@ return [
         "env_var" => 'SYMNEXUS_FORECAST_URL',
         "dev_url" => 'http://localhost:3102',
         "port" => 3102,
+        "prod_url" => 'https://forecast.symnexus.co',
         "repo" => 'TemporalFusionTransformer_TimeSeriesForecasting',
         "colors" => [
             "primary" => '#b45309',
@@ -359,6 +361,7 @@ return [
         "env_var" => 'SYMNEXUS_SENTINEL_URL',
         "dev_url" => 'http://localhost:3103',
         "port" => 3103,
+        "prod_url" => 'https://sentinel.symnexus.co',
         "repo" => 'VariationalAutoencoder_AnomalyDetectionSegmentationAndSyntheticData',
         "colors" => [
             "primary" => '#be123c',
@@ -476,6 +479,7 @@ return [
         "env_var" => 'SYMNEXUS_EXTRACT_URL',
         "dev_url" => 'http://localhost:3104',
         "port" => 3104,
+        "prod_url" => 'https://extract.symnexus.co',
         "repo" => 'TransformerEncoder_TextClassificationAndExtraction',
         "colors" => [
             "primary" => '#047857',
@@ -611,6 +615,7 @@ return [
         "env_var" => 'SYMNEXUS_GEN_URL',
         "dev_url" => 'http://localhost:3105',
         "port" => 3105,
+        "prod_url" => 'https://gen.symnexus.co',
         "repo" => 'LargeLanguageModel_TextGenerationAndChatbots',
         "colors" => [
             "primary" => '#7c3aed',
@@ -755,6 +760,7 @@ return [
         "env_var" => 'SYMNEXUS_VISION_URL',
         "dev_url" => 'http://localhost:3106',
         "port" => 3106,
+        "prod_url" => 'https://vision.symnexus.co',
         "repo" => 'ConvolutionalNeuralNetwork_ImageLabelingAndMonitoring',
         "colors" => [
             "primary" => '#0e7490',
@@ -863,6 +869,7 @@ return [
         "env_var" => 'SYMNEXUS_MATCH_URL',
         "dev_url" => 'http://localhost:3107',
         "port" => 3107,
+        "prod_url" => 'https://match.symnexus.co',
         "repo" => 'TwoTowerNeuralNetwork_RecommendationAndMatching',
         "colors" => [
             "primary" => '#a21caf',
@@ -953,6 +960,7 @@ return [
         "env_var" => 'SYMNEXUS_DECIDE_URL',
         "dev_url" => 'http://localhost:3108',
         "port" => 3108,
+        "prod_url" => 'https://decide.symnexus.co',
         "repo" => 'ProximalPolicyOptimization_DecisionOptimization',
         "colors" => [
             "primary" => '#c2410c',
@@ -1106,6 +1114,7 @@ return [
         "env_var" => 'SYMNEXUS_VOICE_URL',
         "dev_url" => 'http://localhost:3109',
         "port" => 3109,
+        "prod_url" => 'https://voice.symnexus.co',
         "repo" => 'SpeechTransformer_AudioClassificationAndVoiceAuthentication',
         "colors" => [
             "primary" => '#1d4ed8',
