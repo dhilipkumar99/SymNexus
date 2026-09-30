@@ -7,7 +7,8 @@
 		"build": "tailwindcss -i ./src/css/app.css -o ./public/assets/css/app.css --minify",
 		"watch": "tailwindcss -i ./src/css/app.css -o ./public/assets/css/app.css --watch",
 		"dev": "php -S localhost:8000 -t public api/index.php",
-		"dev:docker": "docker run --rm -it -p 8000:8000 -v \"$PWD\":/app -w /app php:8.4-cli php -S 0.0.0.0:8000 -t public api/index.php"
+		"dev:docker": "docker run --rm -it -p 8000:8000 -v \"$PWD\":/app -w /app php:8.4-cli php -S 0.0.0.0:8000 -t public api/index.php",
+		"sync:modelscore": "./scripts/sync-modelscore.sh"
 	},
 	"devDependencies": {
 		"tailwindcss": "^3.4.19"

@@ -29,6 +29,19 @@ require SRC_DIR . '/includes/header.php';
     'lead'    => 'SymNexus employs a team of Silicon Valley educated and trained machine learning engineers to develop custom AI solutions for high-throughput industries, using the latest AI/ML models produced in the Bay Area. SymNexus has built two large-scale products for industries in the United States and Canada; it is now building out solutions globally.',
 ]); ?>
 
+<a href="/solutions"
+    class="group mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-inset hover:border-brandPrimary/60 transition-colors">
+    <span>
+        <span class="pill mb-2">SymNexus product family</span>
+        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">Nine products, ready-made tasks for every department</span>
+        <span class="block body-copy text-sm mt-1">Predict, Forecast, Sentinel, Extract, Gen, Vision, Match, Decide and Voice. Find the task that fits your work and plan a project in minutes.</span>
+    </span>
+    <span class="btn-primary flex-shrink-0">
+        Browse solutions
+        <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
+    </span>
+</a>
+
 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     <?php foreach (PRODUCTS as $slug => $p): ?>
         <article id="<?= e($slug) ?>"

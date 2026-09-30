@@ -91,6 +91,70 @@
     .form-field {
         @apply w-full bg-white/80 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 text-sm rounded-lg px-4 py-2.5 border border-gray-200 dark:border-slate-700/80 focus:outline-none focus:border-brandPrimary focus:ring-1 focus:ring-brandPrimary transition-colors shadow-inner;
     }
+
+    /* ── SymNexus(x) product colours (/solutions) ───────────────────────────
+       The site theme stays teal; each product element sets --mc-light, --mc-dark and
+       --mc-accent inline, and --mc-primary is derived here so dark mode can switch it. */
+    .mc-product {
+        --mc-primary: var(--mc-light, 79 70 229);
+    }
+
+    .dark .mc-product {
+        --mc-primary: var(--mc-dark, 129 140 248);
+    }
+
+    .mc-gradient {
+        background-image: linear-gradient(135deg, rgb(var(--mc-primary)) 0%, rgb(var(--mc-accent)) 100%);
+    }
+
+    .mc-text-gradient {
+        background-image: linear-gradient(135deg, rgb(var(--mc-primary)) 0%, rgb(var(--mc-accent)) 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Outlined task / product buttons; hover takes the product colour. */
+    .mc-task,
+    .mc-pill {
+        border-color: rgb(209 213 219);
+    }
+
+    .dark .mc-task,
+    .dark .mc-pill {
+        border-color: rgb(75 85 99);
+    }
+
+    .mc-task:hover,
+    .mc-pill:hover,
+    .dark .mc-task:hover,
+    .dark .mc-pill:hover {
+        border-color: rgb(var(--mc-primary, var(--brand-primary)));
+        color: rgb(var(--mc-primary, var(--brand-primary)));
+    }
+
+    /* Selected product pill: filled with the product gradient ("All" uses the site teal). */
+    .mc-pill[aria-current="true"],
+    .dark .mc-pill[aria-current="true"] {
+        border-color: transparent;
+        color: #fff;
+        background-image: linear-gradient(135deg, rgb(var(--mc-primary, var(--brand-primary))) 0%, rgb(var(--mc-accent, var(--brand-primary))) 100%);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    }
+
+    .mc-pill[aria-current="true"] .mc-text-gradient {
+        background-image: none;
+        color: inherit;
+    }
+
+    .mc-focus:focus {
+        outline: none;
+    }
+
+    .mc-focus:focus-visible {
+        outline: 2px solid rgb(var(--mc-primary, var(--brand-primary)));
+        outline-offset: 2px;
+    }
 }
 
 @layer utilities {

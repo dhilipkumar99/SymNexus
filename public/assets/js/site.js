@@ -179,10 +179,150 @@
         });
     }
 
+    // ── Solutions browser (/solutions) ─────────────────────────────────────
+    // The server renders every product section, so the page works without JS. This
+    // narrows it to one product (or all) and filters tasks by text and department.
+    // The selected product lives in the URL hash (#predict…) so it can be linked to.
+    function productFromHash(root) {
+        var key = window.location.hash.slice(1);
+        return key && root.querySelector('[data-product-pill][data-product="' + CSS.escape(key) + '"]') ? key : null;
+    }
+
+    function applySolutions(root) {
+        var scope = root.getAttribute('data-scope') || 'all';
+        var dept = root.getAttribute('data-dept') || '';
+        var input = root.querySelector('[data-solutions-search]');
+        var terms = input ? input.value.toLowerCase().split(/\s+/).filter(Boolean) : [];
+        var filtering = terms.length > 0 || dept !== '';
+        var shown = 0, products = 0, elsewhere = 0;
+
+        root.querySelectorAll('[data-product-section]').forEach(function (section) {
+            var inScope = scope === 'all' || section.id === scope;
+            var count = 0;
+            section.querySelectorAll('[data-task]').forEach(function (task) {
+                var text = task.getAttribute('data-search') || '';
+                var match = (!dept || task.getAttribute('data-dept') === dept)
+                    && terms.every(function (t) { return text.indexOf(t) !== -1; });
+                if (match && !inScope) elsewhere++;
+                match = match && inScope;
+                task.classList.toggle('hidden', !match);
+                if (match) count++;
+            });
+            section.classList.toggle('hidden', count === 0);
+            shown += count;
+            if (count) products++;
+        });
+
+        root.querySelectorAll('[data-product-pill]').forEach(function (pill) {
+            pill.setAttribute('aria-current', pill.getAttribute('data-product') === scope ? 'true' : 'false');
+        });
+        root.querySelectorAll('[data-dept-chip]').forEach(function (chip) {
+            chip.setAttribute('aria-pressed', chip.getAttribute('data-dept-chip') === dept ? 'true' : 'false');
+        });
+
+        var status = root.querySelector('[data-solutions-status]');
+        if (status) {
+            status.textContent = !filtering ? '' : shown === 0 ? 'No matching tasks.'
+                : shown + (shown === 1 ? ' task' : ' tasks') + (products > 1 ? ' across ' + products + ' products' : '');
+        }
+
+        var empty = root.querySelector('[data-solutions-empty]');
+        if (empty) {
+            empty.classList.toggle('hidden', shown > 0);
+            var allBtn = empty.querySelector('[data-solutions-all]');
+            if (allBtn) allBtn.classList.toggle('hidden', elsewhere === 0);
+            var text = empty.querySelector('[data-solutions-empty-text]');
+            if (text) {
+                text.textContent = elsewhere > 0
+                    ? 'No tasks in this product match, but ' + elsewhere
+                        + (elsewhere === 1 ? ' task in another product does.' : ' tasks in other products do.')
+                    : 'No tasks match.';
+            }
+        }
+    }
+
+    function setSolutionsScope(root, scope) {
+        root.setAttribute('data-scope', scope);
+        // replaceState: switching products shouldn't fill the Back history.
+        var url = window.location.pathname + window.location.search + (scope === 'all' ? '' : '#' + scope);
+        history.replaceState(history.state, '', url);
+        applySolutions(root);
+    }
+
+    // Called on load and after every SPA swap (the fragment is new each time).
+    function initSolutions() {
+        var root = document.querySelector('[data-solutions]');
+        if (!root) return;
+        var controls = root.querySelector('[data-solutions-controls]');
+        if (controls) controls.classList.remove('hidden');
+
+        var fromHash = productFromHash(root);
+        var first = root.querySelector('[data-product-section]');
+        root.setAttribute('data-scope', fromHash || (first ? first.id : 'all'));
+        applySolutions(root);
+
+        // The browser (or SPA router) may already have scrolled to #product while every
+        // section was visible; re-align now that the others are hidden.
+        if (fromHash) {
+            var section = document.getElementById(fromHash);
+            if (section) section.scrollIntoView();
+        }
+    }
+
+    // ── Questionnaire popup ──────────────────────────────────────────────────
+    // Links marked data-consult (a product site's /consult page) open in a
+    // phone-sized window, falling back to a new tab if popups are blocked.
+    function openConsult(link) {
+        var w = 460;
+        var h = Math.min(900, (window.screen && window.screen.availHeight) || 900);
+        var left = Math.max(0, (window.screenX || 0) + ((window.outerWidth || w) - w) / 2);
+        var top = Math.max(0, (window.screenY || 0) + 40);
+        var win = window.open(link.href, 'symnexus-consult',
+            'popup=yes,width=' + w + ',height=' + h + ',left=' + left + ',top=' + top);
+        if (win) win.focus();
+        else window.open(link.href, '_blank', 'noopener');
+    }
+
     // ── Delegated listeners ─────────────────────────────────────────────────
     document.addEventListener('click', function (e) {
         var target = e.target;
         if (!(target instanceof Element)) return;
+
+        var consult = target.closest('a[data-consult]');
+        if (consult && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            e.preventDefault();
+            openConsult(consult);
+            return;
+        }
+
+        var solutions = target.closest('[data-solutions]');
+        if (solutions) {
+            var pill = target.closest('[data-product-pill]');
+            if (pill) {
+                e.preventDefault(); // also stops the SPA router's same-page anchor scroll
+                setSolutionsScope(solutions, pill.getAttribute('data-product'));
+                return;
+            }
+            var chip = target.closest('[data-dept-chip]');
+            if (chip) {
+                var dept = chip.getAttribute('data-dept-chip');
+                solutions.setAttribute('data-dept', solutions.getAttribute('data-dept') === dept ? '' : dept);
+                applySolutions(solutions);
+                return;
+            }
+            if (target.closest('[data-solutions-all]')) {
+                setSolutionsScope(solutions, 'all');
+                return;
+            }
+            if (target.closest('[data-solutions-clear]')) {
+                var search = solutions.querySelector('[data-solutions-search]');
+                if (search) search.value = '';
+                solutions.setAttribute('data-dept', '');
+                applySolutions(solutions);
+                if (search) search.focus();
+                return;
+            }
+        }
 
         if (target.closest('#theme-toggle')) {
             setTheme(!document.documentElement.classList.contains('dark'));
@@ -240,10 +380,29 @@
         }
     });
 
+    document.addEventListener('input', function (e) {
+        var target = e.target;
+        if (target instanceof Element && target.matches('[data-solutions-search]')) {
+            var root = target.closest('[data-solutions]');
+            if (root) applySolutions(root);
+        }
+    });
+
+    // A hand-edited #product in the address bar selects that product.
+    window.addEventListener('hashchange', function () {
+        var root = document.querySelector('[data-solutions]');
+        var key = root ? productFromHash(root) : null;
+        if (key) {
+            root.setAttribute('data-scope', key);
+            applySolutions(root);
+        }
+    });
+
     document.addEventListener('spa:pageLoaded', function () {
         setMenuOpen(false);
         closeLightbox();
         initMotionVideos();
+        initSolutions();
     });
 
     // ── Header: hide on scroll down, frosted logo pill once scrolled ────────
@@ -284,4 +443,5 @@
 
     onScroll();
     initMotionVideos();
+    initSolutions();
 })();
