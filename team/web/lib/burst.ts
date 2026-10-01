@@ -5,7 +5,7 @@
 // only through the service binding this app holds (BURST_INTERNAL_URL), so this
 // app is the only thing that can set those headers.
 
-import type { Session } from './auth';
+import type { Session } from './auth.ts';
 
 export function burstUrl(path: string, search = ''): URL {
   const base = process.env.BURST_INTERNAL_URL;
@@ -18,9 +18,12 @@ export function burstUrl(path: string, search = ''): URL {
 export function identityHeaders(session: Session): Record<string, string> {
   const local = session.email.split('@')[0].replace(/[^a-z0-9._-]/g, '').slice(0, 32) || 'user';
   return {
-    // The email is the stable identity: Burst keys its user record on it.
-    'x-auth-consumer': `sx:${session.email}`,
-    'x-auth-consumer-groups': session.role,
+    // The permanent account id: Burst keys its user record on it, so a changed
+    // email or name never splits someone's history.
+    'x-auth-consumer': `sx:${session.id}`,
+    // The master admin and admins get Burst's admin panel (channels, exports,
+    // audit log, emoji, webhooks, bots).
+    'x-auth-consumer-groups': session.role === 'member' ? 'member' : 'admin',
     'x-auth-claims': JSON.stringify({ name: session.name, email: session.email, preferred_username: local }),
   };
 }
@@ -68,5 +71,36 @@ export function isSameOrigin(request: Request): boolean {
     return new URL(origin).host === host;
   } catch {
     return false;
+  }
+}
+
+// Mirrors a deactivation into Burst, so the person shows as deactivated in the
+// workspace. Acts with the identity of the admin making the change. Best effort:
+// sign-in is already blocked by the account change itself.
+export async function setBurstUserDeactivated(actor: Session, email: string, deactivated: boolean): Promise<void> {
+  try {
+    const headers = { ...identityHeaders(actor), 'content-type': 'application/json' };
+    let cursor: string | undefined;
+    for (let page = 0; page < 50; page++) {
+      const url = burstUrl('/api/admin/users', `?limit=100${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`);
+      const res = await fetch(url, { headers, signal: AbortSignal.timeout(10_000) });
+      if (!res.ok) throw new Error(`list users: ${res.status}`);
+      const body = (await res.json()) as { items: { id: string; email?: string | null }[]; cursor?: string };
+      const user = body.items.find((u) => u.email?.toLowerCase() === email);
+      if (user) {
+        const patch = await fetch(burstUrl(`/api/admin/users/${encodeURIComponent(user.id)}`), {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify({ deactivated }),
+          signal: AbortSignal.timeout(10_000),
+        });
+        if (!patch.ok) throw new Error(`update user: ${patch.status}`);
+        return;
+      }
+      if (!body.cursor) return; // never signed in, so Burst has no user for them
+      cursor = body.cursor;
+    }
+  } catch (err) {
+    console.error(`[team] could not ${deactivated ? 'deactivate' : 'reactivate'} ${email} in Burst:`, err);
   }
 }

@@ -41,7 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # SymNexus Team
-.team-accounts.json
+.env*.local
 .spa-build/
 /public/assets/
 /public/app.html

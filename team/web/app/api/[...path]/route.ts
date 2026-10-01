@@ -25,7 +25,7 @@ async function handle(request: Request): Promise<Response> {
 
   let session = null;
   if (!isWebhook) {
-    session = readSession((await cookies()).get(SESSION_COOKIE)?.value);
+    session = await readSession((await cookies()).get(SESSION_COOKIE)?.value);
     if (!session) return problem(401, 'Unauthorized', 'Sign in again to continue.');
     if (!['GET', 'HEAD'].includes(request.method) && !isSameOrigin(request)) return problem(403, 'Forbidden');
   }

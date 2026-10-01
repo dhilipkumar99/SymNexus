@@ -16,7 +16,8 @@ const pub = join(web, 'public');
 
 const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 if (!existsSync(join(ui, 'node_modules'))) {
-  execFileSync(npm, ['ci', '--no-audit', '--no-fund'], { cwd: ui, stdio: 'inherit' });
+  // --include=dev: Vercel builds with NODE_ENV=production, which would skip Vite.
+  execFileSync(npm, ['ci', '--include=dev', '--no-audit', '--no-fund'], { cwd: ui, stdio: 'inherit' });
 }
 rmSync(out, { recursive: true, force: true });
 execFileSync(npm, ['exec', '--', 'vite', 'build', '--outDir', out, '--emptyOutDir'], { cwd: ui, stdio: 'inherit' });

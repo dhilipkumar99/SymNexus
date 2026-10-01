@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Hash, LogOut, MessageSquare, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield } from "lucide-react";
+import { Hash, LogOut, MessageSquare, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield, Users, KeyRound } from "lucide-react";
 import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useWsEvent } from "../../lib/ws/hooks";
 import { useAuth } from "../../lib/auth/use-auth";
@@ -214,6 +214,23 @@ export function Sidebar() {
                 <Shield className="h-4 w-4" />
               </button>
             )}
+            {/* SymNexus Team: account pages served by the sign-in app (team/web). */}
+            {user.role === "admin" && (
+              <a
+                href="/accounts"
+                className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                title="Manage accounts"
+              >
+                <Users className="h-4 w-4" />
+              </a>
+            )}
+            <a
+              href="/account"
+              className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              title="My account and password"
+            >
+              <KeyRound className="h-4 w-4" />
+            </a>
             <button
               onClick={() => navigate("/settings")}
               className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"

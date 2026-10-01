@@ -14,13 +14,15 @@ export const maxDuration = 300;
 export const dynamic = 'force-dynamic';
 
 export async function GET(request: Request) {
-  if (request.headers.get('upgrade')?.toLowerCase() !== 'websocket') {
+  // Vercel does not pass the hop-by-hop Upgrade header to the function; every
+  // WebSocket handshake carries Sec-WebSocket-Key.
+  if (!request.headers.get('sec-websocket-key')) {
     return new Response('Expected a WebSocket upgrade', { status: 426 });
   }
   // Cross-site WebSocket hijacking guard: browsers always send Origin here.
   if (!isSameOrigin(request)) return new Response('Forbidden', { status: 403 });
 
-  const session = readSession((await cookies()).get(SESSION_COOKIE)?.value);
+  const session = await readSession((await cookies()).get(SESSION_COOKIE)?.value);
   if (!session) return new Response('Unauthorized', { status: 401 });
 
   const target = burstUrl('/ws');

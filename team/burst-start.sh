@@ -2,8 +2,10 @@
 # Starts Burst with settings derived from the environment it runs in.
 #
 # On Vercel (team/vercel.json) Burst is a private container service: it has no
-# public route, the web service is the only caller (through its binding), and
-# files go to Vercel Blob through the web service's /storage endpoint.
+# public route and the web service is the only caller (through its binding).
+# Files go to Vercel Blob through the web service's key-protected /storage
+# endpoint, at BURST_STORAGE_GATEWAY_URL (the site's public address: Vercel does
+# not allow the two services to bind to each other).
 set -eu
 
 # Database: the Neon integration provides DATABASE_URL; LISTEN/NOTIFY (used to

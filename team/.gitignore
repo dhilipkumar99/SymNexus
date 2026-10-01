@@ -3,3 +3,5 @@ target/
 dist/
 .env
 .env.*
+.vercel
+.env*
