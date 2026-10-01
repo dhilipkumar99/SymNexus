@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type ReactNode } from "react";
-import { apiFetch, setAccessToken, getAccessToken } from "../api/client";
+import { apiFetch, setAccessToken } from "../api/client";
 import type { TokenResponse, User } from "../api/types";
 import { queryClient } from "../query-client";
 import { wsClient } from "../ws/client";
@@ -11,21 +11,18 @@ export { AuthContext } from "./auth-context";
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(() => Boolean(getAccessToken()));
+  // SymNexus Team: the session is an httpOnly cookie set by the sign-in page
+  // (team/web), so there is always a session to try to restore.
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchMe = useCallback(async () => {
     const me = await apiFetch<User>("/users/me");
     setUser(me);
   }, []);
 
-  // On mount: if a token exists in sessionStorage (set by setAccessToken),
-  // try to restore the session by fetching the current user.
-  const hasToken = Boolean(getAccessToken());
+  // On mount: restore the session from the cookie by fetching the current user.
+  // A 401 leaves user null, and the router sends the visitor to sign in.
   useEffect(() => {
-    if (!hasToken) {
-      return;
-    }
-
     let stopHeartbeat: (() => void) | null = null;
     let cancelled = false;
 
@@ -51,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       stopHeartbeat?.();
     };
-  }, [fetchMe, hasToken]);
+  }, [fetchMe]);
 
   // Keeps the signed-in user's own status current when it is changed elsewhere.
   useEffect(
@@ -113,20 +110,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const logout = useCallback(() => {
-    // Revoke the session on the sign-in gateway, not just in this tab.
-    const token = getAccessToken();
-    if (token) {
-      void fetch("/oauth/burst/logout", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        keepalive: true,
-      }).catch(() => {});
-    }
     wsClient.disconnect();
     wsClient.reset();
     queryClient.clear();
     setAccessToken(null);
     setUser(null);
+    // Clear the session cookie on the server, then show the sign-in page.
+    void fetch("/auth/logout", { method: "POST", keepalive: true })
+      .catch(() => {})
+      .finally(() => window.location.assign("/login"));
   }, []);
 
   return (

@@ -1,5 +1,9 @@
 **/node_modules
 **/target
 **/dist
-**/.env
-gateway/test
+**/.next
+**/.env*
+web
+burst/ui
+burst/docs
+burst/deploy
