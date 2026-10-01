@@ -1,0 +1,549 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  # Every pull request, whatever it targets. Filtering on `branches: [main]`
+  # gives a pull request based on any other branch no checks at all, and its
+  # page shows the ones that did run rather than an empty list, so it reads as
+  # passing. Retargeting such a pull request to `main` does not start them
+  # either: that sends `edited`, which is not in the default activity types.
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  BARBACANE_VERSION: "0.12.2"
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      smoke: ${{ steps.filter.outputs.smoke }}
+      chart: ${{ steps.filter.outputs.chart }}
+      ui: ${{ steps.filter.outputs.ui }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dorny/paths-filter@v4
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'crates/**'
+              - 'migrations/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - '.github/workflows/ci.yaml'
+            smoke:
+              - 'crates/**'
+              - 'migrations/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+              - 'specs/**'
+              - 'barbacane.yaml'
+              - 'burst.toml'
+              - 'tests/http/**'
+              - 'docker/**'
+              - 'Dockerfile'
+              - '.github/workflows/ci.yaml'
+            chart:
+              - 'deploy/helm/**'
+              - 'docker/Dockerfile.gateway'
+              - 'specs/**'
+              - 'barbacane.yaml'
+              - 'barbacane-s3.yaml'
+              - '.github/workflows/ci.yaml'
+            ui:
+              - 'ui/**'
+              - '.github/workflows/ci.yaml'
+
+  # ── UI: lint, typecheck and build, unit tests ─────────────────────────────
+  ui:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.ui == 'true'
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v7
+      # The node major the web and all-in-one images build the UI with.
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Typecheck and build
+        run: npm run build
+      - name: Unit tests
+        run: npm test
+
+  # ── Helm chart: lint, unit tests, schema validation, gateway image ────────
+  chart:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.chart == 'true'
+    defaults:
+      run:
+        working-directory: deploy/helm/burst
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # chart-testing compares the chart's version with main.
+          fetch-depth: 0
+      - uses: azure/setup-helm@v4
+        with:
+          version: v4.2.0
+      - uses: helm/chart-testing-action@v2
+        with:
+          version: v3.14.0
+          yamllint_version: 1.38.0
+
+      - name: YAML lint
+        working-directory: .
+        run: yamllint --strict -c deploy/helm/.yamllint.yaml deploy/helm
+
+      - name: Chart checks (schema, lint per profile, version bump)
+        working-directory: .
+        run: ct lint --config deploy/helm/ct.yaml
+
+      - name: Install helm-unittest and kubeconform
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git --version v1.1.2 --verify=false
+          curl -fsSL https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-amd64.tar.gz \
+            | tar -xz -C /usr/local/bin kubeconform
+
+      - name: Lint
+        run: |
+          for values in ci/*-values.yaml; do
+            helm lint . --strict -f "$values"
+          done
+
+      - name: Unit tests
+        run: helm unittest .
+
+      - name: Validate rendered manifests against the Kubernetes and CRD schemas
+        run: |
+          for values in ci/*-values.yaml; do
+            echo "::group::$values"
+            helm template chat . -f "$values" | kubeconform -strict -summary \
+              -kubernetes-version 1.30.0 \
+              -schema-location default \
+              -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'
+            echo "::endgroup::"
+          done
+
+      # Compiling happens at image build time, so a spec or manifest the
+      # gateway refuses fails here rather than on the next release.
+      - name: Build the gateway image
+        working-directory: .
+        run: docker build -f docker/Dockerfile.gateway -t burst-gateway:ci .
+
+  # ── Lint + Release build (single compilation) ─────────────────────────────
+  build:
+    runs-on: ubuntu-latest
+    needs: changes
+    # Also when only the smoke or chart inputs change: both end-to-end jobs
+    # run this build's binary.
+    if: >-
+      needs.changes.outputs.backend == 'true' ||
+      needs.changes.outputs.smoke == 'true' ||
+      needs.changes.outputs.chart == 'true'
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+
+      - name: Lint
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Build release binary and seed example
+        env:
+          SQLX_OFFLINE: "true"
+        run: cargo build --release && cargo build --release --example seed
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: burst-ci
+          path: |
+            target/release/burst
+            target/release/examples/seed
+          retention-days: 1
+
+  # ── Tests (unit + DB, parallel with build) ─────────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: burst
+          POSTGRES_PASSWORD: burst
+          POSTGRES_DB: burst
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U burst"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgres://burst:burst@localhost:5432/burst
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Run all tests
+        run: cargo test --workspace
+
+  # ── Smoke tests (reuses release binary — no compilation) ───────────────────
+  smoke:
+    runs-on: ubuntu-latest
+    needs: [changes, build, test]
+    if: >-
+      needs.changes.outputs.smoke == 'true' &&
+      needs.build.result == 'success' &&
+      !contains(needs.*.result, 'failure')
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: burst
+          POSTGRES_PASSWORD: burst
+          POSTGRES_DB: burst
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U burst"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mock-oauth:
+        image: ghcr.io/navikt/mock-oauth2-server:2.1.10
+        ports:
+          - 9099:8080
+        env:
+          SERVER_PORT: "8080"
+          JSON_CONFIG: >
+            {
+              "interactiveLogin": false,
+              "tokenCallbacks": [
+                {
+                  "issuerId": "burst",
+                  "tokenExpiry": 3600,
+                  "requestMappings": [
+                    {
+                      "requestParam": "username",
+                      "match": "alice",
+                      "claims": { "aud": "burst", "roles": ["admin"] }
+                    },
+                    {
+                      "requestParam": "grant_type",
+                      "match": "password",
+                      "claims": { "aud": "burst", "roles": ["member"] }
+                    }
+                  ]
+                }
+              ]
+            }
+    env:
+      DATABASE_URL: postgres://burst:burst@localhost:5432/burst
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download release binary
+        uses: actions/download-artifact@v8
+        with:
+          name: burst-ci
+          path: bin
+
+      - name: Make binaries executable
+        run: chmod +x bin/burst bin/examples/seed
+
+      - name: Seed database
+        run: bin/examples/seed "$DATABASE_URL"
+
+      - name: Install Barbacane gateway
+        run: |
+          mkdir -p .barbacane/bin
+          curl -fSL -o .barbacane/bin/barbacane \
+            "https://github.com/barbacane-dev/barbacane/releases/download/v${BARBACANE_VERSION}/barbacane-x86_64-unknown-linux-gnu"
+          chmod +x .barbacane/bin/barbacane
+
+      - name: Compile gateway artifact
+        run: make gateway-compile
+
+      - name: Write burst.toml for CI
+        run: |
+          cat > burst.toml <<'TOML'
+          [server]
+          listen = "0.0.0.0:3000"
+          admin_listen = "0.0.0.0:3001"
+
+          [database]
+          url = "postgres://burst:burst@localhost:5432/burst"
+          max_connections = 5
+
+          [auth]
+          mode = "trusted-headers"
+          # The gateway runs on the same host in CI.
+          trusted_proxies = ["127.0.0.1/32", "::1/128"]
+          TOML
+
+      - name: Start Burst server
+        run: |
+          RUST_LOG=info ./bin/burst burst.toml > /tmp/burst.log 2>&1 &
+          echo $! > /tmp/burst.pid
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/channels 2>/dev/null) || true
+            [ "$code" != "000" ] && echo "Burst server ready (HTTP $code)" && break
+            sleep 1
+          done
+          if [ "$code" = "000" ]; then
+            echo "::error::Burst server failed to start"
+            cat /tmp/burst.log
+            exit 1
+          fi
+
+      - name: Start Barbacane gateway
+        env:
+          BURST_UPSTREAM_URL: http://127.0.0.1:3000
+          BURST_UPSTREAM_WS_URL: ws://127.0.0.1:3000
+          BURST_OIDC_ISSUER_URL: http://127.0.0.1:9099/burst
+          BURST_OIDC_ISSUER_OVERRIDE: http://localhost:9099/burst
+          BURST_OIDC_GROUPS_CLAIM: roles
+          BURST_S3_REGION: us-east-1
+          BURST_S3_BUCKET: burst-ci
+          BURST_S3_ACCESS_KEY_ID: ci-key
+          BURST_S3_SECRET_ACCESS_KEY: ci-secret
+          BURST_S3_ENDPOINT: http://localhost:9000
+          BURST_SPA_BUCKET: burst-ci-spa
+          # Burst and the mock IdP are loopback upstreams; the plugin SSRF
+          # guard blocks loopback egress unless this is set.
+          BARBACANE_ALLOW_INTERNAL_EGRESS: "true"
+        run: |
+          .barbacane/bin/barbacane serve \
+            --artifact burst-api.bca \
+            --listen 0.0.0.0:8080 \
+            --dev \
+            --allow-plaintext-upstream \
+            --max-body-size 10485760 > /tmp/barbacane.log 2>&1 &
+          echo $! > /tmp/barbacane.pid
+          for i in $(seq 1 30); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/api/channels 2>/dev/null) || true
+            [ "$code" != "000" ] && echo "Barbacane gateway ready (HTTP $code)" && break
+            sleep 1
+          done
+          if [ "$code" = "000" ]; then
+            echo "::error::Barbacane gateway failed to start"
+            cat /tmp/barbacane.log
+            exit 1
+          fi
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://github.com/grafana/k6/releases/download/v0.55.0/k6-v0.55.0-linux-amd64.tar.gz \
+            | tar xzf - --strip-components=1
+          sudo mv k6 /usr/local/bin/
+
+      - name: Run smoke tests
+        run: k6 run tests/http/smoke.js
+
+      # The gateway forwards only the headers an operation admits, and a header
+      # it drops reaches nothing downstream with no error anywhere. `--dev`
+      # names each one, so the smoke traffic having produced none is the only
+      # cheap evidence that the specs declare what the app actually sends.
+      - name: Assert the gateway dropped no request header
+        run: |
+          if grep -q "request header dropped" /tmp/barbacane.log; then
+            echo "::error::The gateway dropped request headers during the smoke run."
+            echo "Declare each as an in: header parameter, or as the security scheme carrying it."
+            grep -oE "header: [a-z0-9-]+" /tmp/barbacane.log | sort -u
+            exit 1
+          fi
+          echo "No request headers were dropped."
+
+      - name: Show gateway and server logs
+        if: failure()
+        run: |
+          echo "::group::barbacane.log"; cat /tmp/barbacane.log || true; echo "::endgroup::"
+          echo "::group::burst.log"; cat /tmp/burst.log || true; echo "::endgroup::"
+
+  # ── Helm chart on kind: install, sign in, smoke tests through the route ────
+  # The steps of deploy/helm/e2e/README.md: the local-storage profile, then
+  # the S3 profile (RustFS, two server replicas) as an upgrade.
+  helm-e2e:
+    runs-on: ubuntu-latest
+    needs: [changes, build]
+    if: >-
+      (needs.changes.outputs.chart == 'true' || needs.changes.outputs.smoke == 'true') &&
+      needs.build.result == 'success'
+    timeout-minutes: 30
+    env:
+      GATEWAY_URL: http://127.0.0.1:18080
+      # The provider stamps tokens with the address it is asked on, which must
+      # match oidc.issuerOverride in deploy/helm/e2e/values.yaml.
+      MOCK_OAUTH_URL: http://localhost:9099
+      BURST_URL: http://127.0.0.1:13000
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Download release binary
+        uses: actions/download-artifact@v8
+        with:
+          name: burst-ci
+          path: ci-bin
+
+      - name: Build the images
+        run: |
+          mkdir -p bin/amd64
+          install -m 0755 ci-bin/burst bin/amd64/burst
+          docker build -t localhost/burst:e2e -f Dockerfile .
+          docker build -t localhost/burst-gateway:e2e -f docker/Dockerfile.gateway .
+          docker build -t localhost/burst-nginx:e2e -f docker/Dockerfile.nginx .
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: v4.2.0
+
+      - uses: helm/kind-action@v1
+        with:
+          config: deploy/helm/e2e/kind.yaml
+          cluster_name: burst
+
+      - name: Load the images into kind
+        run: kind load docker-image localhost/burst:e2e localhost/burst-gateway:e2e localhost/burst-nginx:e2e --name burst
+
+      - name: Install Envoy Gateway
+        run: |
+          helm install eg oci://docker.io/envoyproxy/gateway-helm --version 1.9.1 \
+            -n envoy-gateway-system --create-namespace --wait --timeout 5m
+
+      - name: Install the chart
+        run: |
+          kubectl create namespace burst
+          kubectl apply -f deploy/helm/e2e/gateway.yaml -f deploy/helm/e2e/oidc.yaml
+          kubectl -n burst rollout status deploy/mock-oauth --timeout 3m
+          helm install chat deploy/helm/burst -n burst -f deploy/helm/e2e/values.yaml --wait --timeout 5m
+          # kind has no load balancer, so the Gateway gets no address and never
+          # reports Programmed. The port-forward needs it accepted and its proxy up.
+          kubectl -n burst wait --for=condition=Accepted gateway/public --timeout 3m
+          proxy='gateway.envoyproxy.io/owning-gateway-name=public'
+          timeout 180 sh -c "until kubectl -n envoy-gateway-system get deploy -l $proxy -o name | grep -q .; do sleep 2; done"
+          kubectl -n envoy-gateway-system wait --for=condition=Available deploy -l "$proxy" --timeout 3m
+
+      - name: Port-forward the Gateway, the provider and the database
+        run: |
+          gw=$(kubectl -n envoy-gateway-system get svc \
+            -l gateway.envoyproxy.io/owning-gateway-name=public -o name)
+          kubectl -n envoy-gateway-system port-forward "$gw" 18080:80 > /tmp/pf-gateway.log 2>&1 &
+          kubectl -n burst port-forward svc/mock-oauth 9099:8080 > /tmp/pf-oauth.log 2>&1 &
+          kubectl -n burst port-forward svc/chat-burst-server 13000:3000 > /tmp/pf-server.log 2>&1 &
+          kubectl -n burst port-forward svc/chat-burst-postgresql 15432:5432 > /tmp/pf-db.log 2>&1 &
+          for port in 18080 9099 13000 15432; do
+            for _ in $(seq 1 30); do
+              nc -z 127.0.0.1 "$port" && break
+              sleep 1
+            done
+            nc -z 127.0.0.1 "$port" || { echo "::error::port-forward on $port did not come up"; exit 1; }
+          done
+
+      - name: Seed the database
+        run: |
+          chmod +x ci-bin/examples/seed
+          password=$(kubectl -n burst get secret chat-burst -o jsonpath='{.data.postgres-password}' | base64 -d)
+          ci-bin/examples/seed "postgres://burst:${password}@127.0.0.1:15432/burst"
+
+      - name: Install k6
+        run: |
+          curl -fsSL https://github.com/grafana/k6/releases/download/v0.55.0/k6-v0.55.0-linux-amd64.tar.gz \
+            | tar xzf - --strip-components=1
+          sudo mv k6 /usr/local/bin/
+
+      - name: Smoke tests (local storage)
+        run: k6 run tests/http/smoke.js
+
+      - name: Switch to S3 storage
+        run: |
+          kubectl apply -f deploy/helm/e2e/s3.yaml
+          kubectl -n burst wait --for=condition=complete job/rustfs-bucket --timeout 3m
+          old=$(kubectl -n burst get pods -l app.kubernetes.io/component=server -o name)
+          helm upgrade chat deploy/helm/burst -n burst \
+            -f deploy/helm/e2e/values.yaml -f deploy/helm/e2e/values-s3.yaml --wait --timeout 5m
+          # The old server pods keep serving through their drain time, and they
+          # store files locally: a file uploaded to one is missing from S3.
+          # shellcheck disable=SC2086
+          kubectl -n burst wait --for=delete $old --timeout 2m
+
+      - name: Smoke tests (S3 storage)
+        run: k6 run tests/http/smoke-s3.js
+
+      - name: Show cluster state and logs
+        if: failure()
+        run: |
+          echo "::group::pods"; kubectl get pods -A -o wide || true; echo "::endgroup::"
+          echo "::group::routes"; kubectl -n burst get gateway,httproute -o yaml || true; echo "::endgroup::"
+          echo "::group::events"; kubectl -n burst get events --sort-by=.lastTimestamp || true; echo "::endgroup::"
+          for pod in $(kubectl -n burst get pods -o name); do
+            echo "::group::$pod"; kubectl -n burst logs "$pod" --all-containers --tail=200 || true; echo "::endgroup::"
+          done
+          echo "::group::port-forwards"; tail -n 20 /tmp/pf-*.log || true; echo "::endgroup::"
+
+  # ── Security audit ─────────────────────────────────────────────────────────
+  audit:
+    runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.backend == 'true'
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v7
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check advisories
+
+  # ── OpenAPI lint ───────────────────────────────────────────────────────────
+  openapi-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Download Barbacane ruleset and functions
+        # The function list is read from the ruleset itself, so it always
+        # matches what docs.barbacane.dev publishes.
+        run: |
+          mkdir -p .barbacane/rulesets
+          curl -fsSL "https://docs.barbacane.dev/rulesets/barbacane.yaml" \
+            -o ".barbacane/rulesets/barbacane.yaml"
+          funcs=$(grep -E '^[[:space:]]*function:[[:space:]]*barbacane-' .barbacane/rulesets/barbacane.yaml \
+            | sed -E 's/.*function:[[:space:]]*//' | sort -u)
+          echo "functions: $(echo $funcs | tr '\n' ' ')"
+          for f in $funcs; do
+            curl -fsSL "https://docs.barbacane.dev/rulesets/functions/${f}.js" \
+              -o "specs/functions/${f}.js"
+          done
+      - name: Lint OpenAPI spec with vacuum
+        run: |
+          docker run --rm -v "$GITHUB_WORKSPACE":/work:ro \
+            dshanley/vacuum:latest lint \
+            --functions /work/specs/functions \
+            --ruleset /work/specs/.vacuum.yaml \
+            --fail-severity error \
+            /work/specs/burst-api.yaml

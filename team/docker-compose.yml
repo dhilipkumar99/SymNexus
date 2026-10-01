@@ -1,0 +1,80 @@
+# SymNexus Team: Burst messaging behind the SymNexus email sign-in gateway.
+#
+#   cp .env.example .env    # set POSTGRES_PASSWORD
+#   docker compose up -d --build
+#   docker compose exec gateway node src/cli.mjs add you@symnexus.co "Your Name" --admin
+#
+# Only the gateway is published. Burst sits on the internal network and believes
+# identity headers from the gateway's fixed address alone.
+
+name: symnexus-team
+
+x-gateway-ip: &gateway_ip 172.30.0.10
+
+services:
+  postgres:
+    image: postgres:17
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: team
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: team
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U team"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  burst:
+    build:
+      context: .
+      dockerfile: Dockerfile.burst
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      BURST_DATABASE_URL: postgres://team:${POSTGRES_PASSWORD}@postgres:5432/team
+      BURST_AUTH_TRUSTED_PROXIES: 172.30.0.10/32
+      BURST_SERVER_LISTEN: 0.0.0.0:3000
+      BURST_SERVER_ADMIN_LISTEN: 127.0.0.1:3001
+      BURST_STORAGE_BACKEND: local
+      BURST_LOG: info
+    volumes:
+      - uploads:/data/uploads
+    networks: [internal]
+
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      burst:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://team:${POSTGRES_PASSWORD}@postgres:5432/team
+      BURST_UPSTREAM_URL: http://burst:3000
+      ALLOWED_EMAIL_DOMAINS: ${ALLOWED_EMAIL_DOMAINS:-symnexus.co}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      HSTS: ${HSTS:-false}
+    ports:
+      - "${GATEWAY_PUBLISH:-127.0.0.1:8080}:8080"
+    networks:
+      internal:
+        ipv4_address: *gateway_ip
+
+networks:
+  internal:
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
+
+volumes:
+  pgdata:
+  uploads:

@@ -1,0 +1,312 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  # From release-please.yaml, with the tag it just created.
+  workflow_call:
+    inputs:
+      tag:
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+  # The release tag: the input when called, the pushed tag otherwise.
+  TAG: ${{ inputs.tag || github.ref_name }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  # ── Build release binaries ─────────────────────────────────────────────────
+  # Linux and macOS are separate jobs so the images, which need only the Linux
+  # binaries, do not wait for the macOS build.
+  build-linux:
+    strategy:
+      matrix:
+        include:
+          - target: x86_64-unknown-linux-gnu
+            artifact: burst-linux-amd64
+          - target: aarch64-unknown-linux-gnu
+            artifact: burst-linux-arm64
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Install Rust toolchain
+        run: rustup target add ${{ matrix.target }}
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      - name: Install cross (Linux cross-compilation)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cross
+
+      - name: Build (native)
+        if: matrix.target != 'aarch64-unknown-linux-gnu'
+        env:
+          SQLX_OFFLINE: "true"
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Build (cross)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        env:
+          SQLX_OFFLINE: "true"
+        run: cross build --release --target ${{ matrix.target }}
+
+      - name: Package binary
+        run: |
+          cp target/${{ matrix.target }}/release/burst ${{ matrix.artifact }}
+          chmod +x ${{ matrix.artifact }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}
+
+  build-macos:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Install Rust toolchain
+        run: rustup target add aarch64-apple-darwin
+
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: aarch64-apple-darwin
+
+      - name: Build
+        env:
+          SQLX_OFFLINE: "true"
+        run: cargo build --release --target aarch64-apple-darwin
+
+      - name: Package binary
+        run: |
+          cp target/aarch64-apple-darwin/release/burst burst-macos-arm64
+          chmod +x burst-macos-arm64
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: burst-macos-arm64
+          path: burst-macos-arm64
+
+  # ── Docker image (multi-arch) ──────────────────────────────────────────────
+  docker:
+    runs-on: ubuntu-latest
+    needs: build-linux
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+
+      - name: Prepare binaries for Docker build
+        run: |
+          mkdir -p bin/amd64 bin/arm64
+          cp artifacts/burst-linux-amd64/burst-linux-amd64 bin/amd64/burst
+          cp artifacts/burst-linux-arm64/burst-linux-arm64 bin/arm64/burst
+          chmod +x bin/amd64/burst bin/arm64/burst
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Log in to custom registry
+        if: env.CUSTOM_REGISTRY != ''
+        continue-on-error: true
+        id: custom-login
+        env:
+          CUSTOM_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Compute image tags
+        id: tags
+        env:
+          CUSTOM_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          CUSTOM_IMAGE: ${{ secrets.DOCKER_IMAGE_NAME }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAGS="ghcr.io/${{ github.repository }}:${VERSION}"
+          TAGS="${TAGS},ghcr.io/${{ github.repository }}:latest"
+          if [ "${{ steps.custom-login.outcome }}" = "success" ] && [ -n "${CUSTOM_REGISTRY}" ] && [ -n "${CUSTOM_IMAGE}" ]; then
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}:${VERSION}"
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}:latest"
+          fi
+          echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push (API server)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+
+      - name: Compute nginx image tags
+        id: nginx-tags
+        env:
+          CUSTOM_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          CUSTOM_IMAGE: ${{ secrets.DOCKER_IMAGE_NAME }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAGS="ghcr.io/${{ github.repository }}-nginx:${VERSION}"
+          TAGS="${TAGS},ghcr.io/${{ github.repository }}-nginx:latest"
+          if [ "${{ steps.custom-login.outcome }}" = "success" ] && [ -n "${CUSTOM_REGISTRY}" ] && [ -n "${CUSTOM_IMAGE}" ]; then
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-nginx:${VERSION}"
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-nginx:latest"
+          fi
+          echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push (nginx frontend)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile.nginx
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.nginx-tags.outputs.tags }}
+
+      - name: Compute gateway image tags
+        id: gateway-tags
+        env:
+          CUSTOM_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          CUSTOM_IMAGE: ${{ secrets.DOCKER_IMAGE_NAME }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAGS="ghcr.io/${{ github.repository }}-gateway:${VERSION}"
+          TAGS="${TAGS},ghcr.io/${{ github.repository }}-gateway:latest"
+          if [ "${{ steps.custom-login.outcome }}" = "success" ] && [ -n "${CUSTOM_REGISTRY}" ] && [ -n "${CUSTOM_IMAGE}" ]; then
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-gateway:${VERSION}"
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-gateway:latest"
+          fi
+          echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
+
+      # Barbacane and the compiled gateway artifacts, used by the Helm chart.
+      - name: Build and push (gateway)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile.gateway
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.gateway-tags.outputs.tags }}
+
+      - name: Compute all-in-one image tags
+        id: aio-tags
+        env:
+          CUSTOM_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          CUSTOM_IMAGE: ${{ secrets.DOCKER_IMAGE_NAME }}
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TAGS="ghcr.io/${{ github.repository }}-aio:${VERSION}"
+          TAGS="${TAGS},ghcr.io/${{ github.repository }}-aio:latest"
+          if [ "${{ steps.custom-login.outcome }}" = "success" ] && [ -n "${CUSTOM_REGISTRY}" ] && [ -n "${CUSTOM_IMAGE}" ]; then
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-aio:${VERSION}"
+            TAGS="${TAGS},${CUSTOM_REGISTRY}/${CUSTOM_IMAGE}-aio:latest"
+          fi
+          echo "tags=${TAGS}" >> "$GITHUB_OUTPUT"
+
+      - name: Build and push (all-in-one)
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/Dockerfile.all-in-one
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.aio-tags.outputs.tags }}
+
+  # ── Helm chart, to oci://ghcr.io/<owner>/charts ───────────────────────────
+  # After the images, since the chart's image tags default to its appVersion.
+  chart:
+    runs-on: ubuntu-latest
+    needs: docker
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: v4.2.0
+
+      - name: Check the chart's appVersion is this release
+        run: |
+          app=$(helm show chart deploy/helm/burst | sed -n 's/^appVersion: *"\{0,1\}\([^"]*\)"\{0,1\}$/\1/p')
+          if [ "$app" != "${TAG#v}" ]; then
+            echo "::error::Chart.yaml appVersion is ${app}, the tag is ${TAG}"
+            exit 1
+          fi
+
+      - name: Package and push the chart
+        env:
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GHCR_TOKEN" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin
+          helm package deploy/helm/burst -d dist
+          helm push dist/burst-*.tgz "oci://ghcr.io/${GITHUB_REPOSITORY_OWNER}/charts"
+
+  # ── GitHub Release ─────────────────────────────────────────────────────────
+  release:
+    runs-on: ubuntu-latest
+    needs: [build-linux, build-macos]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ env.TAG }}
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: ${{ env.TAG }}
+          # release-please writes the notes of the releases it creates.
+          generate_release_notes: ${{ github.event_name == 'push' }}
+          files: |
+            artifacts/burst-linux-amd64/burst-linux-amd64
+            artifacts/burst-linux-arm64/burst-linux-arm64
+            artifacts/burst-macos-arm64/burst-macos-arm64

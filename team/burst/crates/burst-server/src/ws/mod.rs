@@ -1,0 +1,256 @@
+pub mod broker;
+pub mod handler;
+pub mod presence;
+
+use std::collections::VecDeque;
+use std::sync::Arc;
+
+use serde::{Deserialize, Serialize};
+use tokio::sync::RwLock;
+use uuid::Uuid;
+
+pub use broker::{Broker, EventBroker, InProcessBroker};
+
+// ── Event types ──────────────────────────────────────────────────────────────
+
+/// Events sent from server to clients over WebSocket.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(tag = "type")]
+pub enum ServerEvent {
+    #[serde(rename = "message.created", rename_all = "camelCase")]
+    MessageCreated {
+        event_id: String,
+        channel_id: String,
+        message: MessagePayload,
+    },
+    #[serde(rename = "message.updated", rename_all = "camelCase")]
+    MessageUpdated {
+        event_id: String,
+        channel_id: String,
+        message: MessagePayload,
+    },
+    #[serde(rename = "message.deleted", rename_all = "camelCase")]
+    MessageDeleted {
+        event_id: String,
+        channel_id: String,
+        message_id: String,
+    },
+    #[serde(rename = "typing.start", rename_all = "camelCase")]
+    TypingStart {
+        event_id: String,
+        channel_id: String,
+        user_id: String,
+    },
+    #[serde(rename = "typing.stop", rename_all = "camelCase")]
+    TypingStop {
+        event_id: String,
+        channel_id: String,
+        user_id: String,
+    },
+    #[serde(rename = "presence.update", rename_all = "camelCase")]
+    PresenceUpdate {
+        event_id: String,
+        user_id: String,
+        status: String,
+    },
+    /// A user set or cleared their custom status. All three fields are absent
+    /// when it was cleared.
+    #[serde(rename = "user.status_changed", rename_all = "camelCase")]
+    UserStatusChanged {
+        event_id: String,
+        user_id: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        text: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        emoji: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        expires_at: Option<String>,
+    },
+    /// A user's do-not-disturb changed. `until` is when their current quiet
+    /// period ends, absent when they are not quiet.
+    #[serde(rename = "user.dnd_changed", rename_all = "camelCase")]
+    UserDndChanged {
+        event_id: String,
+        user_id: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        until: Option<String>,
+    },
+    #[serde(rename = "channel.joined", rename_all = "camelCase")]
+    ChannelJoined {
+        event_id: String,
+        channel_id: String,
+        user_id: String,
+    },
+    /// A user left a channel or was removed from it. A socket receiving this
+    /// for its own user stops forwarding that channel's events, so a removed
+    /// member does not go on reading it until they reconnect.
+    #[serde(rename = "channel.left", rename_all = "camelCase")]
+    ChannelLeft {
+        event_id: String,
+        channel_id: String,
+        user_id: String,
+    },
+    #[serde(rename = "reaction.added", rename_all = "camelCase")]
+    ReactionAdded {
+        event_id: String,
+        channel_id: String,
+        message_id: String,
+        emoji: String,
+        user_id: String,
+    },
+    #[serde(rename = "reaction.removed", rename_all = "camelCase")]
+    ReactionRemoved {
+        event_id: String,
+        channel_id: String,
+        message_id: String,
+        emoji: String,
+        user_id: String,
+    },
+    #[serde(rename = "message.pinned", rename_all = "camelCase")]
+    MessagePinned {
+        event_id: String,
+        channel_id: String,
+        message_id: String,
+        user_id: String,
+    },
+    #[serde(rename = "message.unpinned", rename_all = "camelCase")]
+    MessageUnpinned {
+        event_id: String,
+        channel_id: String,
+        message_id: String,
+    },
+    #[serde(rename = "channel.updated", rename_all = "camelCase")]
+    ChannelUpdated {
+        event_id: String,
+        channel_id: String,
+    },
+    /// A notification for one member, decided by `burst_core::notify`.
+    ///
+    /// Delivered only to `recipient_id`, and published without entering the
+    /// event buffer: a notification missed while disconnected is stale by the
+    /// time the client reconnects, and gap-fill already replays the message.
+    /// It carries `notificationId` rather than `eventId` for the same reason,
+    /// since the client adopts any `eventId` as its gap-fill cursor and one the
+    /// buffer does not hold would force a full refetch on the next reconnect.
+    #[serde(rename = "notification.created", rename_all = "camelCase")]
+    NotificationCreated {
+        notification_id: String,
+        recipient_id: String,
+        channel_id: String,
+        message_id: String,
+        reason: String,
+        author_name: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        channel_name: Option<String>,
+        preview: String,
+    },
+}
+
+impl ServerEvent {
+    pub fn event_id(&self) -> &str {
+        match self {
+            ServerEvent::MessageCreated { event_id, .. } => event_id,
+            ServerEvent::MessageUpdated { event_id, .. } => event_id,
+            ServerEvent::MessageDeleted { event_id, .. } => event_id,
+            ServerEvent::TypingStart { event_id, .. } => event_id,
+            ServerEvent::TypingStop { event_id, .. } => event_id,
+            ServerEvent::PresenceUpdate { event_id, .. } => event_id,
+            ServerEvent::UserStatusChanged { event_id, .. } => event_id,
+            ServerEvent::UserDndChanged { event_id, .. } => event_id,
+            ServerEvent::ReactionAdded { event_id, .. } => event_id,
+            ServerEvent::ReactionRemoved { event_id, .. } => event_id,
+            ServerEvent::ChannelJoined { event_id, .. } => event_id,
+            ServerEvent::ChannelLeft { event_id, .. } => event_id,
+            ServerEvent::MessagePinned { event_id, .. } => event_id,
+            ServerEvent::MessageUnpinned { event_id, .. } => event_id,
+            ServerEvent::ChannelUpdated { event_id, .. } => event_id,
+            ServerEvent::NotificationCreated {
+                notification_id, ..
+            } => notification_id,
+        }
+    }
+
+    pub fn channel_id(&self) -> Option<&str> {
+        match self {
+            ServerEvent::MessageCreated { channel_id, .. } => Some(channel_id),
+            ServerEvent::MessageUpdated { channel_id, .. } => Some(channel_id),
+            ServerEvent::MessageDeleted { channel_id, .. } => Some(channel_id),
+            ServerEvent::TypingStart { channel_id, .. } => Some(channel_id),
+            ServerEvent::TypingStop { channel_id, .. } => Some(channel_id),
+            ServerEvent::PresenceUpdate { .. } => None,
+            ServerEvent::UserStatusChanged { .. } => None,
+            ServerEvent::UserDndChanged { .. } => None,
+            ServerEvent::ReactionAdded { channel_id, .. } => Some(channel_id),
+            ServerEvent::ReactionRemoved { channel_id, .. } => Some(channel_id),
+            ServerEvent::ChannelJoined { channel_id, .. } => Some(channel_id),
+            ServerEvent::ChannelLeft { channel_id, .. } => Some(channel_id),
+            ServerEvent::MessagePinned { channel_id, .. } => Some(channel_id),
+            ServerEvent::MessageUnpinned { channel_id, .. } => Some(channel_id),
+            ServerEvent::ChannelUpdated { channel_id, .. } => Some(channel_id),
+            ServerEvent::NotificationCreated { channel_id, .. } => Some(channel_id),
+        }
+    }
+}
+
+/// Message payload reused by both REST responses and WS events.
+pub type MessagePayload = crate::api::channels::MessageResponse;
+pub type ReactionPayload = crate::api::channels::ReactionResponse;
+
+/// Events sent from client to server.
+#[derive(Debug, Deserialize)]
+#[serde(tag = "type", rename_all = "camelCase")]
+pub enum ClientEvent {
+    Heartbeat,
+    #[serde(rename = "typing.start")]
+    TypingStart {
+        #[serde(rename = "channelId")]
+        channel_id: String,
+    },
+    #[serde(rename = "typing.stop")]
+    TypingStop {
+        #[serde(rename = "channelId")]
+        channel_id: String,
+    },
+}
+
+// ── Event ring buffer (gap-fill) ──────────────────────────────────────────────
+
+pub struct EventBuffer {
+    inner: RwLock<VecDeque<(Uuid, ServerEvent)>>,
+    capacity: usize,
+}
+
+impl EventBuffer {
+    pub fn new(capacity: usize) -> Arc<Self> {
+        Arc::new(Self {
+            inner: RwLock::new(VecDeque::with_capacity(capacity)),
+            capacity,
+        })
+    }
+
+    pub async fn push(&self, event_id: Uuid, event: ServerEvent) {
+        let mut buf = self.inner.write().await;
+        if buf.len() >= self.capacity {
+            buf.pop_front();
+        }
+        buf.push_back((event_id, event));
+    }
+
+    /// Returns events that occurred after `last_event_id`.
+    /// Returns `None` if `last_event_id` was not found (gap too large).
+    pub async fn events_since(&self, last_event_id: Uuid) -> Option<Vec<ServerEvent>> {
+        let buf = self.inner.read().await;
+        let mut found = false;
+        let mut result = Vec::new();
+        for (id, event) in buf.iter() {
+            if *id == last_event_id {
+                found = true;
+                continue;
+            }
+            if found {
+                result.push(event.clone());
+            }
+        }
+        if found { Some(result) } else { None }
+    }
+}

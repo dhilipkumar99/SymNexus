@@ -1,0 +1,71 @@
+# Keep in step with BARBACANE_VERSION in the Makefile and the plugin URLs in
+# barbacane.yaml and barbacane-s3.yaml. The compile stage needs 0.12.2 or later.
+ARG BARBACANE_VERSION=0.12.2
+
+# ── Stage 1: Build frontend ───────────────────────────────────────────────────
+# The built UI and the compiled artifacts are the same on every platform: build
+# them once, natively, and take only the barbacane binary per platform.
+FROM --platform=$BUILDPLATFORM node:24-slim AS frontend
+
+WORKDIR /ui
+COPY ui/package.json ui/package-lock.json ./
+RUN npm ci
+COPY ui/ ./
+RUN npx vite build
+
+# ── Stage 2: Extract Barbacane binary ─────────────────────────────────────────
+FROM ghcr.io/barbacane-dev/barbacane-standalone:${BARBACANE_VERSION} AS barbacane
+
+# ── Stage 3: Compile .bca gateway artifacts ───────────────────────────────────
+FROM --platform=$BUILDPLATFORM ghcr.io/barbacane-dev/barbacane-standalone:${BARBACANE_VERSION} AS compiler
+
+COPY specs/ /specs/
+COPY barbacane.yaml barbacane-s3.yaml /manifests/
+
+RUN barbacane compile \
+      --spec /specs/burst-api.yaml \
+      --manifest /manifests/barbacane.yaml \
+      --output /workspace/burst-api.bca \
+      --allow-plaintext && \
+    barbacane compile \
+      --spec /specs/burst-s3.yaml \
+      --manifest /manifests/barbacane-s3.yaml \
+      --output /workspace/burst-s3.bca \
+      --allow-plaintext
+
+# ── Stage 4: Runtime ──────────────────────────────────────────────────────────
+FROM debian:trixie-slim
+
+ARG TARGETARCH
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends ca-certificates curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# ── Copy binaries ────────────────────────────────────────────────────────────
+COPY bin/${TARGETARCH}/burst /usr/local/bin/burst
+COPY --from=barbacane /usr/local/bin/barbacane /usr/local/bin/barbacane
+
+# ── Copy compiled .bca artifacts ─────────────────────────────────────────────
+COPY --from=compiler /workspace/burst-api.bca /etc/barbacane/burst-api.bca
+COPY --from=compiler /workspace/burst-s3.bca /etc/barbacane/burst-s3.bca
+
+# ── Copy frontend static files (staged for upload to S3 at startup) ──────────
+COPY --from=frontend /ui/dist /usr/share/burst/html
+
+# ── Copy Burst config ────────────────────────────────────────────────────────
+COPY docker/all-in-one/burst.toml /etc/burst/burst.toml
+
+# ── Copy scripts ─────────────────────────────────────────────────────────────
+COPY docker/env.sh /etc/burst/env.sh
+COPY docker/all-in-one/upload-spa.sh /etc/burst/upload-spa.sh
+COPY docker/all-in-one/entrypoint.sh /entrypoint.sh
+RUN chmod +x /etc/burst/env.sh /etc/burst/upload-spa.sh /entrypoint.sh
+
+# ── Internal wiring (not user-configurable) ──────────────────────────────────
+ENV BURST_UPSTREAM_URL=http://127.0.0.1:3000 \
+    BURST_UPSTREAM_WS_URL=ws://127.0.0.1:3000
+
+EXPOSE 8080 3001
+
+ENTRYPOINT ["/entrypoint.sh"]

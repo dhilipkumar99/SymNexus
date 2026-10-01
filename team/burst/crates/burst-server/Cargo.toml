@@ -1,0 +1,57 @@
+[package]
+name = "burst-server"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[dependencies]
+burst-core.workspace = true
+axum.workspace = true
+tower.workspace = true
+tokio.workspace = true
+sqlx.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+uuid.workspace = true
+chrono.workspace = true
+tracing.workspace = true
+metrics.workspace = true
+metrics-exporter-prometheus.workspace = true
+opentelemetry.workspace = true
+opentelemetry_sdk.workspace = true
+opentelemetry-otlp.workspace = true
+reqwest.workspace = true
+tokio-util.workspace = true
+thiserror.workspace = true
+toml.workspace = true
+axum-extra.workspace = true
+image.workspace = true
+mime_guess.workspace = true
+bytes.workspace = true
+multer.workspace = true
+rand.workspace = true
+sha2.workspace = true
+hmac.workspace = true
+hex.workspace = true
+zip = { version = "8.6.0", default-features = false, features = ["deflate"] }
+futures-util = { version = "0.3", default-features = false, features = ["std"] }
+
+[dev-dependencies]
+burst-core.workspace = true
+tokio = { workspace = true }
+serde_json.workspace = true
+serde_yaml = "0.9.34"
+tower.workspace = true
+uuid.workspace = true
+urlencoding.workspace = true
+sqlx = { workspace = true }
+reqwest.workspace = true
+tempfile = "3"
+# Sending a real SIGTERM in the process-lifecycle test.
+libc = "0.2"
+# A real WebSocket client, for tests of what a connected socket receives.
+# Both are already in the tree through axum.
+tokio-tungstenite = "0.29"
+futures-util = "0.3"
+# Checking values against the patterns the spec declares, which the gateway enforces.
+regex = "1"

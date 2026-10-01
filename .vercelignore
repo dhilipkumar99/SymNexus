@@ -6,3 +6,6 @@ node_modules
 *.pdf
 Screenshot*
 README.md
+
+# Internal messaging stack (team/README.md); deployed separately, not on Vercel
+team

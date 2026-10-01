@@ -1,0 +1,69 @@
+[workspace]
+members = ["crates/*"]
+resolver = "2"
+
+[workspace.package]
+version = "0.2.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+burst-core = { path = "crates/burst-core" }
+burst-server = { path = "crates/burst-server" }
+
+# Async
+tokio = { version = "1", features = ["full"] }
+
+# Web
+axum = { version = "0.8", features = ["ws"] }
+tower = "0.5"
+# `cors` is added back in M11, where the standalone tier terminates requests
+# itself; today every request arrives through the gateway, which handles CORS.
+
+# Database
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "uuid", "chrono", "migrate"] }
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Config
+toml = "1.1"
+
+# IDs & time
+uuid = { version = "1", features = ["v7", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.10"
+
+# Observability
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-opentelemetry = "0.34"
+opentelemetry = "0.33"
+opentelemetry_sdk = { version = "0.33", features = ["rt-tokio"] }
+opentelemetry-otlp = { version = "0.33", default-features = false, features = ["grpc-tonic", "trace"] }
+metrics = "0.24"
+metrics-exporter-prometheus = "0.18"
+
+# Error handling
+thiserror = "2"
+
+# File handling
+axum-extra = { version = "0.12", features = ["multipart"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "gif", "webp"] }
+mime_guess = "2"
+bytes = "1"
+multer = "3"
+
+# HTTP client (S3 gateway storage)
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "stream"] }
+
+# Cryptography
+rand = "0.10"
+sha2 = "0.11"
+hmac = "0.13"
+hex = "0.4"
+
+# Utilities
+tokio-util = { version = "0.7", features = ["rt", "io"] }
+urlencoding = "2"
