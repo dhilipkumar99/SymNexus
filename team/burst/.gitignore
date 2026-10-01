@@ -1,0 +1,24 @@
+tmp
+/target
+/bin
+/burst.toml
+.env
+*.swp
+*.swo
+*.bca
+.DS_Store
+
+# Barbacane ruleset (downloaded at lint time)
+.barbacane/
+
+# Frontend
+ui/node_modules/
+ui/dist/
+uploads/
+
+# mdBook build output
+book/
+
+# Playwright
+ui/test-results/
+ui/playwright-report/

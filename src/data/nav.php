@@ -19,6 +19,8 @@ const FOOTER_LINKS = [
     ['label' => 'Research', 'href' => '/research'],
     ['label' => 'Careers',  'href' => '/careers'],
     ['label' => 'Contact',  'href' => '/contact'],
+    // Employee messaging (team/, a separate Vercel project).
+    ['label' => 'Team login', 'href' => 'https://symnexus-team.vercel.app/login'],
 ];
 
 const LEGAL_LINKS = [

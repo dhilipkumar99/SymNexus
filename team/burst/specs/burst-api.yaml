@@ -1,0 +1,4762 @@
+openapi: 3.2.0
+info:
+  title: Burst API
+  version: 0.1.0
+  description: >-
+    Burst team messaging API. This spec is the single source of truth for both
+    the API contract and the Barbacane gateway configuration (ADR-005, ADR-006).
+  contact:
+    name: Barbacane
+    url: https://github.com/barbacane-dev/burst
+  license:
+    name: Apache-2.0
+    identifier: Apache-2.0
+
+servers:
+  - url: https://localhost:8080
+    description: Barbacane gateway (local dev)
+
+# ── Barbacane gateway configuration ──
+
+x-barbacane-middlewares:
+  - name: oidc-auth
+    config:
+      issuer_url: "env://BURST_OIDC_ISSUER_URL"
+      issuer_override: "env://BURST_OIDC_ISSUER_OVERRIDE"
+      audience: "burst"
+      groups_claim: "env://BURST_OIDC_GROUPS_CLAIM"
+  - name: rate-limit
+    config:
+      quota: 300
+      window: 60
+      partition_key: "context:auth.sub"
+
+# ── Tags ──
+
+tags:
+  - name: Realtime
+    description: WebSocket real-time messaging
+  - name: Users
+    description: User profile management
+  - name: Channels
+    description: Channel management and membership
+  - name: Messages
+    description: Messaging within channels
+  - name: Reactions
+    description: Emoji reactions on messages
+  - name: Search
+    description: Full-text message search
+  - name: Files
+    description: File attachments
+  - name: Pins
+    description: Pinned messages
+  - name: Webhooks
+    description: Incoming and outgoing webhook management
+  - name: Bots
+    description: Bot user account management
+  - name: Admin
+    description: Administration endpoints (admin role required)
+  - name: Frontend
+    description: SPA static file serving (no authentication)
+
+# ── Paths ──
+
+paths:
+  /ws:
+    get:
+      operationId: websocket
+      summary: WebSocket real-time connection
+      description: >-
+        Upgrades to a WebSocket connection for real-time events. Authentication
+        is handled by Barbacane on the HTTP Upgrade request. The optional
+        lastEventId query parameter enables gap-fill on reconnect.
+      tags:
+        - Realtime
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: ws-upstream
+        config:
+          url: "env://BURST_UPSTREAM_WS_URL"
+      x-barbacane-middlewares:
+        - name: oidc-auth
+          config:
+            issuer_url: "env://BURST_OIDC_ISSUER_URL"
+            issuer_override: "env://BURST_OIDC_ISSUER_OVERRIDE"
+            audience: "burst"
+            allow_query_token: true
+            groups_claim: "env://BURST_OIDC_GROUPS_CLAIM"
+        - name: rate-limit
+          config:
+            quota: 300
+            window: 60
+            partition_key: "context:auth.sub"
+      parameters:
+        - name: lastEventId
+          in: query
+          description: >-
+            ID of the last event received by the client. If provided, the server
+            will replay missed events after the WebSocket connection is established.
+          schema:
+            type: string
+            format: uuid
+            pattern: "^[0-9a-f-]{36}$"
+            maxLength: 36
+      responses:
+        "101":
+          description: Switching Protocols — WebSocket upgrade successful
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/users:
+    get:
+      operationId: listUsers
+      summary: List users
+      description: Returns a paginated list of users ordered by creation time.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - name: cursor
+          in: query
+          description: Pagination cursor (opaque token from previous response)
+          schema:
+            type: string
+            pattern: "^ch_[0-9a-f-]{36}$"
+            maxLength: 39
+            example: "ch_0193a5e0-7c1a-7000-8000-000000000001"
+        - name: limit
+          in: query
+          description: Number of results per page
+          schema:
+            type: string
+            maxLength: 3
+            pattern: "^[1-9][0-9]{0,2}$"
+            default: "50"
+            example: "50"
+      responses:
+        "200":
+          description: Paginated user list
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserList"
+        "400":
+          description: Invalid query parameters
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/users/me:
+    get:
+      operationId: getMe
+      summary: Get current user
+      description: Returns the profile of the currently authenticated user.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      responses:
+        "200":
+          description: Current user profile
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+              example:
+                id: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+                username: "alice"
+                displayName: "Alice Martin"
+                email: "alice@example.com"
+                role: "member"
+                status: "online"
+                isBot: false
+                createdAt: "2026-03-06T10:00:00Z"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    patch:
+      operationId: updateMe
+      summary: Update current user profile
+      description: >-
+        Updates the authenticated user's profile fields. Only provided fields
+        are updated; omitted fields are left unchanged.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProfileRequest"
+      responses:
+        "200":
+          description: Updated user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/users/me/status:
+    put:
+      operationId: setMyStatus
+      summary: Set my custom status
+      description: >-
+        Sets the authenticated user's custom status: a text, an emoji, or both,
+        shown until `expiresAt` when given. Replaces any previous status and
+        sends a `user.status_changed` event to every connected client. Once
+        expired, the status is reported as absent.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetStatusRequest"
+            example:
+              text: "In a meeting"
+              emoji: "📅"
+              expiresAt: "2026-09-24T15:00:00Z"
+      responses:
+        "200":
+          description: The user with their new status
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      operationId: clearMyStatus
+      summary: Clear my custom status
+      description: >-
+        Removes the authenticated user's custom status and sends a
+        `user.status_changed` event without a status to every connected client.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      responses:
+        "200":
+          description: The user without a status
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/users/me/do-not-disturb:
+    get:
+      operationId: getMyDoNotDisturb
+      summary: Get my do-not-disturb settings
+      description: >-
+        Returns the authenticated user's snooze and quiet-hours schedule, and
+        when their current quiet period ends if they are quiet now.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      responses:
+        "200":
+          description: Do-not-disturb settings
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoNotDisturb"
+              example:
+                snoozeUntil: "2026-09-24T15:00:00+00:00"
+                schedule:
+                  start: "22:00"
+                  end: "07:00"
+                  days: ["mon", "tue", "wed", "thu", "fri"]
+                  timeZone: "Europe/Paris"
+                quietUntil: "2026-09-24T15:00:00+00:00"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    put:
+      operationId: setMyDoNotDisturb
+      summary: Set my do-not-disturb settings
+      description: >-
+        Replaces the authenticated user's do-not-disturb settings: an omitted
+        `snoozeUntil` or `schedule` is cleared, so an empty object turns do not
+        disturb off. While quiet, the user receives no `notification.created`
+        events; messages still count as unread and mentions are still recorded.
+        Sends `user.dnd_changed` to every connected client.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SetDoNotDisturbRequest"
+            example:
+              schedule:
+                start: "22:00"
+                end: "07:00"
+                days: ["mon", "tue", "wed", "thu", "fri"]
+                timeZone: "Europe/Paris"
+      responses:
+        "200":
+          description: The new settings
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DoNotDisturb"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/users/{userId}:
+    get:
+      operationId: getUser
+      summary: Get a user by ID
+      description: Returns the public profile of a specific user.
+      tags:
+        - Users
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User ID (prefixed with usr_ or raw UUID)
+          schema:
+            type: string
+            pattern: "^(usr_)?[0-9a-f-]{36}$"
+            maxLength: 40
+            example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+      responses:
+        "200":
+          description: User profile
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Invalid user ID format
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels:
+    get:
+      operationId: listChannels
+      summary: List channels
+      description: >-
+        Returns a paginated list of channels.
+
+        - `?joined=true` — channels the authenticated user is a member of,
+          with per-channel `unreadCount`. Use this for the sidebar.
+        - `?joined=false` (default) — all public channels, for discovery.
+          `unreadCount` is always `0` in this mode. Empty for a guest, who
+          finds channels only by being added to them.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - name: joined
+          in: query
+          description: When true, restrict results to channels the caller has joined.
+          schema:
+            type: string
+            enum: ["true", "false"]
+            default: "false"
+        - name: cursor
+          in: query
+          description: Pagination cursor (opaque token from previous response)
+          schema:
+            type: string
+            pattern: "^ch_[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Number of results per page
+          schema:
+            type: string
+            maxLength: 3
+            pattern: "^[1-9][0-9]{0,2}$"
+            default: "50"
+      responses:
+        "200":
+          description: Paginated channel list
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - items
+                properties:
+                  items:
+                    type: array
+                    maxItems: 200
+                    items:
+                      $ref: "#/components/schemas/Channel"
+                  cursor:
+                    type: string
+                    maxLength: 40
+                    description: Cursor for next page, absent if no more results.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      operationId: createChannel
+      summary: Create a channel
+      description: Creates a new public or private channel. The creator is automatically added as owner. Guests cannot create channels.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      requestBody:
+        description: Channel to create
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChannelRequest"
+            example:
+              name: "engineering"
+              slug: "engineering"
+              kind: "public"
+              topic: "Engineering discussions"
+      responses:
+        "201":
+          description: Channel created
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Channel slug already exists
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}:
+    get:
+      operationId: getChannel
+      summary: Get a channel
+      description: Returns a channel by ID. Private channels require membership, and so do public ones for a guest. A channel the caller may not see is reported as not found.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "200":
+          description: Channel details
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "400":
+          description: Invalid channel ID format
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    patch:
+      operationId: updateChannel
+      summary: Update a channel
+      description: Updates channel name, topic, or description. Requires membership; guests cannot.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        description: Fields to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChannelRequest"
+      responses:
+        "200":
+          description: Channel updated
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/dms:
+    post:
+      operationId: createOrGetDm
+      summary: Create or retrieve a direct message channel
+      description: Returns an existing DM channel with the given user, or creates one if it does not exist. Guests cannot start one; they take part in those others start with them.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      requestBody:
+        description: Target user for the DM
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateDmRequest"
+      responses:
+        "200":
+          description: DM channel (existing or newly created)
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Target user not found
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/members:
+    get:
+      operationId: listChannelMembers
+      summary: List channel members
+      description: Returns members of a channel. Requires membership.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "200":
+          description: Channel member list
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelMemberList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      operationId: joinChannel
+      summary: Join a channel, or add someone to it
+      description: >-
+        Without a body, or without `userId`, adds the current user to a public
+        channel; guests cannot join on their own. With `userId`, adds that user
+        to a public or private channel; the caller must be a member and not a
+        guest. This is the only way into a private channel, and the only way a
+        guest enters any channel. Direct messages keep their members.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddChannelMemberRequest"
+      responses:
+        "204":
+          description: Joined, or the user was added
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "403":
+          description: >-
+            Joining a channel that is not public, joining as a guest, or adding
+            someone without being a member or as a guest
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/members/me:
+    delete:
+      operationId: leaveChannel
+      summary: Leave a channel
+      description: Removes the current user from the channel.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "204":
+          description: Left successfully
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/members/{userId}:
+    delete:
+      operationId: removeChannelMember
+      summary: Remove a member
+      description: >-
+        Removes another member from the channel. The caller must moderate the
+        channel (its owner, a channel moderator, or an instance moderator who
+        is a member) and outrank the member, so moderators cannot remove one
+        another. Nobody removes the owner. To leave, use
+        `DELETE /api/channels/{channelId}/members/me`.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/UserId"
+      responses:
+        "204":
+          description: Removed
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    patch:
+      operationId: updateChannelMemberRole
+      summary: Appoint or remove a channel moderator
+      description: >-
+        Sets a member's role to `moderator` or `member`. Only the channel owner
+        or an admin may. The owner's role cannot change and ownership cannot be
+        given this way. A guest cannot be made a moderator.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/UserId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateChannelMemberRoleRequest"
+      responses:
+        "200":
+          description: The member's updated membership
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChannelMember"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/members/me/last-read:
+    patch:
+      operationId: markChannelRead
+      summary: Mark the channel as read
+      description: Updates the caller's last-read timestamp for this channel, resetting the unread count.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "204":
+          description: Last-read timestamp updated
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/messages:
+    get:
+      operationId: listMessages
+      summary: List messages in a channel
+      description: Returns messages in a channel ordered by newest first (cursor-based pagination with UUIDv7).
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - name: cursor
+          in: query
+          description: Pagination cursor (message ID; returns messages older than this)
+          schema:
+            type: string
+            pattern: "^msg_[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Number of results per page
+          schema:
+            type: string
+            maxLength: 3
+            pattern: "^[1-9][0-9]{0,2}$"
+            default: "50"
+      responses:
+        "200":
+          description: Paginated message list
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      operationId: sendMessage
+      summary: Send a message
+      description: Sends a new message to a channel. Requires membership.
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        description: >-
+          Send as JSON for text-only messages, or multipart/form-data to
+          include file attachments.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageRequest"
+            example:
+              content: "Hello, world!"
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/SendMessageMultipart"
+      responses:
+        "201":
+          description: Message sent
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/messages/{messageId}:
+    get:
+      operationId: getMessage
+      summary: Get a message
+      description: Returns a specific message by ID. Requires channel membership.
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "200":
+          description: Message details
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/MessageNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    patch:
+      operationId: editMessage
+      summary: Edit a message
+      description: Edits a message's content. Only the author can edit their own messages.
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+      requestBody:
+        description: Updated message content
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EditMessageRequest"
+      responses:
+        "200":
+          description: Message edited
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/MessageNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    delete:
+      operationId: deleteMessage
+      summary: Delete a message
+      description: Soft-deletes a message (content cleared, row preserved). The author can delete their own; someone who moderates the channel can delete anyone's, which is recorded in the audit log. Others get 404.
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "204":
+          description: Message deleted
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/MessageNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/messages/{messageId}/replies:
+    get:
+      operationId: listThreadReplies
+      summary: List replies in a message thread
+      description: Returns replies to a thread root message, ordered by oldest first.
+      tags:
+        - Messages
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+        - name: cursor
+          in: query
+          description: Pagination cursor (message ID)
+          schema:
+            type: string
+            pattern: "^msg_[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Number of results per page
+          schema:
+            type: string
+            maxLength: 3
+            pattern: "^[1-9][0-9]{0,2}$"
+            default: "50"
+      responses:
+        "200":
+          description: Paginated thread reply list
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/MessageNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/messages/{messageId}/reactions/{emoji}:
+    put:
+      operationId: addReaction
+      summary: Add a reaction to a message (idempotent)
+      description: Adds an emoji reaction from the current user. Has no effect if already reacted.
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+        - name: emoji
+          in: path
+          required: true
+          description: Emoji character or shortcode
+          schema:
+            type: string
+            pattern: "^.+$"
+            minLength: 1
+            maxLength: 64
+            example: "👍"
+      responses:
+        "204":
+          description: Reaction added
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          $ref: "#/components/responses/MessageNotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    delete:
+      operationId: removeReaction
+      summary: Remove a reaction from a message
+      description: Removes the current user's emoji reaction from a message.
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+        - name: emoji
+          in: path
+          required: true
+          description: Emoji character or shortcode
+          schema:
+            type: string
+            pattern: "^.+$"
+            minLength: 1
+            maxLength: 64
+            example: "👍"
+      responses:
+        "204":
+          description: Reaction removed
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/NotChannelMember"
+        "404":
+          description: Message or reaction not found
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/search/messages:
+    get:
+      operationId: searchMessages
+      summary: Full-text search across messages
+      description: >-
+        Searches message content, matching word stems ("running" finds "run"),
+        and the names of the files attached to messages. Results are scoped to
+        channels the caller is a member of. The query accepts "quoted phrases"
+        and -excluded words. Matching terms are highlighted in the `headline`
+        field. File names match by case-insensitive substring, and a result
+        found that way names the file in `matchedFile`. Results are ordered by
+        relevance; `cursor` continues exactly where the previous page ended.
+      tags:
+        - Search
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: Search query (supports quoted phrases and -exclude)
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 200
+            example: "deploy fix"
+        - name: channelId
+          in: query
+          description: Restrict results to a specific channel
+          schema:
+            type: string
+            pattern: "^(ch_)?[0-9a-f-]{36}$"
+            maxLength: 39
+            example: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+        - name: from
+          in: query
+          description: Only messages written by this user
+          schema:
+            type: string
+            pattern: "^(usr_)?[0-9a-f-]{36}$"
+            maxLength: 40
+            example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        - name: after
+          in: query
+          description: Only messages sent at or after this instant (RFC 3339)
+          schema:
+            type: string
+            format: date-time
+            maxLength: 40
+            example: "2026-09-01T00:00:00+02:00"
+        - name: before
+          in: query
+          description: >-
+            Only messages sent before this instant (RFC 3339). Must be later
+            than `after` when both are given.
+          schema:
+            type: string
+            format: date-time
+            maxLength: 40
+            example: "2026-10-01T00:00:00+02:00"
+        - name: hasFile
+          in: query
+          description: Only messages carrying at least one file
+          schema:
+            type: string
+            enum:
+              - "true"
+              - "false"
+        - name: cursor
+          in: query
+          description: Pagination cursor (opaque token from the previous response)
+          schema:
+            type: string
+            pattern: "^[0-9.]+_[0-9a-f-]{36}$"
+            maxLength: 64
+        - name: limit
+          in: query
+          description: Number of results per page
+          schema:
+            type: string
+            maxLength: 3
+            pattern: "^[1-9][0-9]{0,2}$"
+            default: "50"
+      responses:
+        "200":
+          description: Search results
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResultList"
+        "400":
+          description: Invalid or empty search query
+          headers:
+            X-RateLimit-Limit:
+              $ref: "#/components/headers/X-RateLimit-Limit"
+            X-RateLimit-Remaining:
+              $ref: "#/components/headers/X-RateLimit-Remaining"
+            X-RateLimit-Reset:
+              $ref: "#/components/headers/X-RateLimit-Reset"
+            X-RateLimit-Policy:
+              $ref: "#/components/headers/X-RateLimit-Policy"
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/emojis:
+    get:
+      operationId: listCustomEmojis
+      summary: List custom emojis
+      description: >-
+        Returns all custom emojis available to the current user (for the emoji picker).
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      responses:
+        "200":
+          description: Paginated list of custom emojis
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    maxItems: 1000
+                    items:
+                      $ref: "#/components/schemas/CustomEmoji"
+                  cursor:
+                    type: ["string", "null"]
+                    maxLength: 40
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/emojis/{emojiId}/image:
+    get:
+      operationId: getCustomEmojiImage
+      summary: Custom emoji image
+      description: >-
+        Returns the image of a custom emoji, for any signed-in user. This is the
+        `imageUrl` a CustomEmoji carries. An `<img>` cannot send a bearer
+        header, so the token may come as the `access_token` query parameter.
+      tags:
+        - Reactions
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: oidc-auth
+          config:
+            issuer_url: "env://BURST_OIDC_ISSUER_URL"
+            issuer_override: "env://BURST_OIDC_ISSUER_OVERRIDE"
+            audience: "burst"
+            allow_query_token: true
+            groups_claim: "env://BURST_OIDC_GROUPS_CLAIM"
+        - name: rate-limit
+          config:
+            quota: 300
+            window: 60
+            partition_key: "context:auth.sub"
+      parameters:
+        - name: emojiId
+          in: path
+          required: true
+          description: Custom emoji ID (UUID)
+          schema:
+            type: string
+            pattern: "^[0-9a-f-]{36}$"
+            maxLength: 36
+            example: "0193a5e0-7c1a-7000-8000-000000000300"
+      responses:
+        "200":
+          description: The emoji image
+          content:
+            image/*:
+              schema:
+                type: string
+                format: binary
+                maxLength: 262144
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: No custom emoji has this ID
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  /api/attachments/{attachmentId}:
+    get:
+      operationId: downloadAttachment
+      summary: Download a file attachment
+      description: >-
+        Returns the raw file content for the given attachment. The caller must
+        be a member of the channel that contains the attachment's message.
+        Images and PDFs are served inline; other files as downloads.
+      tags:
+        - Files
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: oidc-auth
+          config:
+            issuer_url: "env://BURST_OIDC_ISSUER_URL"
+            issuer_override: "env://BURST_OIDC_ISSUER_OVERRIDE"
+            audience: "burst"
+            allow_query_token: true
+            groups_claim: "env://BURST_OIDC_GROUPS_CLAIM"
+        - name: rate-limit
+          config:
+            quota: 300
+            window: 60
+            partition_key: "context:auth.sub"
+      parameters:
+        - name: attachmentId
+          in: path
+          required: true
+          description: Attachment ID (prefixed or raw UUID)
+          schema:
+            type: string
+            pattern: "^(att_)?[0-9a-f-]{36}$"
+            maxLength: 40
+            example: "att_0193a5e0-7c1a-7000-8000-000000000200"
+      responses:
+        "200":
+          description: File content
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                maxLength: 10485760
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          description: Attachment not found or caller is not a channel member
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  # ── Pinned messages ──
+
+  /api/channels/{channelId}/messages/{messageId}/pin:
+    put:
+      operationId: pinMessage
+      summary: Pin a message
+      description: Pins a message in the channel. Requires channel membership; guests cannot.
+      tags:
+        - Pins
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "204":
+          description: Message pinned
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Channel or message not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    delete:
+      operationId: unpinMessage
+      summary: Unpin a message
+      description: Removes a pin from a message in the channel. Requires channel membership; guests cannot.
+      tags:
+        - Pins
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "204":
+          description: Message unpinned
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          description: Pin not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/channels/{channelId}/pins:
+    get:
+      operationId: listPins
+      summary: List pinned messages
+      description: Returns all pinned messages for a channel, ordered by pin time.
+      tags:
+        - Pins
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "200":
+          description: List of pinned messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  # ── Channel archival ──
+
+  /api/channels/{channelId}/archive:
+    post:
+      operationId: archiveChannel
+      summary: Archive a channel
+      description: >-
+        Archives a channel, making it read-only. Requires moderating the
+        channel (its owner, a channel moderator, or an instance moderator who
+        is a member) or the admin role.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "200":
+          description: Channel archived
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Forbidden — not admin or channel owner
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/channels/{channelId}/unarchive:
+    post:
+      operationId: unarchiveChannel
+      summary: Unarchive a channel
+      description: Restores an archived channel to normal read-write mode. Requires moderating the channel or the admin role.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "200":
+          description: Channel unarchived
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  # ── Notification preferences ──
+
+  /api/channels/{channelId}/members/me/notify:
+    patch:
+      operationId: updateNotifyPreference
+      summary: Update notification preference
+      description: >-
+        Sets the per-channel notification preference for the current user.
+      tags:
+        - Channels
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notify:
+                  type: string
+                  enum: [all, mentions, nothing]
+                  description: Notification level for this channel
+              required:
+                - notify
+      responses:
+        "204":
+          description: Preference updated
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  # ── Admin endpoints ──
+
+  /api/admin/users:
+    get:
+      operationId: listAdminUsers
+      summary: List all users (admin)
+      description: >-
+        Returns a paginated list of all users including deactivated ones.
+        Requires admin role.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous request.
+          schema:
+            type: string
+            pattern: "^usr_[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Maximum number of items to return per page.
+          schema:
+            type: string
+            maxLength: 3
+            default: "50"
+      responses:
+        "200":
+          description: Paginated admin user list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUserList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Forbidden — admin role required
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/admin/users/{userId}:
+    patch:
+      operationId: updateAdminUser
+      summary: Update a user (admin)
+      description: >-
+        Updates user role or deactivation status. All changes are audit-logged.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: The user's unique identifier.
+          schema:
+            type: string
+            maxLength: 40
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              properties:
+                role:
+                  type: string
+                  enum: [admin, integrator, moderator, member, guest]
+                deactivated:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/UserNotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/admin/channels:
+    get:
+      operationId: listAdminChannels
+      summary: List all channels (admin)
+      description: >-
+        Returns all channels including archived ones. Requires admin role.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous request.
+          schema:
+            type: string
+            pattern: "^ch_[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Maximum number of items to return per page.
+          schema:
+            type: string
+            maxLength: 3
+            default: "50"
+      responses:
+        "200":
+          description: Paginated channel list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminChannelList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/admin/channels/{channelId}:
+    patch:
+      operationId: updateAdminChannel
+      summary: Update a channel (admin)
+      description: Archive or unarchive a channel. Changes are audit-logged.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                isArchived:
+                  type: boolean
+      responses:
+        "200":
+          description: Updated channel
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Channel"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+    delete:
+      operationId: deleteAdminChannel
+      summary: Delete a channel (admin)
+      description: >-
+        Permanently deletes a channel and all its messages. This action
+        cannot be undone. Changes are audit-logged.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      responses:
+        "204":
+          description: Channel deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/ChannelNotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+  /api/admin/audit-log:
+    get:
+      operationId: listAuditLog
+      summary: List audit log entries
+      description: >-
+        Returns a paginated list of admin action audit log entries.
+        Optionally filterable by target type.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor returned by a previous request.
+          schema:
+            type: string
+            pattern: "^[0-9a-f-]{36}$"
+            maxLength: 40
+        - name: limit
+          in: query
+          description: Maximum number of items to return per page.
+          schema:
+            type: string
+            maxLength: 3
+            default: "50"
+        - name: targetType
+          in: query
+          description: Filter by target type (e.g. "user", "channel")
+          schema:
+            type: string
+            maxLength: 50
+      responses:
+        "200":
+          description: Paginated audit log
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuditLogList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+        "429":
+          $ref: "#/components/responses/RateLimited"
+
+  # ── Data Exports (Admin) ──
+
+  /api/admin/exports:
+    get:
+      operationId: listExports
+      summary: List data exports
+      description: The 50 most recent exports, newest first.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      responses:
+        "200":
+          description: Exports
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExportList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      operationId: createExport
+      summary: Request a data export
+      description: >-
+        Starts building an archive of messages and files in the background:
+        the whole instance (every channel, private channels and direct messages
+        included) or one channel. Deleted messages are left out. Poll the export
+        until its status is `completed`, then download it. One export runs at a
+        time. The request is recorded in the audit log.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateExportRequest"
+            example:
+              channelId: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+      responses:
+        "202":
+          description: The export, pending
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Export"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: Another export is in progress
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/admin/exports/{exportId}:
+    get:
+      operationId: getExport
+      summary: Get a data export
+      description: >-
+        An export's status. One that stopped making progress for ten minutes
+        (its server restarted) is reported as failed with the error
+        `interrupted`.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          description: Prefixed export ID.
+          schema:
+            type: string
+            pattern: "^exp_[0-9a-f-]{36}$"
+            maxLength: 40
+      responses:
+        "200":
+          description: The export
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Export"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    delete:
+      operationId: deleteExport
+      summary: Delete a data export
+      description: Deletes a finished export and its archive. Recorded in the audit log.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          description: Prefixed export ID.
+          schema:
+            type: string
+            pattern: "^exp_[0-9a-f-]{36}$"
+            maxLength: 40
+      responses:
+        "204":
+          description: Deleted
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: The export is still in progress
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/admin/exports/{exportId}/download:
+    get:
+      operationId: downloadExport
+      summary: Download a data export
+      description: >-
+        The archive, as a zip: `export.json` (what was exported), `users.json`,
+        `channels/<channel id>/channel.json` and `messages.jsonl` (one message
+        per line, oldest first), and `files/<attachment id>/<file name>`.
+        Recorded in the audit log.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: exportId
+          in: path
+          required: true
+          description: Prefixed export ID.
+          schema:
+            type: string
+            pattern: "^exp_[0-9a-f-]{36}$"
+            maxLength: 40
+      responses:
+        "200":
+          description: The zip archive
+          content:
+            application/zip:
+              schema:
+                type: string
+                format: binary
+                maxLength: 17179869184
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "409":
+          description: The export is not complete
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Custom Emojis (Admin) ──
+
+  /api/admin/emojis:
+    get:
+      operationId: listAdminEmojis
+      summary: List custom emojis (admin)
+      description: >-
+        Returns all custom emojis. Requires admin role.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      responses:
+        "200":
+          description: Paginated list of custom emojis
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    maxItems: 1000
+                    items:
+                      $ref: "#/components/schemas/CustomEmoji"
+                  cursor:
+                    type: ["string", "null"]
+                    maxLength: 40
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      operationId: createCustomEmoji
+      summary: Upload a custom emoji
+      description: >-
+        Uploads a custom emoji image with a shortcode. Requires admin role.
+        The image must be under 256 KB and have an image/* content type.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [shortcode, image]
+              properties:
+                shortcode:
+                  type: string
+                  minLength: 2
+                  maxLength: 32
+                  pattern: "^[a-z0-9_]+$"
+                  description: Shortcode for the emoji (e.g. "party_parrot").
+                image:
+                  type: string
+                  format: binary
+                  maxLength: 262144
+                  description: Emoji image file (PNG, GIF, WebP, or SVG, max 256 KB).
+      responses:
+        "201":
+          description: Custom emoji created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomEmoji"
+        "400":
+          description: Invalid shortcode or missing image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "413":
+          description: Image exceeds 256 KB size limit
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/admin/emojis/{emojiId}:
+    delete:
+      operationId: deleteCustomEmoji
+      summary: Delete a custom emoji
+      description: >-
+        Deletes a custom emoji by ID. Requires admin role.
+      tags:
+        - Admin
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+      parameters:
+        - name: emojiId
+          in: path
+          required: true
+          description: Custom emoji ID
+          schema:
+            type: string
+            maxLength: 40
+      responses:
+        "204":
+          description: Emoji deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Webhooks ──
+
+  /api/channels/{channelId}/webhooks:
+    get:
+      operationId: listChannelWebhooks
+      summary: List webhooks for a channel
+      description: Returns webhooks configured for this channel. Requires integrator or admin role.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor.
+          schema:
+            type: string
+            pattern: "^wh_[0-9a-f-]{36}$"
+            maxLength: 39
+        - name: limit
+          in: query
+          description: Maximum items per page.
+          schema:
+            type: string
+            maxLength: 3
+            default: "50"
+      responses:
+        "200":
+          description: Paginated webhook list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      operationId: createWebhook
+      summary: Create a webhook
+      description: >-
+        Creates an incoming or outgoing webhook for a channel. The response
+        includes the plaintext token which is only shown once. Requires
+        integrator or admin role.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWebhookRequest"
+      responses:
+        "201":
+          description: Webhook created (includes token shown only once)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateWebhookResponse"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/webhooks/{webhookId}:
+    get:
+      operationId: getWebhook
+      summary: Get a webhook
+      description: Returns webhook details for a specific webhook.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/WebhookId"
+      responses:
+        "200":
+          description: Webhook details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    patch:
+      operationId: updateWebhook
+      summary: Update a webhook
+      description: Updates webhook name, URL, or active status.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/WebhookId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateWebhookRequest"
+      responses:
+        "200":
+          description: Webhook updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Webhook"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    delete:
+      operationId: deleteWebhook
+      summary: Delete a webhook
+      description: Permanently deletes a webhook.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/WebhookId"
+      responses:
+        "204":
+          description: Webhook deleted
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/channels/{channelId}/webhooks/{webhookId}/token:
+    post:
+      operationId: regenerateWebhookToken
+      summary: Regenerate webhook token
+      description: Generates a new token, invalidating the old one. Returns the new token once.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - $ref: "#/components/parameters/ChannelId"
+        - $ref: "#/components/parameters/WebhookId"
+      responses:
+        "200":
+          description: New token (shown only once)
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - token
+                properties:
+                  token:
+                    type: string
+                    maxLength: 64
+                    description: New plaintext token.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/webhooks/{webhookId}/trigger:
+    post:
+      operationId: triggerIncomingWebhook
+      summary: Trigger an incoming webhook
+      description: >-
+        Posts a message to the channel associated with this incoming webhook.
+        Authenticates via the webhook's bearer token, not OIDC.
+      tags:
+        - Webhooks
+      security:
+        - WebhookToken: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares: []
+      parameters:
+        - $ref: "#/components/parameters/WebhookId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IncomingWebhookPayload"
+      responses:
+        "201":
+          description: Message created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/admin/webhooks:
+    get:
+      operationId: listAllWebhooks
+      summary: List all webhooks
+      description: Returns all webhooks across all channels. Requires integrator or admin role.
+      tags:
+        - Webhooks
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - name: cursor
+          in: query
+          description: Opaque pagination cursor.
+          schema:
+            type: string
+            pattern: "^wh_[0-9a-f-]{36}$"
+            maxLength: 39
+        - name: limit
+          in: query
+          description: Maximum items per page.
+          schema:
+            type: string
+            maxLength: 3
+            default: "50"
+      responses:
+        "200":
+          description: Paginated webhook list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Bots ──
+
+  /api/admin/bots:
+    get:
+      operationId: listBots
+      summary: List bot users
+      description: Returns all bot user accounts. Requires integrator or admin role.
+      tags:
+        - Bots
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      responses:
+        "200":
+          description: List of bot users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BotList"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    post:
+      operationId: createBot
+      summary: Create a bot user
+      description: >-
+        Creates a new bot user account. Bot credentials are managed in the
+        Barbacane gateway (apikey-auth plugin), not in Burst.
+      tags:
+        - Bots
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateBotRequest"
+      responses:
+        "201":
+          description: Bot created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "409":
+          description: Username already taken
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  /api/admin/bots/{botId}:
+    patch:
+      operationId: updateBot
+      summary: Update a bot user
+      description: Updates bot display name.
+      tags:
+        - Bots
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - name: botId
+          in: path
+          required: true
+          description: Bot user ID.
+          schema:
+            type: string
+            pattern: "^usr_[0-9a-f-]{36}$"
+            maxLength: 40
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateBotRequest"
+      responses:
+        "200":
+          description: Bot updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+    delete:
+      operationId: deleteBot
+      summary: Deactivate a bot user
+      description: Deactivates a bot user account.
+      tags:
+        - Bots
+      security:
+        - BearerAuth: []
+      x-barbacane-dispatch:
+        name: http-upstream
+        config:
+          url: "env://BURST_UPSTREAM_URL"
+      x-barbacane-middlewares:
+        - name: acl
+          config:
+            allow:
+              - admin
+              - integrator
+      parameters:
+        - name: botId
+          in: path
+          required: true
+          description: Bot user ID.
+          schema:
+            type: string
+            pattern: "^usr_[0-9a-f-]{36}$"
+            maxLength: 40
+      responses:
+        "204":
+          description: Bot deactivated
+        "400":
+          $ref: "#/components/responses/MalformedRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "429":
+          $ref: "#/components/responses/RateLimited"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+  # ── Frontend SPA ──
+
+  /:
+    get:
+      operationId: spaRoot
+      summary: Redirect root to SPA index
+      tags:
+        - Frontend
+      x-barbacane-dispatch:
+        name: mock
+        config:
+          status: 302
+          body: ""
+          headers:
+            Location: /index.html
+          content_type: text/plain
+      x-barbacane-middlewares: []
+      responses:
+        "302":
+          description: Redirect to SPA
+
+  # An /api path no operation above matches is an API error, not a page of the
+  # SPA: without this, the catch-all below would look it up in the SPA bucket.
+  /api/{path+}:
+    get:
+      operationId: unknownApiPath
+      summary: No API operation at this path
+      tags:
+        - Frontend
+      x-barbacane-dispatch:
+        name: mock
+        config:
+          status: 404
+          body: '{"type":"urn:burst:error:not_found","title":"Not Found","status":404,"detail":"No API operation matches this path."}'
+          content_type: application/problem+json
+      x-barbacane-middlewares: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          allowReserved: true
+          schema:
+            type: string
+            maxLength: 1024
+      responses:
+        "404":
+          description: No API operation matches this path
+          content:
+            application/problem+json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetails"
+
+  /{path+}:
+    get:
+      operationId: serveSpa
+      summary: Serve SPA static files from S3 with index.html fallback
+      tags:
+        - Frontend
+      x-barbacane-dispatch:
+        name: s3
+        config:
+          region: "env://BURST_S3_REGION"
+          bucket: "env://BURST_SPA_BUCKET"
+          access_key_id: "env://BURST_S3_ACCESS_KEY_ID"
+          secret_access_key: "env://BURST_S3_SECRET_ACCESS_KEY"
+          endpoint: "env://BURST_S3_ENDPOINT"
+          force_path_style: true
+          key_param: path
+          fallback_key: index.html
+      x-barbacane-middlewares: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          allowReserved: true
+          schema:
+            type: string
+            maxLength: 1024
+      responses:
+        "200":
+          description: Static file or SPA fallback
+        "404":
+          description: File not found (fallback also missing)
+
+# ── Components ──
+
+components:
+  securitySchemes:
+    WebhookToken:
+      type: http
+      scheme: bearer
+      description: >-
+        The incoming webhook's own token, issued by Burst and validated by the
+        upstream rather than by a gateway middleware. Naming it here is what
+        lets the Authorization header reach the upstream.
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: >-
+        JWT validated by the Barbacane oidc-auth middleware (RFC8725 best
+        practices enforced) which sets the X-Auth-Consumer header (sub claim)
+        before forwarding to Burst. In local dev, tokens are issued by a mock
+        OIDC server (localhost:9099).
+
+  parameters:
+    UserId:
+      name: userId
+      in: path
+      required: true
+      description: User ID (prefixed with usr_ or raw UUID)
+      schema:
+        type: string
+        pattern: "^(usr_)?[0-9a-f-]{36}$"
+        maxLength: 40
+        example: "usr_0193a5e0-7c1a-7000-8000-000000000002"
+    ChannelId:
+      name: channelId
+      in: path
+      required: true
+      description: Channel ID (prefixed with ch_ or raw UUID)
+      schema:
+        type: string
+        pattern: "^(ch_)?[0-9a-f-]{36}$"
+        maxLength: 39
+        example: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+    MessageId:
+      name: messageId
+      in: path
+      required: true
+      description: Message ID (prefixed with msg_ or raw UUID)
+      schema:
+        type: string
+        pattern: "^(msg_)?[0-9a-f-]{36}$"
+        maxLength: 40
+        example: "msg_0193a5e0-7c1a-7000-8000-000000000100"
+    WebhookId:
+      name: webhookId
+      in: path
+      required: true
+      description: Webhook ID (prefixed with wh_ or raw UUID)
+      schema:
+        type: string
+        pattern: "^(wh_)?[0-9a-f-]{36}$"
+        maxLength: 39
+        example: "wh_0193a5e0-7c1a-7000-8000-000000000200"
+
+  responses:
+    Unauthorized:
+      description: Missing or invalid authentication
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+    RateLimited:
+      description: Rate limited
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+        Retry-After:
+          $ref: "#/components/headers/Retry-After"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+    NotFound:
+      description: Resource not found
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+    InternalError:
+      description: Internal server error
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+    NotChannelMember:
+      description: Not a channel member
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+    ChannelNotFound:
+      description: Channel not found
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+    Forbidden:
+      description: Forbidden
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+    MalformedRequest:
+      description: Malformed request
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+    MessageNotFound:
+      description: Message not found
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+    UserNotFound:
+      description: User not found
+      headers:
+        X-RateLimit-Limit:
+          $ref: "#/components/headers/X-RateLimit-Limit"
+        X-RateLimit-Remaining:
+          $ref: "#/components/headers/X-RateLimit-Remaining"
+        X-RateLimit-Reset:
+          $ref: "#/components/headers/X-RateLimit-Reset"
+        X-RateLimit-Policy:
+          $ref: "#/components/headers/X-RateLimit-Policy"
+      content:
+        application/problem+json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetails"
+
+  headers:
+    X-RateLimit-Limit:
+      description: Maximum requests allowed in the current window.
+      schema:
+        type: integer
+        format: int32
+        example: 100
+    X-RateLimit-Remaining:
+      description: Remaining requests in the current window.
+      schema:
+        type: integer
+        format: int32
+        example: 87
+    X-RateLimit-Reset:
+      description: Unix timestamp when the current window resets.
+      schema:
+        type: integer
+        format: int64
+        example: 1741200000
+    X-RateLimit-Policy:
+      description: Policy name and settings (IETF draft-ietf-httpapi-ratelimit-headers).
+      schema:
+        type: string
+        maxLength: 100
+        example: "100;w=60"
+    Retry-After:
+      description: Seconds until the next request will be accepted.
+      schema:
+        type: integer
+        format: int32
+        example: 12
+
+  schemas:
+    User:
+      type: object
+      description: User profile visible to other authenticated users.
+      required:
+        - id
+        - username
+        - displayName
+        - role
+        - status
+        - isBot
+        - createdAt
+      properties:
+        id:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Prefixed user ID.
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        username:
+          type: string
+          pattern: "^[a-zA-Z0-9._-]+$"
+          maxLength: 64
+          example: "alice"
+        displayName:
+          type: string
+          pattern: "^[^\\x00-\\x1f]+$"
+          maxLength: 128
+          example: "Alice Martin"
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          example: "alice@example.com"
+        avatarUrl:
+          type: string
+          format: uri
+          maxLength: 2048
+        role:
+          type: string
+          enum:
+            - admin
+            - integrator
+            - moderator
+            - member
+            - guest
+          example: "member"
+        status:
+          type: string
+          enum:
+            - online
+            - away
+            - offline
+            - dnd
+          example: "online"
+        statusText:
+          type: string
+          pattern: "^.*$"
+          maxLength: 256
+          description: Custom status text. Absent when no status is set or it has expired.
+          example: "In a meeting"
+        statusEmoji:
+          type: string
+          maxLength: 16
+          description: Custom status emoji. Absent when none is set or the status has expired.
+          example: "📅"
+        statusExpiresAt:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: When the custom status stops showing. Absent when it has no end.
+          example: "2026-09-24T15:00:00Z"
+        doNotDisturbUntil:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: When the user's current do-not-disturb period ends. Absent when they are not quiet.
+          example: "2026-09-25T05:00:00+00:00"
+        isBot:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:00:00Z"
+
+    UserList:
+      type: object
+      description: Paginated list of users with cursor for next page.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/User"
+          example: []
+        cursor:
+          type: string
+          maxLength: 40
+          pattern: "^usr_[0-9a-f-]{36}$"
+          description: Cursor for next page, absent if no more results.
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000002"
+
+    ProblemDetails:
+      type: object
+      description: RFC 9457 problem details for HTTP APIs.
+      required:
+        - type
+        - title
+        - status
+      properties:
+        type:
+          type: string
+          format: uri
+          maxLength: 128
+          description: "Error type URN (e.g., urn:burst:error:not-found)."
+          example: "urn:burst:error:not-found"
+        title:
+          type: string
+          pattern: "^.+$"
+          maxLength: 128
+          description: Short human-readable summary of the problem type.
+          example: "Not Found"
+        status:
+          type: integer
+          format: int32
+          minimum: 100
+          maximum: 599
+          description: HTTP status code.
+          example: 404
+        detail:
+          type: string
+          pattern: "^.+$"
+          maxLength: 1024
+          description: Human-readable explanation specific to this occurrence.
+          example: "User not found"
+        instance:
+          type: string
+          format: uri
+          maxLength: 2048
+          description: URI identifying the specific occurrence.
+        errors:
+          type: array
+          maxItems: 100
+          description: Validation errors when type is urn:burst:error:validation.
+          items:
+            $ref: "#/components/schemas/ValidationError"
+
+    ValidationError:
+      type: object
+      description: Individual field validation error within a validation problem.
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          pattern: "^[a-z][a-z0-9_.-]*$"
+          maxLength: 64
+          description: Machine-readable validation error code.
+          example: "required"
+        message:
+          type: string
+          pattern: "^.+$"
+          maxLength: 512
+          description: Human-readable validation error message.
+          example: "Field 'email' is required"
+        location:
+          type: string
+          pattern: "^[a-zA-Z0-9._\\[\\]]+$"
+          maxLength: 256
+          description: JSONPath or dot-notation location of the invalid field.
+          example: "body.email"
+
+    Channel:
+      type: object
+      description: A messaging channel (public, private, DM, or group DM).
+      required:
+        - id
+        - kind
+        - createdBy
+        - isArchived
+        - isReadonly
+        - createdAt
+        - updatedAt
+        - unreadCount
+      properties:
+        id:
+          type: string
+          pattern: "^ch_[0-9a-f-]{36}$"
+          maxLength: 39
+          description: Prefixed channel ID.
+          example: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+        kind:
+          type: string
+          enum:
+            - public
+            - private
+            - dm
+            - group_dm
+          example: "public"
+        name:
+          type: string
+          pattern: "^.+$"
+          maxLength: 128
+          example: "engineering"
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+          maxLength: 128
+          description: URL-friendly channel identifier.
+          example: "engineering"
+        topic:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 512
+          example: "Engineering discussions"
+        description:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 2048
+          example: "Main channel for the engineering team"
+        createdBy:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        isArchived:
+          type: boolean
+          example: false
+        isReadonly:
+          type: boolean
+          example: false
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:00:00Z"
+        unreadCount:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Number of unread messages for the current user in this channel.
+          example: 3
+
+    CreateChannelRequest:
+      type: object
+      description: Request body for creating a new channel.
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          pattern: "^.+$"
+          maxLength: 128
+          example: "engineering"
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+          maxLength: 128
+          example: "engineering"
+        kind:
+          type: string
+          enum:
+            - public
+            - private
+          default: public
+          example: "public"
+        topic:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 512
+        description:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 2048
+
+    UpdateChannelRequest:
+      type: object
+      description: Request body for updating a channel.
+      properties:
+        name:
+          type: string
+          pattern: "^.+$"
+          maxLength: 128
+        topic:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 512
+        description:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 2048
+
+    ChannelMember:
+      type: object
+      description: A user's membership in a channel.
+      required:
+        - userId
+        - role
+        - joinedAt
+      properties:
+        userId:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        role:
+          type: string
+          enum:
+            - owner
+            - moderator
+            - member
+          example: "member"
+        joinedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:00:00Z"
+
+    Message:
+      type: object
+      description: A message in a channel.
+      required:
+        - id
+        - channelId
+        - userId
+        - content
+        - replyCount
+        - reactions
+        - attachments
+        - createdAt
+      properties:
+        id:
+          type: string
+          pattern: "^msg_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Prefixed message ID.
+          example: "msg_0193a5e0-7c1a-7000-8000-000000000100"
+        channelId:
+          type: string
+          pattern: "^ch_[0-9a-f-]{36}$"
+          maxLength: 39
+          example: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+        userId:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        threadId:
+          type: string
+          pattern: "^msg_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Thread root message ID. Null for top-level messages.
+        content:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 4000
+          description: Message text content. Empty string if soft-deleted.
+          example: "Hello, world!"
+        editedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          description: Set when message has been edited.
+        deletedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          description: Set when message has been soft-deleted.
+        replyCount:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Number of replies in this message's thread.
+          example: 0
+        reactions:
+          type: array
+          maxItems: 100
+          description: Aggregated emoji reactions on this message.
+          items:
+            $ref: "#/components/schemas/ReactionCount"
+        attachments:
+          type: array
+          maxItems: 10
+          description: File attachments on this message.
+          items:
+            $ref: "#/components/schemas/Attachment"
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:05:00Z"
+
+    MessageList:
+      type: object
+      description: Paginated list of messages with cursor for next page.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/Message"
+        cursor:
+          type: string
+          maxLength: 40
+          pattern: "^msg_[0-9a-f-]{36}$"
+          description: Cursor for next page (oldest message ID), absent if no more results.
+
+    ChannelMemberList:
+      type: object
+      description: List of channel members.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 10000
+          items:
+            $ref: "#/components/schemas/ChannelMember"
+        cursor:
+          type: string
+          maxLength: 40
+          description: Cursor for next page, absent if no more results.
+
+    CustomEmoji:
+      type: object
+      required: [id, shortcode, imageUrl, createdBy, createdAt]
+      properties:
+        id:
+          type: string
+          maxLength: 40
+          description: Emoji unique identifier.
+        shortcode:
+          type: string
+          maxLength: 64
+          description: Shortcode used to insert the emoji (e.g. "party_parrot").
+        imageUrl:
+          type: string
+          maxLength: 2048
+          format: uri-reference
+          description: >-
+            Path of the emoji image on this server
+            (`/api/emojis/{emojiId}/image`), fetched with the caller's token.
+        createdBy:
+          type: string
+          maxLength: 40
+          description: User ID of the emoji creator.
+        createdAt:
+          type: string
+          maxLength: 40
+          format: date-time
+
+    UpdateProfileRequest:
+      type: object
+      minProperties: 1
+      properties:
+        displayName:
+          type: string
+          pattern: "^[^\\x00-\\x1f]+$"
+          maxLength: 128
+          description: Display name shown in messages and sidebar.
+        email:
+          type: string
+          format: email
+          maxLength: 320
+          description: Email address.
+        statusText:
+          type: string
+          maxLength: 128
+          deprecated: true
+          description: >-
+            Short status text (e.g. "On vacation"). Use `PUT /api/users/me/status`,
+            which also sets an emoji and an expiry, and can clear the status.
+
+    SetStatusRequest:
+      type: object
+      description: A custom status. At least one of `text` and `emoji` must be non-blank.
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        text:
+          type: string
+          maxLength: 100
+          description: Status text, trimmed.
+          example: "In a meeting"
+        emoji:
+          type: string
+          maxLength: 16
+          description: A single emoji, including ZWJ sequences, flags and skin tones.
+          example: "📅"
+        expiresAt:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: When the status stops showing. Must be in the future.
+          example: "2026-09-24T15:00:00Z"
+
+    DoNotDisturbSchedule:
+      type: object
+      description: >-
+        Weekly quiet hours in the user's time zone. A window whose end is not
+        after its start runs past midnight and belongs to the day it starts on.
+      required:
+        - start
+        - end
+        - days
+        - timeZone
+      additionalProperties: false
+      properties:
+        start:
+          type: string
+          pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+          maxLength: 5
+          example: "22:00"
+        end:
+          type: string
+          pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"
+          maxLength: 5
+          example: "07:00"
+        days:
+          type: array
+          minItems: 1
+          maxItems: 7
+          uniqueItems: true
+          description: Days a window starts on.
+          items:
+            type: string
+            enum: [mon, tue, wed, thu, fri, sat, sun]
+        timeZone:
+          type: string
+          maxLength: 64
+          pattern: "^[A-Za-z0-9_+/-]+$"
+          description: IANA time zone name.
+          example: "Europe/Paris"
+
+    DoNotDisturb:
+      type: object
+      description: A user's do-not-disturb settings.
+      properties:
+        snoozeUntil:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: Notifications are held back until this time. Absent when not snoozed.
+        schedule:
+          $ref: "#/components/schemas/DoNotDisturbSchedule"
+        quietUntil:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: When the current quiet period ends. Absent when not quiet now.
+
+    SetDoNotDisturbRequest:
+      type: object
+      description: The whole do-not-disturb setting. Omitted parts are cleared.
+      additionalProperties: false
+      properties:
+        snoozeUntil:
+          type: string
+          format: date-time
+          maxLength: 40
+          description: Must be in the future.
+        schedule:
+          $ref: "#/components/schemas/DoNotDisturbSchedule"
+
+    Export:
+      type: object
+      description: A data export and its progress.
+      required:
+        - id
+        - scope
+        - status
+        - requestedBy
+        - createdAt
+      properties:
+        id:
+          type: string
+          pattern: "^exp_[0-9a-f-]{36}$"
+          maxLength: 40
+        scope:
+          type: string
+          enum: [instance, channel]
+        channelId:
+          type: string
+          maxLength: 40
+          description: The exported channel, for a channel export.
+        status:
+          type: string
+          enum: [pending, running, completed, failed]
+        requestedBy:
+          type: string
+          maxLength: 40
+        sizeBytes:
+          type: integer
+          format: int64
+          minimum: 0
+          maximum: 9223372036854775807
+          description: Size of the archive, once completed.
+        error:
+          type: string
+          maxLength: 2048
+          description: Why the export failed.
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 40
+        completedAt:
+          type: string
+          format: date-time
+          maxLength: 40
+
+    ExportList:
+      type: object
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 50
+          items:
+            $ref: "#/components/schemas/Export"
+        cursor:
+          type: string
+          maxLength: 64
+
+    CreateExportRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        channelId:
+          type: string
+          pattern: "^ch_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: One channel to export. The whole instance when absent.
+
+    SendMessageRequest:
+      type: object
+      description: Request body for sending a new message.
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          pattern: "^.+$"
+          maxLength: 4000
+          description: Message text content.
+          example: "Hello, world!"
+        threadId:
+          type: string
+          pattern: "^(msg_)?[0-9a-f-]{36}$"
+          maxLength: 40
+          description: ID of the thread root message. Omit to post a top-level message.
+          example: "msg_0193a5e0-7c1a-7000-8000-000000000100"
+
+    SendMessageMultipart:
+      type: object
+      description: Multipart form for sending a message with file attachments.
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          pattern: "^.+$"
+          maxLength: 4000
+          description: Message text content.
+        threadId:
+          type: string
+          maxLength: 40
+          description: ID of the thread root message.
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+            maxLength: 10485760
+          maxItems: 10
+          description: File attachments (max 10 files, 10 MB each).
+
+    EditMessageRequest:
+      type: object
+      description: Request body for editing a message.
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          pattern: "^.+$"
+          maxLength: 4000
+          description: Updated message text content.
+          example: "Hello, world! (edited)"
+
+    ReactionCount:
+      type: object
+      description: Aggregated reaction count for a single emoji on a message.
+      required:
+        - emoji
+        - count
+        - userIds
+      properties:
+        emoji:
+          type: string
+          maxLength: 64
+          description: Emoji character or shortcode.
+          example: "👍"
+        count:
+          type: integer
+          format: int64
+          minimum: 0
+          description: Total number of users who reacted with this emoji.
+          example: 3
+        userIds:
+          type: array
+          maxItems: 1000
+          description: IDs of users who reacted with this emoji.
+          items:
+            type: string
+            pattern: "^usr_[0-9a-f-]{36}$"
+            maxLength: 40
+          example:
+            - "usr_0193a5e0-7c1a-7000-8000-000000000001"
+
+    AddChannelMemberRequest:
+      type: object
+      description: >-
+        Who to add. Omit `userId`, or send your own, to join a public channel
+        yourself.
+      properties:
+        userId:
+          type: string
+          pattern: "^(usr_)?[0-9a-f-]{36}$"
+          maxLength: 40
+          description: ID of the user to add.
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000002"
+
+    UpdateChannelMemberRoleRequest:
+      type: object
+      description: The role to give a member.
+      required:
+        - role
+      properties:
+        role:
+          type: string
+          enum:
+            - moderator
+            - member
+          description: "`owner` cannot be given; ownership does not transfer this way."
+
+    CreateDmRequest:
+      type: object
+      description: Request body for creating or retrieving a DM channel.
+      required:
+        - userId
+      properties:
+        userId:
+          type: string
+          pattern: "^(usr_)?[0-9a-f-]{36}$"
+          maxLength: 40
+          description: ID of the user to open a DM with.
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000002"
+
+    SearchResult:
+      type: object
+      description: A message matching a full-text search query.
+      required:
+        - id
+        - channelId
+        - userId
+        - content
+        - headline
+        - createdAt
+      properties:
+        matchedFile:
+          type: string
+          maxLength: 255
+          description: >-
+            The name of the attached file that matched the query, present when
+            a file name matched.
+          example: "q3-report.pdf"
+        id:
+          type: string
+          pattern: "^msg_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Prefixed message ID.
+          example: "msg_0193a5e0-7c1a-7000-8000-000000000100"
+        channelId:
+          type: string
+          pattern: "^ch_[0-9a-f-]{36}$"
+          maxLength: 39
+          example: "ch_0193a5e0-7c1a-7000-8000-000000000010"
+        userId:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+          example: "usr_0193a5e0-7c1a-7000-8000-000000000001"
+        threadId:
+          type: string
+          pattern: "^msg_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Thread root message ID. Absent for top-level messages.
+        content:
+          type: string
+          pattern: "^[\\s\\S]*$"
+          maxLength: 4000
+          description: Full message content.
+          example: "The deploy fix is ready for review"
+        headline:
+          type: string
+          maxLength: 1000
+          description: >-
+            Highlighted snippet with <mark> tags around matching terms.
+            Suitable for rendering in search result UIs.
+          example: "The <mark>deploy</mark> <mark>fix</mark> is ready for review"
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:05:00Z"
+
+    SearchResultList:
+      type: object
+      description: Paginated list of search results with cursor for next page.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/SearchResult"
+        cursor:
+          type: string
+          maxLength: 40
+          pattern: "^msg_[0-9a-f-]{36}$"
+          description: Cursor for next page, absent if no more results.
+
+    Attachment:
+      type: object
+      description: A file attachment on a message.
+      required:
+        - id
+        - fileName
+        - fileSize
+        - contentType
+        - metadata
+        - createdAt
+      properties:
+        id:
+          type: string
+          pattern: "^att_[0-9a-f-]{36}$"
+          maxLength: 40
+          description: Prefixed attachment ID.
+          example: "att_0193a5e0-7c1a-7000-8000-000000000200"
+        fileName:
+          type: string
+          maxLength: 255
+          description: Original file name.
+          example: "screenshot.png"
+        fileSize:
+          type: integer
+          format: int64
+          minimum: 0
+          description: File size in bytes.
+          example: 204800
+        contentType:
+          type: string
+          maxLength: 255
+          description: MIME type of the file.
+          example: "image/png"
+        metadata:
+          type: object
+          description: Additional metadata (e.g. image width/height).
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+          example: "2026-03-06T10:05:00Z"
+
+    # ── Pin & Admin schemas ──
+
+    PinnedMessage:
+      description: A message pinned to a channel.
+      type: object
+      required: [channelId, messageId, pinnedBy, pinnedAt]
+      properties:
+        channelId:
+          type: string
+          maxLength: 40
+        messageId:
+          type: string
+          maxLength: 40
+        pinnedBy:
+          type: string
+          maxLength: 40
+        pinnedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+
+    AdminUser:
+      description: User record as seen by administrators, includes role and deactivation status.
+      type: object
+      required: [id, username, displayName, role, isBot, createdAt]
+      properties:
+        id:
+          type: string
+          maxLength: 40
+        username:
+          type: string
+          maxLength: 100
+        displayName:
+          type: string
+          maxLength: 200
+        email:
+          type: string
+          maxLength: 255
+        role:
+          type: string
+          enum: [admin, integrator, moderator, member, guest]
+        isBot:
+          type: boolean
+        deactivatedAt:
+          type: string
+          format: date-time
+          maxLength: 30
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+
+    AdminUserList:
+      description: Cursor-paginated list of admin user records.
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/AdminUser"
+        cursor:
+          type: string
+          maxLength: 40
+
+    AdminChannelList:
+      description: Cursor-paginated list of channels for admin management.
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/Channel"
+        cursor:
+          type: string
+          maxLength: 40
+
+    AuditLogEntry:
+      description: A single audit log record capturing an admin action.
+      type: object
+      required: [id, action, targetType, targetId, createdAt]
+      properties:
+        id:
+          type: string
+          maxLength: 40
+        userId:
+          type: string
+          maxLength: 40
+        action:
+          type: string
+          maxLength: 100
+        targetType:
+          type: string
+          maxLength: 50
+        targetId:
+          type: string
+          maxLength: 40
+        metadata:
+          type: object
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+
+    AuditLogList:
+      description: Cursor-paginated list of audit log entries.
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/AuditLogEntry"
+        cursor:
+          type: string
+          maxLength: 40
+
+    # ── Webhook schemas ──
+
+    Webhook:
+      type: object
+      description: Webhook configuration (token is never included in list responses).
+      required:
+        - id
+        - channelId
+        - kind
+        - name
+        - isActive
+        - createdBy
+        - createdAt
+      properties:
+        id:
+          type: string
+          pattern: "^wh_[0-9a-f-]{36}$"
+          maxLength: 39
+          example: "wh_0193a5e0-7c1a-7000-8000-000000000200"
+        channelId:
+          type: string
+          pattern: "^ch_[0-9a-f-]{36}$"
+          maxLength: 39
+        kind:
+          type: string
+          enum:
+            - incoming
+            - outgoing
+          example: "incoming"
+        name:
+          type: string
+          maxLength: 128
+          example: "CI Notifications"
+        url:
+          type: string
+          format: uri
+          maxLength: 2048
+          description: Target URL for outgoing webhooks.
+        isActive:
+          type: boolean
+          example: true
+        createdBy:
+          type: string
+          pattern: "^usr_[0-9a-f-]{36}$"
+          maxLength: 40
+        createdAt:
+          type: string
+          format: date-time
+          maxLength: 30
+
+    WebhookList:
+      type: object
+      description: Cursor-paginated list of webhooks.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/Webhook"
+        cursor:
+          type: string
+          maxLength: 39
+          pattern: "^wh_[0-9a-f-]{36}$"
+
+    CreateWebhookRequest:
+      type: object
+      description: Request body for creating a webhook.
+      required:
+        - kind
+        - name
+      properties:
+        kind:
+          type: string
+          enum:
+            - incoming
+            - outgoing
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+        url:
+          type: string
+          format: uri
+          maxLength: 2048
+          description: Required for outgoing webhooks.
+
+    CreateWebhookResponse:
+      type: object
+      description: Webhook with plaintext token (shown only once).
+      required:
+        - id
+        - channelId
+        - kind
+        - name
+        - isActive
+        - createdBy
+        - createdAt
+        - token
+      allOf:
+        - $ref: "#/components/schemas/Webhook"
+        - type: object
+          properties:
+            token:
+              type: string
+              maxLength: 64
+              description: Plaintext token for authentication (shown once).
+
+    UpdateWebhookRequest:
+      type: object
+      description: Partial update for a webhook.
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 128
+        url:
+          type: string
+          format: uri
+          maxLength: 2048
+        isActive:
+          type: boolean
+
+    IncomingWebhookPayload:
+      type: object
+      description: Payload for triggering an incoming webhook.
+      required:
+        - content
+      properties:
+        content:
+          type: string
+          minLength: 1
+          maxLength: 40000
+          description: Message content to post.
+
+    # ── Bot schemas ──
+
+    CreateBotRequest:
+      type: object
+      description: Request body for creating a bot user.
+      required:
+        - username
+        - displayName
+      properties:
+        username:
+          type: string
+          pattern: "^[a-zA-Z0-9_-]+$"
+          minLength: 1
+          maxLength: 64
+          example: "ci-bot"
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 128
+          example: "CI Bot"
+
+    UpdateBotRequest:
+      type: object
+      description: Partial update for a bot user.
+      properties:
+        displayName:
+          type: string
+          minLength: 1
+          maxLength: 128
+
+    BotList:
+      type: object
+      description: List of bot users.
+      required:
+        - items
+      properties:
+        items:
+          type: array
+          maxItems: 200
+          items:
+            $ref: "#/components/schemas/AdminUser"

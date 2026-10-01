@@ -1,0 +1,22 @@
+# ── Frontend build stage ──────────────────────────────────────────────────────
+# The built UI is static files, the same on every platform: build it once, natively.
+FROM --platform=$BUILDPLATFORM node:24-slim AS frontend
+
+WORKDIR /ui
+COPY ui/package.json ui/package-lock.json ./
+RUN npm ci
+COPY ui/ ./
+RUN npx vite build
+
+# ── nginx stage ───────────────────────────────────────────────────────────────
+FROM nginx:alpine
+
+COPY --from=frontend /ui/dist /usr/share/nginx/html
+# Rendered to conf.d/default.conf at startup, with BURST_GATEWAY_UPSTREAM.
+COPY docker/nginx.conf.template /etc/nginx/templates/default.conf.template
+ENV BURST_GATEWAY_UPSTREAM=barbacane:8080
+COPY docker/env.sh /docker-entrypoint.d/40-env.sh
+ENV BURST_ENV_JS=/usr/share/nginx/html/env.js
+RUN chmod +x /docker-entrypoint.d/40-env.sh
+
+EXPOSE 8080

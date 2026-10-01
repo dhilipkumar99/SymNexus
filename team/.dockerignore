@@ -1,0 +1,9 @@
+**/node_modules
+**/target
+**/dist
+**/.next
+**/.env*
+web
+burst/ui
+burst/docs
+burst/deploy

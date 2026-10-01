@@ -1,0 +1,30 @@
+{
+	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"services": {
+		"web": {
+			"root": "web",
+			"framework": "nextjs",
+			"bindings": [
+				{
+					"type": "service",
+					"service": "burst",
+					"format": "url",
+					"env": "BURST_INTERNAL_URL"
+				}
+			]
+		},
+		"burst": {
+			"root": ".",
+			"runtime": "container",
+			"entrypoint": "Dockerfile"
+		}
+	},
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": {
+				"service": "web"
+			}
+		}
+	]
+}

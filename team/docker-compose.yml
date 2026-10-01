@@ -1,0 +1,46 @@
+# Local development for SymNexus Team: PostgreSQL + Burst.
+# Run the web app (sign-in, API proxy, chat UI) separately: see README.md.
+#
+#   docker compose up -d --build
+#
+# Burst is published on 127.0.0.1:3000 only. It trusts identity headers from
+# any peer (burst-start.sh default), which is safe only because nothing but this
+# machine can reach it.
+
+name: symnexus-team
+
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: team
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-team-dev-only}
+      POSTGRES_DB: team
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U team"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  burst:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://team:${POSTGRES_PASSWORD:-team-dev-only}@postgres:5432/team
+      BURST_LOG: info
+    volumes:
+      - uploads:/data/uploads
+    ports:
+      - "127.0.0.1:3000:80"
+
+volumes:
+  pgdata:
+  uploads:
