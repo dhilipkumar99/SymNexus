@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BrandIcon } from '@/app/components/BrandIcon';
 import { logout } from '@/app/login/actions';
 import { ROLE_LABEL, type Session } from '@/lib/auth';
 
@@ -11,9 +12,7 @@ export function Shell({ session, title, children }: { session: Session; title: s
         <div className="max-w-5xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3 min-w-0">
             <Link href="/" className="inline-flex items-center gap-2 font-semibold text-zinc-900 shrink-0">
-              <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg text-white text-sm" style={{ background: 'var(--primary)' }}>
-                S
-              </span>
+              <BrandIcon size={28} className="h-7 w-7" />
               SymNexus Team
             </Link>
             <nav className="hidden sm:flex items-center gap-1 text-sm">

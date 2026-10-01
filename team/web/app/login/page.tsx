@@ -3,6 +3,7 @@
 import { useActionState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
+import { BrandIcon } from '@/app/components/BrandIcon';
 import { login } from './actions';
 
 function LoginForm() {
@@ -13,12 +14,7 @@ function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-zinc-50 px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div
-            className="inline-flex items-center justify-center w-14 h-14 rounded-2xl mb-4"
-            style={{ background: 'var(--primary)' }}
-          >
-            <span className="text-white text-2xl font-bold">S</span>
-          </div>
+          <BrandIcon size={64} className="mx-auto mb-4 h-16 w-16" />
           <h1 className="text-2xl font-bold text-zinc-900">SymNexus Team</h1>
           <p className="text-sm text-zinc-500 mt-1">Sign in to team messaging</p>
         </div>

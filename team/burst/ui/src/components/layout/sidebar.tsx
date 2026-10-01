@@ -1,6 +1,8 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Hash, LogOut, MessageSquare, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield, Users, KeyRound } from "lucide-react";
+import { Hash, LogOut, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield, Users, KeyRound } from "lucide-react";
+import { SidebarResizeHandle } from "./sidebar-resize";
+import { useSidebarWidth } from "./use-sidebar-width";
 import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useWsEvent } from "../../lib/ws/hooks";
 import { useAuth } from "../../lib/auth/use-auth";
@@ -19,6 +21,7 @@ import { DndIndicator } from "../ui/dnd-indicator";
 
 export function Sidebar() {
   const { user, logout } = useAuth();
+  const { width: sidebarWidth, update: setSidebarWidth } = useSidebarWidth();
   const { resolved, setTheme } = useTheme();
   const navigate = useNavigate();
   const { channelId } = useParams();
@@ -91,14 +94,24 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
-      <div className="flex h-14 items-center justify-between border-b border-gray-200 px-4 dark:border-gray-700">
-        <div className="flex items-center">
-          <MessageSquare className="mr-2 h-5 w-5 text-indigo-600" />
-          <h1 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
-            SymNexus Team
-          </h1>
-        </div>
+    <aside
+      style={{ width: sidebarWidth }}
+      className="relative flex h-full shrink-0 flex-col border-r border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
+    >
+      {/* SymNexus Team: drag the right edge to resize. */}
+      <SidebarResizeHandle width={sidebarWidth} onResize={setSidebarWidth} />
+      <div className="flex h-14 items-center justify-between gap-2 border-b border-gray-200 px-4 dark:border-gray-700">
+        {/* SymNexus Team: the symnexus.co favicon mark and wordmark. */}
+        <h1 className="flex min-w-0 items-center gap-2">
+          <img src="/brand/symnexus-icon.png" alt="" width={24} height={24} className="h-6 w-6 shrink-0" />
+          <img
+            src="/brand/symnexus-wordmark.webp"
+            alt="SymNexus Team"
+            width={1067}
+            height={124}
+            className="block h-4 w-auto min-w-0 dark:brightness-0 dark:invert"
+          />
+        </h1>
         <button
           onClick={() => setShowSearch(true)}
           className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
@@ -189,7 +202,57 @@ export function Sidebar() {
 
       {user && (
         // Same minimum height as the message composer, so their top borders line up.
-        <div className="flex min-h-16 flex-col justify-center border-t border-gray-200 p-3 dark:border-gray-700">
+        // SymNexus Team: the action icons sit in their own row above the user.
+        <div className="flex min-h-16 flex-col justify-center gap-2 border-t border-gray-200 p-3 dark:border-gray-700">
+          <div className="flex flex-wrap items-center gap-0.5" role="toolbar" aria-label="Account and settings">
+            {(user.role === "admin" || user.role === "integrator") && (
+              <button
+                onClick={() => navigate("/admin")}
+                className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                title="Administration"
+              >
+                <Shield className="h-4 w-4" />
+              </button>
+            )}
+            {/* SymNexus Team: account pages served by the sign-in app (team/web). */}
+            {user.role === "admin" && (
+              <a
+                href="/accounts"
+                className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                title="Manage accounts"
+              >
+                <Users className="h-4 w-4" />
+              </a>
+            )}
+            <a
+              href="/account"
+              className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              title="My account and password"
+            >
+              <KeyRound className="h-4 w-4" />
+            </a>
+            <button
+              onClick={() => navigate("/settings")}
+              className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              title="Settings"
+            >
+              <Settings className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setTheme(resolved === "dark" ? "light" : "dark")}
+              className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+              title={resolved === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {resolved === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </button>
+            <button
+              onClick={logout}
+              className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300 ml-auto"
+              title="Log out"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
+          </div>
           <div className="flex items-center gap-2">
             <Avatar
               name={user.displayName}
@@ -205,53 +268,6 @@ export function Sidebar() {
                 {user.username}
               </p>
             </div>
-            {(user.role === "admin" || user.role === "integrator") && (
-              <button
-                onClick={() => navigate("/admin")}
-                className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                title="Administration"
-              >
-                <Shield className="h-4 w-4" />
-              </button>
-            )}
-            {/* SymNexus Team: account pages served by the sign-in app (team/web). */}
-            {user.role === "admin" && (
-              <a
-                href="/accounts"
-                className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-                title="Manage accounts"
-              >
-                <Users className="h-4 w-4" />
-              </a>
-            )}
-            <a
-              href="/account"
-              className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-              title="My account and password"
-            >
-              <KeyRound className="h-4 w-4" />
-            </a>
-            <button
-              onClick={() => navigate("/settings")}
-              className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-              title="Settings"
-            >
-              <Settings className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setTheme(resolved === "dark" ? "light" : "dark")}
-              className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-              title={resolved === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {resolved === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-            </button>
-            <button
-              onClick={logout}
-              className="rounded p-1 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
-              title="Log out"
-            >
-              <LogOut className="h-4 w-4" />
-            </button>
           </div>
         </div>
       )}

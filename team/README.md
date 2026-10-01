@@ -123,7 +123,12 @@ cd team/burst/ui && npm ci && npx vitest run  # Burst web app
 All in `burst/ui`, kept small so upstream updates stay easy:
 
 - `index.html`, `src/components/layout/main-layout.tsx`, `src/components/layout/sidebar.tsx`:
-  "SymNexus Team" branding, `noindex`, and sidebar links to "My account" and (admins) "Manage accounts".
+  SymNexus favicon and wordmark (served from `web/public/brand/`), `noindex`, sidebar links to "My
+  account" and (admins) "Manage accounts", and the account/settings icons in their own row above the
+  signed-in user.
+- `src/components/layout/sidebar-resize.tsx`, `use-sidebar-width.ts` (new): drag the sidebar's right
+  edge to resize it (200–480 px, at most half the window; arrow keys when focused; double-click resets;
+  remembered per browser).
 - `src/lib/auth/context.tsx`: the session comes from the cookie (restored on every load); signing out
   clears it on the server and returns to `/login`.
 - `src/pages/login.tsx`: hands over to the server sign-in page.

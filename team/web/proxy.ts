@@ -27,6 +27,6 @@ export const config = {
   matcher: [
     // Everything except: the sign-in page and its server action, API handlers,
     // Next internals and the SPA's static files.
-    '/((?!login|accounts|account|setup/|api/|api$|ws$|storage/|auth/|_next/|assets/|env\\.js$|app\\.html$|favicon\\.ico$|robots\\.txt$).*)',
+    '/((?!login|accounts|account|setup/|api/|api$|ws$|storage/|auth/|_next/|assets/|brand/|env\\.js$|app\\.html$|favicon\\.ico$|robots\\.txt$).*)',
   ],
 };

@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: 'SymNexus Team',
   description: 'SymNexus team messaging',
   robots: { index: false, follow: false },
+  icons: { icon: '/brand/favicon.ico', apple: '/brand/symnexus-icon.png' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
