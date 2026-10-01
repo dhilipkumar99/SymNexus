@@ -128,11 +128,17 @@ header('Content-Type: text/html; charset=utf-8');
                 <?php endforeach; ?>
             </nav>
 
-            <!-- Right: floating pill for demo link, theme toggle and mobile trigger -->
+            <!-- Right: floating pill for team login, demo link, theme toggle and mobile trigger -->
             <div
                 class="flex items-center space-x-1 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-md border border-gray-200/40 dark:border-neutral-800/40 shadow-md rounded-full p-1.5 transition-colors duration-300">
+                <a href="<?= e(TEAM_LOGIN_URL) ?>"
+                    class="hidden md:inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-semibold text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary focus-visible:ring-offset-1 transition-colors">
+                    Team login
+                </a>
+                <!-- Hidden from lg to ~1360px, where the centred nav leaves room for only one of
+                     these two links; the page's own demo call-to-action stays visible. -->
                 <a href="/demo"
-                    class="hidden sm:inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold text-brandPrimary hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 transition-colors">
+                    class="hidden sm:inline-flex lg:hidden min-[1360px]:inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold text-brandPrimary hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 transition-colors">
                     Request a demo
                 </a>
                 <button id="theme-toggle" type="button"
@@ -169,6 +175,8 @@ header('Content-Type: text/html; charset=utf-8');
                 <?php endforeach; ?>
                 <a href="/demo"
                     class="block text-sm font-semibold px-4 py-2.5 rounded-xl text-brandPrimary hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Request a demonstration</a>
+                <a href="<?= e(TEAM_LOGIN_URL) ?>"
+                    class="block text-center text-sm font-semibold px-4 py-2.5 mt-2 rounded-xl text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 transition-colors">Team login</a>
             </nav>
         </div>
     </header>

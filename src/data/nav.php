@@ -1,5 +1,8 @@
 <?php
 
+// Employee messaging (team/, a separate Vercel project).
+const TEAM_LOGIN_URL = 'https://symnexus-team.vercel.app/login';
+
 // Primary navigation. `match` lists every path prefix that highlights the link.
 const NAV_LINKS = [
     // FluorocellAI and ComplianceCall are presented on the About page.
@@ -19,8 +22,7 @@ const FOOTER_LINKS = [
     ['label' => 'Research', 'href' => '/research'],
     ['label' => 'Careers',  'href' => '/careers'],
     ['label' => 'Contact',  'href' => '/contact'],
-    // Employee messaging (team/, a separate Vercel project).
-    ['label' => 'Team login', 'href' => 'https://symnexus-team.vercel.app/login'],
+    ['label' => 'Team login', 'href' => TEAM_LOGIN_URL],
 ];
 
 const LEGAL_LINKS = [
