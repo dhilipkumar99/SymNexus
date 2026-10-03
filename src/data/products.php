@@ -67,10 +67,12 @@ const PRODUCTS = [
         'link'     => 'Visit Yashara',
         'category' => 'Retail & Wholesale Operations',
         'icon'     => 'globe',
-        'summary'  => 'We also build custom AI systems around how a business already runs. For an ethically sourced Southeast Asian goods retailer, that meant automated inventory and quality monitoring, and AI that manages its large wholesale accounts.',
-        // The home page presents this card as Custom Systems: the client is named
-        // only in the footer link, and the main link goes to custom pricing.
+        'summary'  => 'We also build custom AI systems around how a business already runs: designed for its own data, fitted into its existing workflows, and validated by the people who use them before they go live.',
+        // The home page presents this card as Custom Systems, described in general
+        // terms: the client is named only in the footer link, and the main link
+        // goes to custom pricing.
         'home'     => [
+            'category'  => 'Tailored to Your Operations',
             'name'      => 'Custom Systems',
             'link'      => 'See pricing',
             'href'      => '/pricing#custom',
