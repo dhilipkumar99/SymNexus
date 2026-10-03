@@ -205,8 +205,15 @@
         if (film.ended) film.currentTime = 0;
         film.focus({ preventScroll: true });
         var playing = film.play();
-        // Blocked or failed: the native controls are showing, so a second press plays it.
-        if (playing && playing.catch) playing.catch(function () {});
+        // Sound blocked by the browser's autoplay policy: play muted instead (the
+        // visitor can unmute from the controls). Any other failure leaves the
+        // controls showing, so a second press plays it.
+        if (playing && playing.catch) playing.catch(function (err) {
+            if (!err || err.name !== 'NotAllowedError' || !player.hasAttribute('data-playing')) return;
+            film.muted = true;
+            var retry = film.play();
+            if (retry && retry.catch) retry.catch(function () {});
+        });
     }
 
     function stopFilm(player, restoreFocus) {
