@@ -68,6 +68,15 @@ require SRC_DIR . '/includes/header.php';
             </article>
         <?php endforeach; ?>
     </div>
+
+    <!-- The FluorocellAI product card from the About page, with its first image only. -->
+    <div class="mt-10">
+        <?php partial('product-card', [
+            'slug'   => 'fluorocellai',
+            'p'      => PRODUCTS['fluorocellai'],
+            'slides' => array_slice(PRODUCT_MEDIA['fluorocellai'], 0, 1),
+        ]); ?>
+    </div>
 </div>
 
 <?php partial('cta', [

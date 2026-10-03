@@ -89,3 +89,18 @@ const PRODUCTS = [
         'pricing'  => null,
     ],
 ];
+
+// Card media (first slide leads), shared by the About and Research pages.
+const PRODUCT_MEDIA = [
+    'fluorocellai' => [
+        ['asset' => 'images/fluorocellai-segmentation.webp', 'small' => 'images/fluorocellai-segmentation-800.webp', 'width' => 1494, 'smallWidth' => 800,
+         'alt' => 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary'],
+        ['img' => 'fluoroCells', 'alt' => 'Fluorescence microscopy of cells, the kind FluorocellAI analyzes'],
+        ['img' => 'fluoroHero',  'alt' => 'Fluorescent-stained cells under a microscope'],
+    ],
+    'compliancecall' => [
+        ['asset' => 'images/compliancecall-dashboard.webp', 'small' => 'images/compliancecall-dashboard-900.webp', 'width' => 1952, 'smallWidth' => 900, 'fit' => 'object-contain',
+         'alt' => 'ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels'],
+        ['img' => 'complianceDesk', 'alt' => 'Compliance documents and data reviewed at a desk'],
+    ],
+];
