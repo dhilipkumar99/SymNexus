@@ -114,12 +114,12 @@ require SRC_DIR . '/includes/header.php';
                     <?php foreach ($p['tasks'] as $i => $t): ?>
                         <a href="<?= e($base . $t['path']) ?>" data-task data-dept="<?= e($t['dept']) ?>"
                             data-search="<?= e(mb_strtolower($t['title'] . ' ' . $t['dept'] . ' ' . $t['sub'] . ' ' . $p['word'])) ?>"
-                            class="<?= $i === 0 ? 'mc-gradient text-white border-transparent shadow-md' : 'mc-task bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white' ?> mc-focus group flex flex-col items-center justify-center text-center rounded-xl border-2 px-4 py-4 min-h-[88px] transition-all duration-200">
+                            class="mc-task <?= $i === 0 ? 'mc-selected' : '' ?> bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white mc-focus group flex flex-col items-center justify-center text-center rounded-xl border-2 px-4 py-4 min-h-[88px] transition-all duration-200">
                             <span class="mb-2 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white shadow-sm ring-1 ring-black/5">
                                 <img src="<?= e(asset('images/tasks/' . $t['icon'])) ?>" alt="" width="40" height="40" class="w-9 h-9 object-contain" loading="lazy" decoding="async">
                             </span>
                             <span class="font-sans font-semibold text-base sm:text-lg leading-snug"><?= e($t['title']) ?></span>
-                            <span class="mt-1 text-xs sm:text-sm <?= $i === 0 ? 'text-white/85' : 'text-gray-500 dark:text-gray-400' ?>"><?= e($t['dept']) ?> · <?= e($t['sub']) ?></span>
+                            <span class="mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400"><?= e($t['dept']) ?> · <?= e($t['sub']) ?></span>
                         </a>
                     <?php endforeach; ?>
                 </div>
