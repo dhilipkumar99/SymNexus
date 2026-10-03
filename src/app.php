@@ -24,6 +24,7 @@ const ROUTES = [
     '/terms'                                   => ['page' => 'terms',               'priority' => '0.3'],
     '/security'                                => ['page' => 'security',            'priority' => '0.4'],
     '/video'                                   => ['page' => 'video',               'priority' => null],
+    '/qr'                                      => ['page' => 'qr',                  'priority' => null],
     '/offline'                                 => ['page' => 'offline',             'priority' => null],
 ];
 
