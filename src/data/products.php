@@ -67,7 +67,16 @@ const PRODUCTS = [
         'link'     => 'Visit Yashara',
         'category' => 'Retail & Wholesale Operations',
         'icon'     => 'globe',
-        'summary'  => 'We also build custom AI systems around how a business already runs. For Yashara, an ethically sourced Southeast Asian goods retailer, that meant automated inventory and quality monitoring, and AI that manages its large wholesale accounts.',
+        'summary'  => 'We also build custom AI systems around how a business already runs. For an ethically sourced Southeast Asian goods retailer, that meant automated inventory and quality monitoring, and AI that manages its large wholesale accounts.',
+        // The home page presents this card as Custom Systems: the client is named
+        // only in the footer link, and the main link goes to custom pricing.
+        'home'     => [
+            'name'      => 'Custom Systems',
+            'link'      => 'See pricing',
+            'href'      => '/pricing#custom',
+            'external'  => false,
+            'secondary' => ['label' => 'Yashara', 'href' => 'https://yashara.org/', 'external' => true],
+        ],
         'overview' => 'Built for Yashara, an ethically-sourced South East Asian goods retailer — our Silicon Valley engineering team deployed the same domain-native approach we bring to regulated science, this time overseas, applied to retail operations.',
         'detail'   => 'An AI monitoring system watches inventory and product quality across Yashara\'s handcrafted goods catalog, flagging inconsistencies before they reach a customer. A second AI layer handles interfacing for large wholesale accounts — routing orders, answering account-specific questions, and surfacing exceptions to a human when it matters.',
         'features' => [

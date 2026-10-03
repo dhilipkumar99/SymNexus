@@ -73,6 +73,7 @@ require SRC_DIR . '/includes/header.php';
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <?php foreach (PRODUCTS as $slug => $p): ?>
+            <?php $p = array_merge($p, $p['home'] ?? []); ?>
             <article class="card-ghost flex flex-col h-full group">
                 <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
                 <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"><?= e($p['name']) ?></h3>
@@ -81,7 +82,13 @@ require SRC_DIR . '/includes/header.php';
                 </p>
                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
                     <div>
-                        <?php if ($p['pricing'] !== null): ?>
+                        <?php if (isset($p['secondary'])): ?>
+                            <a href="<?= e($p['secondary']['href']) ?>" <?= $p['secondary']['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                                class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium inline-flex items-center transition-colors">
+                                <?= e($p['secondary']['label']) ?>
+                                <?php if ($p['secondary']['external']): ?><?= icon('arrow-up-right', 'w-3.5 h-3.5 ml-1') ?><?php endif; ?>
+                            </a>
+                        <?php elseif ($p['pricing'] !== null): ?>
                             <a href="/pricing#<?= e($slug) ?>" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Pricing</a>
                         <?php else: ?>
                             <a href="/contact" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
