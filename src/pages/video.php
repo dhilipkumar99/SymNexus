@@ -20,7 +20,7 @@ header('Content-Type: text/html; charset=utf-8');
 </head>
 
 <body>
-    <video src="/video/symnexus.mp4" autoplay controls playsinline preload="auto"></video>
+    <video src="<?= e(FEATURE_VIDEO) ?>" autoplay controls playsinline preload="auto"></video>
 </body>
 
 </html>

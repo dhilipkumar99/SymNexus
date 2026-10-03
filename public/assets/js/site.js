@@ -151,6 +151,11 @@
     var videoObserver = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             var video = entry.target;
+            if (video.hasAttribute('data-feature-video')) {
+                if (!entry.isIntersecting) video.pause(); // never resumes by itself
+                return;
+            }
+            if (isFilmPlaying(video)) return;
             if (entry.isIntersecting && !(reducedMotion && reducedMotion.matches)) {
                 video.muted = true; // required for autoplay policies
                 var playing = video.play();
@@ -168,12 +173,77 @@
             if (videoObserver) videoObserver.observe(video);
             else if (!(reducedMotion && reducedMotion.matches)) video.play();
         });
+        document.querySelectorAll('video[data-feature-video]').forEach(function (video) {
+            if (videoObserver) videoObserver.observe(video);
+        });
     }
+
+    // ── Hero film (logo frame) ──────────────────────────────────────────────
+    // Clicking the logo frame swaps the looping logo for the SymNexus film and
+    // plays it in place, with sound and native controls. Close (✕), Escape or the
+    // film ending puts the logo back. The click target is a link to /video, so
+    // modified clicks open that page and it still works without this script.
+    function isFilmPlaying(el) {
+        var player = el.closest('[data-logo-player]');
+        return !!(player && player.hasAttribute('data-playing'));
+    }
+
+    function startFilm(player) {
+        var film = player.querySelector('video[data-feature-video]');
+        if (!film) return;
+        var logo = player.querySelector('video[data-motion-video]');
+        var trigger = player.querySelector('[data-logo-play]');
+        var close = player.querySelector('[data-logo-close]');
+
+        player.setAttribute('data-playing', '');
+        if (logo) logo.pause();
+        if (trigger) trigger.classList.add('hidden');
+        film.classList.remove('hidden');
+        if (close) { close.classList.remove('hidden'); close.classList.add('flex'); }
+
+        film.muted = false;
+        if (film.ended) film.currentTime = 0;
+        film.focus({ preventScroll: true });
+        var playing = film.play();
+        // Blocked or failed: the native controls are showing, so a second press plays it.
+        if (playing && playing.catch) playing.catch(function () {});
+    }
+
+    function stopFilm(player, restoreFocus) {
+        if (!player.hasAttribute('data-playing')) return;
+        var film = player.querySelector('video[data-feature-video]');
+        var logo = player.querySelector('video[data-motion-video]');
+        var trigger = player.querySelector('[data-logo-play]');
+        var close = player.querySelector('[data-logo-close]');
+
+        player.removeAttribute('data-playing');
+        if (film) { film.pause(); film.classList.add('hidden'); }
+        if (close) { close.classList.add('hidden'); close.classList.remove('flex'); }
+        if (trigger) {
+            trigger.classList.remove('hidden');
+            if (restoreFocus) trigger.focus({ preventScroll: true });
+        }
+        // Hand the logo back to the observer, which resumes it if on screen.
+        if (logo && videoObserver) { videoObserver.unobserve(logo); videoObserver.observe(logo); }
+        else if (logo && !(reducedMotion && reducedMotion.matches)) logo.play();
+    }
+
+    // Media events don't bubble, so listen in the capture phase.
+    document.addEventListener('ended', function (e) {
+        var player = e.target instanceof Element && e.target.matches('video[data-feature-video]') && e.target.closest('[data-logo-player]');
+        if (player) stopFilm(player, document.activeElement === e.target);
+    }, true);
+    document.addEventListener('error', function (e) {
+        var player = e.target instanceof Element && e.target.closest('[data-logo-player]');
+        // Errors fire on the <source>, not the <video>.
+        if (player && e.target.closest('video[data-feature-video]')) stopFilm(player, false);
+    }, true);
 
     if (reducedMotion && reducedMotion.addEventListener) {
         reducedMotion.addEventListener('change', function () {
             document.querySelectorAll('video[data-motion-video]').forEach(function (video) {
                 if (reducedMotion.matches) video.pause();
+                else if (isFilmPlaying(video)) return;
                 else if (videoObserver) { videoObserver.unobserve(video); videoObserver.observe(video); }
             });
         });
@@ -288,6 +358,22 @@
         var target = e.target;
         if (!(target instanceof Element)) return;
 
+        var filmTrigger = target.closest('a[data-logo-play]');
+        if (filmTrigger && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            var filmPlayer = filmTrigger.closest('[data-logo-player]');
+            if (filmPlayer) {
+                e.preventDefault();
+                startFilm(filmPlayer);
+                return;
+            }
+        }
+
+        var filmClose = target.closest('[data-logo-close]');
+        if (filmClose) {
+            stopFilm(filmClose.closest('[data-logo-player]'), true);
+            return;
+        }
+
         var consult = target.closest('a[data-consult]');
         if (consult && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
             e.preventDefault();
@@ -361,6 +447,9 @@
 
     document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape') {
+            document.querySelectorAll('[data-logo-player][data-playing]').forEach(function (player) {
+                stopFilm(player, player.contains(document.activeElement));
+            });
             closeLightbox();
             setMenuOpen(false);
             return;
