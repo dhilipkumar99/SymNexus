@@ -1,4 +1,4 @@
-# Licences for scripts/qr/qrcodegen.cjs
+# Licences for qrcodegen.js
 
 ## QR Code generator library — Project Nayuki (MIT)
 

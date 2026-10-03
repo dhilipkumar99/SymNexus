@@ -1,7 +1,9 @@
 // QR Code generator library by Project Nayuki (MIT), as bundled in
 // qrcode.react 4.2.0 (https://github.com/zpao/qrcode.react, ISC), lib/index.js
-// lines 65-791, copied unchanged from the Jonestown project's dependency.
-// Upstream: https://github.com/nayuki/QR-Code-generator  See LICENSE.md.
+// lines 65-791, copied from the Jonestown project's dependency. Unchanged except
+// the export at the end, which also works as a plain <script> in the browser
+// (window.qrcodegen). Upstream: https://github.com/nayuki/QR-Code-generator
+// See LICENSE.md.
 "use strict";
 
 // src/third-party/qrcodegen/index.ts
@@ -732,4 +734,5 @@ var qrcodegen;
   })(QrSegment = qrcodegen2.QrSegment || (qrcodegen2.QrSegment = {}));
 })(qrcodegen || (qrcodegen = {}));
 
-module.exports = qrcodegen;
+if (typeof module === "object" && module.exports) module.exports = qrcodegen;
+else globalThis.qrcodegen = qrcodegen;
