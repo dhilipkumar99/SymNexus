@@ -120,7 +120,7 @@ require SRC_DIR . '/includes/header.php';
 <!-- APPROACH -->
 <section class="panel mt-10" aria-labelledby="approach-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
-        <h2 id="approach-title" class="section-title">Domain-native software systems.</h2>
+        <h2 id="approach-title" class="section-title">Domain-Native: Integrated into your Workflows</h2>
         <p class="section-lead">
             For cell researchers, FluorocellAI turned a 3–4 day manual review into a same-day first pass — because the system is built around
             how a lab already works, not the other way around.
