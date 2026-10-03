@@ -44,14 +44,10 @@ $industries = 'Life sciences, pharmaceuticals, healthcare, food safety, chemical
 
     <a href="/video" data-logo-play data-no-spa aria-label="Play the SymNexus film"
         class="group absolute inset-0 z-10 cursor-pointer rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-inset focus-visible:ring-teal-600/70">
-        <!-- Play cue: always visible (touch screens have no hover), larger on hover and focus. -->
+        <!-- Play cue: shows on hover and keyboard focus. -->
         <span aria-hidden="true"
             class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex h-14 w-14 sm:h-20 sm:w-20 items-center justify-center rounded-full bg-teal-700/85 text-white shadow-lg ring-4 ring-white/70 opacity-0 scale-90 transition duration-300 group-hover:opacity-100 group-hover:scale-100 group-focus-visible:opacity-100 group-focus-visible:scale-100">
             <svg class="h-6 w-6 sm:h-8 sm:w-8 translate-x-0.5" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.24-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z"/></svg>
-        </span>
-        <span aria-hidden="true"
-            class="absolute bottom-[14%] right-[10.5%] flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-teal-700 text-white shadow-md ring-2 ring-white transition-opacity duration-300 group-hover:opacity-0 group-focus-visible:opacity-0">
-            <svg class="h-4 w-4 sm:h-5 sm:w-5 translate-x-px" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.14v13.72a1 1 0 0 0 1.5.86l11.24-6.86a1 1 0 0 0 0-1.72L9.5 4.28A1 1 0 0 0 8 5.14Z"/></svg>
         </span>
     </a>
 
