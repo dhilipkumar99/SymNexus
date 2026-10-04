@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'ComplianceCall — Symnexus';
+$pageTitle = 'ComplianceCall — SymNexus';
 $pageMeta  = [
     'description' => 'ComplianceCall: benchmarks pharmaceutical development against federal regulation. Full audit-trail transparency, built in by design for FDA-regulated teams.',
     'og_image'    => img('complianceDesk', 1200),
@@ -55,7 +55,7 @@ require SRC_DIR . '/includes/header.php';
 ]); ?>
 
 <div class="flex flex-wrap gap-3 -mt-4 mb-12">
-    <a href="/demo" class="btn-primary group">Request Demonstration <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
+    <a href="/demo?interest=compliancecall" class="btn-primary group">Request a demonstration <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
     <a href="/pricing#compliancecall" class="btn-secondary">View Pricing</a>
 </div>
 
@@ -103,14 +103,6 @@ require SRC_DIR . '/includes/header.php';
     </div>
 </section>
 
-<!-- Pull quote -->
-<figure class="my-8 max-w-3xl border-l-4 border-brandPrimary bg-white dark:bg-slate-800/40 rounded-r-2xl p-6 sm:p-8 shadow-sm">
-    <blockquote class="font-headline text-xl md:text-2xl font-medium leading-relaxed text-gray-900 dark:text-white">
-        &ldquo;It tells us not just what a chemical's current hazard category is, but what it used to be and why it changed. That historical record is exactly what our EHS auditors ask for.&rdquo;
-    </blockquote>
-    <figcaption class="mt-4 font-mono text-[11px] uppercase tracking-widest text-gray-500 dark:text-gray-300">Dr. S. Okonkwo — Chemical Hygiene Officer, Research University · ComplianceCall pilot customer</figcaption>
-</figure>
-
 <!-- Capabilities -->
 <section class="py-16" aria-labelledby="capabilities-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
@@ -148,8 +140,8 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'     => 'Speak with a compliance specialist.',
     'body'      => 'Domain specialists run every ComplianceCall demonstration, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your work.',
-    'note'      => 'Not a regulatory workflow? We build domain-native software systems for many industries — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
-    'primary'   => ['label' => 'Request Demonstration', 'href' => '/demo'],
+    'note'      => 'Not a regulatory workflow? We build custom AI systems for many industries. <a href="/services" class="link-inline">See our AI development services</a>.',
+    'primary'   => ['label' => 'Request a demonstration', 'href' => '/demo?interest=compliancecall'],
     'secondary' => ['label' => 'View Pricing', 'href' => '/pricing#compliancecall'],
 ]); ?>
 

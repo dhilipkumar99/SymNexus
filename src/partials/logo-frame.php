@@ -1,6 +1,6 @@
 <?php
 /**
- * Hero brand panel: the animated Symnexus logo inside a frame of industry tiles.
+ * Hero brand panel: the animated SymNexus logo inside a frame of industry tiles.
  *
  * The video is placed over the frame's empty centre using percentages measured
  * from the 1792×1008 frame artwork (inner edge of the tiles: x 148–1648, y 103–878),
@@ -30,7 +30,7 @@ $industries = 'Life sciences, pharmaceuticals, healthcare, food safety, chemical
 -->
 <div data-logo-player
     class="relative w-full max-w-5xl mx-auto aspect-[1792/1008] mb-10 overflow-hidden rounded-2xl bg-white shadow-xl border border-gray-200/70 dark:border-white/10">
-    <figure class="absolute inset-0 m-0" role="img" aria-label="Symnexus — building AI for <?= e(strtolower($industries)) ?>.">
+    <figure class="absolute inset-0 m-0" role="img" aria-label="SymNexus — building AI for <?= e(strtolower($industries)) ?>.">
         <img src="<?= e(asset('images/industries-frame.webp')) ?>"
             srcset="<?= e(asset('images/industries-frame-900.webp')) ?> 900w, <?= e(asset('images/industries-frame.webp')) ?> 1792w"
             sizes="(min-width: 1280px) 1024px, 92vw" width="1792" height="1008" alt="" aria-hidden="true"

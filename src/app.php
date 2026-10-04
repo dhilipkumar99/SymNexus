@@ -10,13 +10,15 @@ require_once __DIR__ . '/bootstrap.php';
  */
 const ROUTES = [
     '/'                                        => ['page' => 'home',                'priority' => '1.0'],
+    '/services'                                => ['page' => 'services',            'priority' => '0.9'],
     '/about'                                   => ['page' => 'about',               'priority' => '0.8'],
     '/products'                                => ['page' => 'products',            'priority' => '0.9'],
     '/fluorocellai'                            => ['page' => 'fluorocellai',        'priority' => '0.9'],
     '/compliancecall'                          => ['page' => 'compliancecall',      'priority' => '0.9'],
     '/pricing'                                 => ['page' => 'pricing',             'priority' => '0.7'],
-    '/research'                                => ['page' => 'research',            'priority' => '0.6'],
-    '/research/fluorocellai-cancer-research-lab' => ['page' => 'research-fluorocellai', 'priority' => '0.6'],
+    '/research'                                => ['page' => 'research',            'priority' => '0.8'],
+    '/research/fluorocellai-cancer-research-lab' => ['page' => 'research-fluorocellai', 'priority' => '0.7'],
+    '/research/yashara-retail-ai'              => ['page' => 'research-yashara',    'priority' => '0.7'],
     '/careers'                                 => ['page' => 'careers',             'priority' => '0.5'],
     '/contact'                                 => ['page' => 'contact',             'priority' => '0.7'],
     '/demo'                                    => ['page' => 'demo',                'priority' => '0.8'],
@@ -35,6 +37,8 @@ const REDIRECTS = [
     '/index.php'              => ['/', 301],
     // The catalog moved to /products; the SymNexus(x) product sites still link here.
     '/solutions'              => ['/products', 301],
+    '/case-studies'           => ['/research', 301],
+    '/ai-development'         => ['/services', 301],
 ];
 
 function send_common_headers(): void
@@ -87,7 +91,7 @@ function render_fatal(): void
         header('Content-Type: text/html; charset=utf-8');
         header('Cache-Control: no-store');
     }
-    echo '<!doctype html><meta charset="utf-8"><title>Error — Symnexus</title>'
+    echo '<!doctype html><meta charset="utf-8"><title>Error — SymNexus</title>'
         . '<p style="font-family:sans-serif;padding:2rem">Something went wrong. Please try again, or email '
         . '<a href="mailto:' . SITE_EMAIL . '">' . SITE_EMAIL . '</a>.</p>';
 }

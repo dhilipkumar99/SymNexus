@@ -1,6 +1,6 @@
 <?php
 
-// Product catalogue shared by the home, products and pricing pages.
+// Shipped systems, shown on the About, Research and Pricing pages.
 const PRODUCTS = [
     'fluorocellai' => [
         'name'     => 'FluorocellAI',
@@ -20,7 +20,7 @@ const PRODUCTS = [
             'Fine-tuned models on proprietary annotated data',
             'REST API for lab pipeline integration',
         ],
-        'cta'      => 'Request Evaluation',
+        'cta'      => 'Request a demonstration',
         'pricing'  => [
             'desc'     => 'AI-automated cell identification, counting, and analysis for cell and cancer research labs.',
             'features' => [
@@ -49,7 +49,7 @@ const PRODUCTS = [
             'One modular AI stack shared with FluorocellAI',
             'REST API for compliance workflow integration',
         ],
-        'cta'      => 'Request Demonstration',
+        'cta'      => 'Request a demonstration',
         'pricing'  => [
             'desc'     => 'Benchmarks pharmaceutical development against federal regulation, with full audit-trail transparency.',
             'features' => [
@@ -62,24 +62,14 @@ const PRODUCTS = [
     ],
     'yashara' => [
         'name'     => 'Yashara',
-        'href'     => 'https://yashara.org/',
-        'external' => true,
-        'link'     => 'Visit Yashara',
+        'href'     => '/research/yashara-retail-ai',
+        'external' => false,
+        'link'     => 'Read the case study',
         'category' => 'Retail & Wholesale Operations',
         'icon'     => 'globe',
-        'summary'  => 'We also build custom AI systems around how a business already runs: designed for its own data, fitted into its existing workflows, and validated by the people who use them before they go live.',
-        // The home page presents this card as Custom Systems, described in general
-        // terms: the client is named only in the footer link, and the main link
-        // goes to custom pricing.
-        'home'     => [
-            'category'  => 'Tailored to Your Operations',
-            'name'      => 'Custom Systems',
-            'link'      => 'See pricing',
-            'href'      => '/pricing#custom',
-            'external'  => false,
-            'secondary' => ['label' => 'Yashara', 'href' => 'https://yashara.org/', 'external' => true],
-        ],
-        'overview' => 'Built for Yashara, an ethically-sourced South East Asian goods retailer — our Silicon Valley engineering team deployed the same domain-native approach we bring to regulated science, this time overseas, applied to retail operations.',
+        'summary'  => 'AI inventory and quality monitoring, plus an AI layer for large wholesale accounts, built for an ethically-sourced goods retailer.',
+        'site'     => 'https://yashara.org/',
+        'overview' => 'Built for Yashara, an ethically-sourced South East Asian goods retailer: our Silicon Valley engineering team applied the same approach we bring to regulated science, this time overseas and to retail operations.',
         'detail'   => 'An AI monitoring system watches inventory and product quality across Yashara\'s handcrafted goods catalog, flagging inconsistencies before they reach a customer. A second AI layer handles interfacing for large wholesale accounts — routing orders, answering account-specific questions, and surfacing exceptions to a human when it matters.',
         'features' => [
             'Automated inventory & quality monitoring',
@@ -87,7 +77,7 @@ const PRODUCTS = [
             'AI-driven large-account interfacing',
             'Exception routing to a human when needed',
         ],
-        'cta'      => 'Discuss a Custom System',
+        'cta'      => 'Book a scoping call',
         'pricing'  => null,
     ],
 ];

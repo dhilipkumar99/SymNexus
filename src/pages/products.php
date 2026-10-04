@@ -26,33 +26,35 @@ foreach ($products as $p) {
 }
 arsort($depts);
 
-$pageTitle = 'SymNexus Tasks — Symnexus';
+$pageTitle = 'SymNexus Models — AI for Every Department | SymNexus';
 $pageMeta  = [
-    'description' => 'Browse ' . $taskCount . ' ready-made SymNexus tasks, from customer churn to document extraction, and start a project questionnaire for the one that fits.',
+    'description' => 'Nine SymNexus AI model families and ' . $taskCount . ' ready-made tasks, from customer churn and demand forecasting to document extraction and computer vision, configured by our engineers to your data.',
 ];
 
 require SRC_DIR . '/includes/header.php';
 ?>
 
 <?php partial('page-header', [
-    'eyebrow'   => 'SymNexus Tasks',
-    'title'     => 'Find the right',
-    'highlight' => 'SymNexus task',
-    'lead'      => 'Pick the task closest to your work and see how our SymNexus AI models run on data like yours.',
+    'eyebrow'   => 'SymNexus Models',
+    'title'     => 'AI models for',
+    'highlight' => 'every department.',
+    'lead'      => 'Nine model families and ' . $taskCount . ' ready-made tasks. Pick the one closest to your work, and our engineers configure it to your data and build it into your workflow.',
 ]); ?>
 
 <section class="mb-10 max-w-4xl" aria-label="Our offering">
     <p class="body-copy">
-        Cloud-based AI tools are our domain. We develop and implement natively for our clients text, vision, and video
-        models hand-designed by our Silicon Valley engineering team. To design and configure our models to most closely
-        match your task, take a look at the list of tasks below or search for tasks within different business sectors to
-        identify where SymNexus can assist you most.
+        Text, vision, voice and tabular models, designed by our Silicon Valley engineering team and configured to your
+        task. Search by department below. Don&rsquo;t see your use case? These are starting points, not limits:
+        <a href="/services" class="link-inline">we build custom AI systems</a> too.
     </p>
+    <div class="flex flex-wrap gap-3 mt-6">
+        <a href="<?= e(PRIMARY_CTA['href']) ?>?interest=custom" data-cta="models-hero" class="btn-primary group"><?= e(PRIMARY_CTA['label']) ?> <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
+    </div>
 </section>
 
 <div id="solutions-browser" data-solutions class="mb-8">
 
-    <nav aria-label="SymNexus tasks" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
+    <nav aria-label="SymNexus models" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
         <a href="#solutions-browser" data-product-pill data-product="all"
             class="mc-pill mc-focus flex flex-col items-center justify-center text-center rounded-xl border-2 px-3 py-3 min-h-[64px] bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white transition-all duration-200">
             <span class="font-sans font-semibold text-sm sm:text-base leading-tight">All tasks</span>
@@ -138,10 +140,10 @@ require SRC_DIR . '/includes/header.php';
 </div>
 
 <?php partial('cta', [
-    'title'     => 'Not sure which task fits?',
-    'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right task and walk you through it on your own data.',
-    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
-    'secondary' => ['label' => 'Contact Us', 'href' => '/contact'],
+    'title'     => 'Not sure which model fits?',
+    'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right model and prove it on your own data.',
+    'primary'   => ['label' => PRIMARY_CTA['label'], 'href' => PRIMARY_CTA['href'] . '?interest=custom'],
+    'secondary' => ['label' => 'Our services', 'href' => '/services'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

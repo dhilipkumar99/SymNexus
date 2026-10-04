@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /**
- * POST /api/chat — the Symnexus AI assistant.
+ * POST /api/chat — the SymNexus AI assistant.
  *
  * Proxies a short conversation to an OpenAI-compatible chat-completions API
  * (Groq by default) with the company briefing in src/ai/instructions.md as the
@@ -95,7 +95,7 @@ function handle_chat(): void
 
     $instructions = @file_get_contents(SRC_DIR . '/ai/instructions.md');
     if ($instructions === false) {
-        $instructions = 'You are the assistant for Symnexus, a software company. Answer briefly and direct visitors to {{EMAIL}}.';
+        $instructions = 'You are the assistant for SymNexus, a software company. Answer briefly and direct visitors to {{EMAIL}}.';
     }
     $instructions = str_replace(['{{EMAIL}}', '{{PHONE}}'], [SITE_EMAIL, SITE_PHONE], $instructions);
 

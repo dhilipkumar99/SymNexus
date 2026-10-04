@@ -1,15 +1,15 @@
 <?php
-$pageTitle = 'FluorocellAI, in a cancer-research lab — Symnexus Research';
+$pageTitle = 'Case Study: FluorocellAI in a Cancer-Research Lab — SymNexus';
 $pageMeta  = [
     'description' => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI: from roughly three to four days of manual review to same-day turnaround.',
     'og_type'     => 'article',
-    'og_image'    => img('fluoroCells', 1200),
+    'og_image'    => SITE_URL . asset('images/fluorocellai-segmentation.webp'),
     'jsonld'      => [
         '@context'         => 'https://schema.org',
         '@type'            => 'Article',
         'headline'         => 'FluorocellAI, in a cancer-research lab.',
         'description'      => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI.',
-        'image'            => img('fluoroCells', 1200),
+        'image'            => SITE_URL . asset('images/fluorocellai-segmentation.webp'),
         'author'           => ['@type' => 'Organization', 'name' => SITE_NAME, 'url' => SITE_URL],
         'publisher'        => ['@type' => 'Organization', 'name' => SITE_NAME, 'url' => SITE_URL],
         'mainEntityOfPage' => SITE_URL . '/research/fluorocellai-cancer-research-lab',
@@ -27,7 +27,7 @@ require SRC_DIR . '/includes/header.php';
     <div class="mb-8">
         <a href="/research" class="inline-flex items-center text-sm font-sans font-semibold text-teal-700 dark:text-teal-400 hover:text-teal-500 transition-colors group">
             <?= icon('arrow-left', 'w-4 h-4 mr-2 transform group-hover:-translate-x-0.5 transition-transform') ?>
-            Back to Research
+            All case studies
         </a>
     </div>
 
@@ -47,16 +47,36 @@ require SRC_DIR . '/includes/header.php';
         </h1>
     </div>
 
-    <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-slate-900 mb-10 shadow-xl">
-        <img src="<?= e(img('fluoroCells', 1600)) ?>" alt="Fluorescence microscopy of cells, the kind FluorocellAI analyzes" class="w-full h-full object-cover" fetchpriority="high">
-    </div>
+    <figure class="mb-10">
+        <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-black shadow-xl">
+            <img src="<?= e(asset('images/fluorocellai-segmentation.webp')) ?>" alt="FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary" class="w-full h-full object-cover" fetchpriority="high">
+        </div>
+        <figcaption class="mt-3 text-xs text-gray-500 dark:text-gray-400">FluorocellAI output: every nucleus detected and outlined automatically.</figcaption>
+    </figure>
+
+    <dl class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-10">
+        <?php foreach ([['Client', 'Cancer-research lab'], ['Built', 'Computer vision · QC · audit trail'], ['Result', '3–4 days → same day']] as [$k, $v]): ?>
+            <div class="card-inset p-4">
+                <dt class="font-mono text-[10px] uppercase tracking-widest text-gray-500 dark:text-gray-400"><?= e($k) ?></dt>
+                <dd class="mt-1 font-sans text-sm font-bold text-gray-900 dark:text-white"><?= e($v) ?></dd>
+            </div>
+        <?php endforeach; ?>
+    </dl>
 
     <article class="font-body text-base leading-relaxed text-gray-600 dark:text-gray-300 space-y-6">
+        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white">The challenge</h2>
         <p>
-            A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual
-            review of cells from a week of manual cross-referencing to a same-day first pass.
+            The lab's cell-analysis workflow ran on manual cross-referencing: after slide prep and imaging, researchers
+            counted cells by hand, re-counted for QC, then wrote up the results. A single analysis took roughly three
+            to four days, and every hour spent counting was an hour not spent on the research itself.
         </p>
 
+        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">What we built</h2>
+        <p>
+            FluorocellAI: fine-tuned models that segment and count cells automatically, with automatic QC and an audit
+            trail behind every result, validated by working cell biologists. A REST API connects it to the lab's
+            existing pipeline, so slide prep and imaging stay exactly as they were.
+        </p>
         <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">Before FluorocellAI</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <?php foreach ($before as [$label, $value]): ?>
@@ -87,9 +107,9 @@ require SRC_DIR . '/includes/header.php';
     </article>
 
     <?php partial('cta', [
-        'title'   => 'Want to see this on your own data?',
-        'body'    => 'Request a Demonstration and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
-        'primary' => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+        'title'   => 'Have a manual process like this one?',
+        'body'    => 'Book a 30-minute scoping call with the engineers who built FluorocellAI, or request a FluorocellAI demonstration on your own images.',
+        'primary' => PRIMARY_CTA,
         'secondary' => ['label' => 'About FluorocellAI', 'href' => '/fluorocellai'],
     ]); ?>
 </div>

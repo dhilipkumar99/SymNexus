@@ -1,13 +1,13 @@
 <?php
-$pageTitle = 'Careers — Symnexus';
+$pageTitle = 'Careers — SymNexus';
 $pageMeta  = [
-    'description' => 'Symnexus is a small team of Silicon Valley engineers and domain researchers building software systems for regulated industries. Get in touch if you think you\'d be a fit.',
+    'description' => 'SymNexus is a small team of Silicon Valley engineers and domain researchers building software systems for regulated industries. Get in touch if you think you\'d be a fit.',
     'og_image'    => img('labTeam', 1200),
 ];
 
 $values = [
     ['title' => 'Small, senior team',         'body' => 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers. We hire for depth, not headcount.'],
-    ['title' => 'Domain-native, not generic', 'body' => 'We build software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt it after the fact for the lab or the regulator.'],
+    ['title' => 'Built around the user, not generic', 'body' => 'We build software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt it after the fact for the lab or the regulator.'],
     ['title' => 'Prove it, then teach it',    'body' => 'We prove our models first, then train businesses to manage these systems independently. The same discipline applies to how we build internally.'],
     ['title' => 'Compliance by design',       'body' => 'Full audit-trail transparency is built into everything we ship. That rigor extends to how we operate as a team.'],
 ];
@@ -24,16 +24,16 @@ require SRC_DIR . '/includes/header.php';
 
 <div class="flex flex-wrap gap-3 -mt-4 mb-12">
     <a href="/contact" class="btn-primary">Get in touch</a>
-    <a href="/about" class="btn-secondary">About Symnexus</a>
+    <a href="/about" class="btn-secondary">About SymNexus</a>
 </div>
 
 <!-- How we work -->
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center py-8" aria-labelledby="how-title">
     <div>
         <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">How We Work</p>
-        <h2 id="how-title" class="section-title">Small team. Deep expertise. Domain-native discipline.</h2>
+        <h2 id="how-title" class="section-title">Small team. Deep expertise. Built to fit.</h2>
         <p class="section-lead text-base mb-8">
-            Symnexus is building software infrastructure for regulated industries that need precision and accountability
+            SymNexus is building software infrastructure for regulated industries that need precision and accountability
             over convenience. The same is true of how we build our team.
         </p>
         <div class="grid grid-cols-1 gap-4">
@@ -81,7 +81,7 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'   => 'Questions before reaching out?',
     'body'    => 'Email us at ' . SITE_EMAIL . '. We read every message.',
-    'primary' => ['label' => 'Email us', 'href' => mailto('Careers at Symnexus')],
+    'primary' => ['label' => 'Email us', 'href' => mailto('Careers at SymNexus')],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

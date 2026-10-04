@@ -3,12 +3,13 @@
 declare(strict_types=1);
 
 // ── Site-wide constants ─────────────────────────────────────────────────────
-const SITE_NAME       = 'Symnexus';
+const SITE_NAME       = 'SymNexus';
 const SITE_LEGAL_NAME = 'Symnexus Ltd.';
 const SITE_URL        = 'https://symnexus.co';
 const SITE_EMAIL      = 'info@symnexus.co';
 const SITE_PHONE      = '+1 (408) 508-4718';
 const SITE_PHONE_TEL  = '+14085084718';
+const SITE_DESCRIPTION = 'SymNexus builds production AI systems for businesses — agents, document and data automation, computer vision and forecasting — engineered by a Silicon Valley team and proven on your own data before you commit.';
 // The SymNexus film: played at /video and inside the hero logo frame on click.
 const FEATURE_VIDEO   = '/video/symnexus-voiced.mp4';
 
@@ -20,6 +21,7 @@ require_once SRC_DIR . '/data/images.php';
 require_once SRC_DIR . '/data/nav.php';
 require_once SRC_DIR . '/data/products.php';
 require_once SRC_DIR . '/data/forms.php';
+require_once SRC_DIR . '/data/services.php';
 require_once SRC_DIR . '/includes/icons.php';
 
 /**
@@ -110,6 +112,36 @@ function chat_enabled(): bool
 function mailto(?string $subject = null): string
 {
     return 'mailto:' . SITE_EMAIL . ($subject !== null ? '?subject=' . rawurlencode($subject) : '');
+}
+
+/** Optional external scheduling link (Cal.com, Calendly…) offered beside the enquiry forms. */
+function booking_url(): ?string
+{
+    $url = env('BOOKING_URL');
+    return $url !== null && preg_match('#^https://#', $url) ? $url : null;
+}
+
+/** Site-wide structured data: SymNexus as a professional AI development service. */
+function organization_jsonld(): array
+{
+    return [
+        '@context'    => 'https://schema.org',
+        '@type'       => 'ProfessionalService',
+        'name'        => SITE_NAME,
+        'legalName'   => SITE_LEGAL_NAME,
+        'url'         => SITE_URL,
+        'logo'        => SITE_URL . '/android-chrome-512x512.png',
+        'image'       => SITE_URL . asset('images/og-symnexus.png'),
+        'email'       => SITE_EMAIL,
+        'telephone'   => SITE_PHONE_TEL,
+        'description' => SITE_DESCRIPTION,
+        'areaServed'  => 'Worldwide',
+        'knowsAbout'  => ['Custom AI software development', 'AI agents', 'Machine learning', 'Computer vision', 'Document and data extraction', 'Forecasting', 'Regulatory compliance software', 'Life-sciences imaging'],
+        'founder'     => [
+            ['@type' => 'Person', 'name' => 'Dhilip Raman', 'jobTitle' => 'Chief Executive Officer'],
+            ['@type' => 'Person', 'name' => 'Jacob Matthew Rajesh', 'jobTitle' => 'Chief Technical Officer'],
+        ],
+    ];
 }
 
 /** Render a partial from src/partials with the given variables in scope. */

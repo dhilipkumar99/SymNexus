@@ -1,8 +1,7 @@
 <?php
-$pageTitle = 'Research — Symnexus';
+$pageTitle = 'Case Studies — SymNexus';
 $pageMeta  = [
-    'description' => 'A case study on FluorocellAI in a cancer-research lab: what changed, and how much time it saved.',
-    'og_image'    => img('fluoroCells', 1200),
+    'description' => 'AI systems SymNexus has built and deployed: FluorocellAI in a cancer-research lab, and AI inventory monitoring and wholesale-account automation for an overseas retailer.',
 ];
 
 $entries = [
@@ -12,7 +11,15 @@ $entries = [
         'category'  => 'Case Study',
         'meta'      => 'FluorocellAI',
         'excerpt'   => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual review of cells from a week of manual cross-referencing to a same-day first pass.',
-        'thumbnail' => 'fluoroCells',
+        'thumbnail' => ['asset' => 'images/fluorocellai-segmentation-800.webp'],
+    ],
+    [
+        'href'      => '/research/yashara-retail-ai',
+        'title'     => 'AI monitoring and wholesale automation for an overseas retailer.',
+        'category'  => 'Case Study',
+        'meta'      => 'Custom AI system · Yashara',
+        'excerpt'   => 'An ethically-sourced goods retailer, two AI systems: one that watches inventory and product quality across the catalog, and one that handles large wholesale accounts and hands exceptions to a person.',
+        'thumbnail' => null,
     ],
 ];
 
@@ -22,11 +29,13 @@ require SRC_DIR . '/includes/header.php';
 <div class="w-full max-w-4xl mx-auto py-4">
 
     <div class="mb-12 border-b border-gray-200 dark:border-gray-700/60 pb-8">
+        <p class="badge mb-5">Case Studies</p>
         <h1 class="font-headline text-3xl md:text-4xl font-bold tracking-tight text-gray-900 dark:text-white mb-3">
-            What changed for one small research lab.
+            AI we&rsquo;ve built, and what changed.
         </h1>
         <p class="font-body text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed max-w-2xl">
-            A before-and-after look at FluorocellAI in production.
+            Before-and-after looks at systems our engineers designed, built and deployed, from a cancer-research lab
+            to an overseas retailer.
         </p>
     </div>
 
@@ -36,7 +45,11 @@ require SRC_DIR . '/includes/header.php';
                 <div class="absolute -inset-x-4 -inset-y-2 z-0 scale-95 bg-gray-200/40 dark:bg-gray-800/30 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 rounded-2xl sm:-inset-x-6" aria-hidden="true"></div>
 
                 <div class="relative z-10 w-full sm:w-[240px] aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/40 flex-shrink-0">
-                    <img src="<?= e(img($entry['thumbnail'], 600)) ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <?php if ($entry['thumbnail'] !== null): ?>
+                        <img src="<?= e(asset($entry['thumbnail']['asset'])) ?>" alt="" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <?php else: ?>
+                        <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-700 to-emerald-900 text-white"><?= icon('globe', 'w-10 h-10 opacity-80') ?></div>
+                    <?php endif; ?>
                 </div>
 
                 <div class="relative z-10 w-full flex flex-col justify-center">
@@ -80,10 +93,10 @@ require SRC_DIR . '/includes/header.php';
 </div>
 
 <?php partial('cta', [
-    'title'     => 'Want to see this on your own data?',
-    'body'      => 'Request a Demonstration and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
-    'note'      => 'Working outside imaging or compliance? We build domain-native software systems for many industries — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
-    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'title'     => 'Want results like these on your own data?',
+    'body'      => 'Book a 30-minute scoping call with the engineers who built these systems.',
+    'primary'   => PRIMARY_CTA,
+    'secondary' => ['label' => 'Our services', 'href' => '/services'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

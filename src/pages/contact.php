@@ -1,7 +1,7 @@
 <?php
-$pageTitle = 'Contact — Symnexus';
+$pageTitle = 'Contact — SymNexus';
 $pageMeta  = [
-    'description' => 'Contact Symnexus to request a product demonstration or discuss your requirements.',
+    'description' => 'Contact SymNexus about a custom AI development project, FluorocellAI or ComplianceCall. Email, phone, or send us a message.',
 ];
 
 require SRC_DIR . '/includes/header.php';
@@ -9,10 +9,10 @@ require SRC_DIR . '/includes/header.php';
 
 <?php partial('page-header', [
     'eyebrow' => 'Contact',
-    'title'   => 'Let\'s discuss',
-    'highlight' => 'your requirements.',
-    'lead'    => 'We provide structured evaluation access for qualified research and regulatory teams. Domain specialists run every demonstration, not sales staff.',
-    'sublead' => 'We also build domain-native software systems well beyond FluorocellAI and ComplianceCall — if you have a custom solution in mind, tell us about it below.',
+    'title'   => 'Let\'s talk about',
+    'highlight' => 'what you\'re building.',
+    'lead'    => 'Whether it\'s a custom AI system, FluorocellAI or ComplianceCall, an engineer reads every message and replies within one business day.',
+    'sublead' => 'Ready to scope a project? <a href="/demo" class="link-inline">Book a scoping call</a> instead.',
 ]); ?>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 pb-8">
@@ -40,10 +40,10 @@ require SRC_DIR . '/includes/header.php';
             <h2 class="font-headline font-semibold text-lg text-gray-900 dark:text-white mb-4">What to expect</h2>
             <ul class="space-y-3 font-sans text-sm text-gray-700 dark:text-gray-300">
                 <?php foreach ([
-                    'Scientific team responds within one business day',
-                    'Domain specialists run every demonstration, not sales',
-                    'We build every demo around your specific workflow',
-                    'Evaluation access for qualified research teams',
+                    'An engineer replies within one business day',
+                    'Engineers and researchers, not sales staff',
+                    'We prove the model on your own data first',
+                    'No automated sales sequences',
                 ] as $item): ?>
                     <li class="flex items-start"><span class="w-2 h-2 mt-1.5 rounded-full bg-brandPrimary mr-2.5 flex-shrink-0" aria-hidden="true"></span><?= e($item) ?></li>
                 <?php endforeach; ?>
@@ -55,21 +55,19 @@ require SRC_DIR . '/includes/header.php';
     <div class="lg:col-span-2">
         <?php partial('contact-form', [
             'form'         => 'contact',
-            'withSubject'  => true,
+            'withSubject'  => false,
             'heading'      => null,
             'inputs'       => [
-                ['firstName',    'First Name',    'text',  true,  'given-name'],
-                ['lastName',     'Last Name',     'text',  true,  'family-name'],
-                ['email',        'Email Address', 'email', true,  'email'],
-                ['phone',        'Phone Number',  'tel',   false, 'tel'],
-                ['organization', 'Organization',  'text',  true,  'organization'],
-                ['role',         'Your Role',     'text',  false, 'organization-title'],
+                ['firstName',    'First name', 'text',  true, 'given-name'],
+                ['lastName',     'Last name',  'text',  true, 'family-name'],
+                ['email',        'Work email', 'email', true, 'email'],
+                ['organization', 'Company',    'text',  true, 'organization'],
             ],
             'selects'      => [
-                ['name' => 'product', 'label' => 'Product of Interest', 'required' => false, 'options' => ['' => 'Select a product'] + CONTACT_PRODUCTS],
+                ['name' => 'product', 'label' => 'Interested in', 'required' => false, 'options' => ['' => 'Choose one (optional)'] + CONTACT_PRODUCTS],
             ],
-            'textarea'     => ['name' => 'message', 'label' => 'Message', 'rows' => 5, 'placeholder' => 'Describe your organization, current workflow, and what you\'d like to evaluate...'],
-            'submitLabel'  => 'Send Enquiry',
+            'textarea'     => ['name' => 'message', 'label' => 'Message', 'rows' => 5, 'placeholder' => 'Tell us what you\'re working on and how we can help.'],
+            'submitLabel'  => 'Send message',
             'footnote'     => 'We reply within one business day.',
         ]); ?>
     </div>

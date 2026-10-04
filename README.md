@@ -73,8 +73,19 @@ deployment.
   product sites. Unset, links fall back to `http://localhost:3101…3109`, which only works for local
   demos. The product sites link back to `/solutions`, which now 301-redirects to `/products`.
 
-FluorocellAI, ComplianceCall and the custom-systems cards (`src/data/products.php`) are shown at the
-top of `/about`.
+The page is presented as **Models** in the navigation. FluorocellAI, ComplianceCall and the Yashara
+cards (`src/data/products.php`) are shown on `/about` under "Shipped in production".
+
+## Services, pricing and lead capture
+
+- The custom AI development service is the site's main offer. Its capabilities, engagement process and
+  tiers live in `src/data/services.php` and are shared by `/`, `/services` and `/pricing`.
+- The single primary call to action is `PRIMARY_CTA` in `src/data/nav.php` ("Book a scoping call" → `/demo`).
+  Links may add `?interest=<key>` (a key of `CONTACT_PRODUCTS`) to preselect the form's "Interested in" option.
+- **Analytics:** the layout loads Vercel Web Analytics (`/_vercel/insights/script.js`). Turn it on in the
+  Vercel project → Analytics tab; until then the script request 404s harmlessly.
+- Optional env vars: `BOOKING_URL` adds a "Book a call directly" link under the forms; `LINKEDIN_PARTNER_ID`
+  adds the LinkedIn Insight Tag.
 
 ## AI assistant (optional)
 

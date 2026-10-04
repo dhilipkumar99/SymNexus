@@ -1,6 +1,6 @@
 <?php
 // Served by the service worker when a page is requested with no network and no cached copy.
-$pageTitle = 'You are offline — Symnexus';
+$pageTitle = 'You are offline — SymNexus';
 $pageMeta  = ['robots' => 'noindex'];
 
 require SRC_DIR . '/includes/header.php';

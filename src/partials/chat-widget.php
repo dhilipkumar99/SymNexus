@@ -1,6 +1,6 @@
 <!-- AI assistant: rendered only when AI_API_KEY / GROQ_API_KEY is configured -->
 <div id="chat-trigger-container" class="fixed bottom-5 right-4 sm:right-5 z-[9999] font-sans antialiased">
-    <button id="chat-toggle-btn" type="button" aria-controls="ai-chat-window" aria-expanded="false" aria-label="Open the Symnexus AI assistant"
+    <button id="chat-toggle-btn" type="button" aria-controls="ai-chat-window" aria-expanded="false" aria-label="Open the SymNexus AI assistant"
         class="flex h-16 w-16 items-center justify-center rounded-full bg-white dark:bg-brandNeutral text-brandNeutral dark:text-white shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(0,150,136,0.4)] hover:shadow-[0_0_25px_rgba(0,150,136,0.6)] transition-all duration-300 transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary">
         <span id="toggle-icon-open" class="block" aria-hidden="true">
             <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
@@ -16,7 +16,7 @@
     </button>
 </div>
 
-<div id="ai-chat-window" role="dialog" aria-label="Symnexus AI assistant" data-contact-email="<?= e(SITE_EMAIL) ?>"
+<div id="ai-chat-window" role="dialog" aria-label="SymNexus AI assistant" data-contact-email="<?= e(SITE_EMAIL) ?>"
     class="hidden fixed bottom-0 left-0 right-0 sm:left-auto sm:right-4 sm:bottom-24 w-full sm:w-[380px] h-[60vh] sm:h-[520px] bg-white/70 dark:bg-slate-950/80 backdrop-blur-md border-t sm:border border-white/40 dark:border-slate-800/60 rounded-t-xl sm:rounded-xl flex-col overflow-hidden origin-bottom-right shadow-[0_8px_32px_0_rgba(15,23,42,0.12)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-[9999]">
 
     <div class="px-5 py-4 border-b border-gray-200/50 dark:border-slate-800/60 flex items-center justify-between bg-white/30 dark:bg-slate-950/40 flex-shrink-0">
@@ -26,7 +26,7 @@
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 dark:bg-emerald-400"></span>
             </span>
             <span class="font-mono text-[11px] uppercase tracking-widest text-slate-600 dark:text-slate-300 font-semibold dark:font-normal">
-                Symnexus AI
+                SymNexus AI
             </span>
         </div>
         <button type="button" data-chat-close
@@ -43,7 +43,7 @@
     </div>
 
     <form id="chat-form" class="p-3 sm:p-4 bg-white/60 dark:bg-slate-950/80 border-t border-gray-200/50 dark:border-slate-800/60 flex items-center gap-2.5 flex-shrink-0">
-        <label for="chat-input" class="sr-only">Ask the Symnexus AI assistant</label>
+        <label for="chat-input" class="sr-only">Ask the SymNexus AI assistant</label>
         <input type="text" id="chat-input" maxlength="1000" autocomplete="off" placeholder="Ask about our products or services…"
             class="flex-1 bg-white/80 dark:bg-slate-900/60 text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-600 font-normal dark:font-light text-sm rounded-lg px-4 py-2.5 border border-gray-200/60 dark:border-slate-800/80 focus:outline-none focus:border-brandPrimary dark:focus:border-slate-700 transition-colors shadow-inner min-w-0">
         <button type="submit"

@@ -16,6 +16,8 @@
 $sent   = ($_GET['sent'] ?? '') === '1';
 $failed = ($_GET['error'] ?? '') === '1';
 $id     = $form;
+// Preselect an option from ?interest= (links from the pricing tiers and product pages).
+$interest = is_string($_GET['interest'] ?? null) ? $_GET['interest'] : '';
 ?>
 <div id="enquiry" data-form-root class="scroll-mt-28">
     <form action="/api/contact" method="post" data-contact-form
@@ -44,7 +46,7 @@ $id     = $form;
                         <select id="<?= e($id . '-' . $select['name']) ?>" name="<?= e($select['name']) ?>"
                             <?= $select['required'] ? 'required' : '' ?> class="form-field">
                             <?php foreach ($select['options'] as $value => $optionLabel): ?>
-                                <option value="<?= e($value) ?>"><?= e($optionLabel) ?></option>
+                                <option value="<?= e($value) ?>" <?= $value !== '' && $value === $interest ? 'selected' : '' ?>><?= e($optionLabel) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -86,6 +88,11 @@ $id     = $form;
 
         <?php if (!empty($footnote)): ?>
             <p class="font-body text-xs text-center text-gray-600 dark:text-gray-300"><?= e($footnote) ?></p>
+        <?php endif; ?>
+        <?php if (booking_url() !== null): ?>
+            <p class="font-body text-xs text-center text-gray-600 dark:text-gray-300">
+                Prefer to pick a time? <a href="<?= e(booking_url()) ?>" target="_blank" rel="noopener" data-cta="booking-<?= e($form) ?>" class="link-inline">Book a call directly</a>.
+            </p>
         <?php endif; ?>
     </form>
 

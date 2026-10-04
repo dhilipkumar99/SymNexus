@@ -365,11 +365,16 @@
         var target = e.target;
         if (!(target instanceof Element)) return;
 
-        var filmTrigger = target.closest('a[data-logo-play]');
+        // The logo frame itself, or a "watch the overview" link elsewhere on the page.
+        var filmTrigger = target.closest('a[data-logo-play], a[data-film-trigger]');
         if (filmTrigger && e.button === 0 && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
-            var filmPlayer = filmTrigger.closest('[data-logo-player]');
+            var filmPlayer = filmTrigger.closest('[data-logo-player]')
+                || (filmTrigger.hasAttribute('data-film-trigger') && document.querySelector('[data-logo-player]'));
             if (filmPlayer) {
                 e.preventDefault();
+                if (!filmTrigger.closest('[data-logo-player]')) {
+                    filmPlayer.scrollIntoView({ behavior: reducedMotion && reducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
+                }
                 startFilm(filmPlayer);
                 return;
             }
