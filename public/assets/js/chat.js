@@ -1,5 +1,5 @@
 /**
- * SymNexus AI assistant widget.
+ * Symnexus AI assistant widget.
  *
  * Conversation state is kept as plain data in sessionStorage and every message
  * is rendered through textContent/escaping — model or user text is never
@@ -10,7 +10,7 @@
 
     var STORAGE_KEY = 'symnexus_chat_history';
     var MAX_HISTORY = 10;
-    var GREETING = "Hi! I'm the SymNexus AI assistant, built by our engineering team. Tell me what you'd like AI to do for your business, or ask about our services, FluorocellAI or ComplianceCall.";
+    var GREETING = "Hello! I'm the Symnexus AI assistant. Ask me about FluorocellAI, ComplianceCall, the custom systems we build, or how to request a demonstration.";
 
     var windowEl = document.getElementById('ai-chat-window');
     var screenEl = document.getElementById('chat-screen');
@@ -105,7 +105,7 @@
 
         var label = document.createElement('span');
         label.className = 'block text-[10px] uppercase font-mono tracking-wider text-slate-500 font-semibold dark:font-normal';
-        label.textContent = isUser ? 'You' : 'SymNexus AI';
+        label.textContent = isUser ? 'You' : 'Symnexus AI';
 
         var text = document.createElement('div');
         text.className = 'text-slate-800 dark:text-slate-100 text-sm font-normal dark:font-light leading-relaxed bg-white/60 dark:bg-slate-900/40 px-3.5 py-2.5 rounded-lg border border-white/80 dark:border-slate-800/50 shadow-sm text-left break-words';
@@ -130,7 +130,7 @@
         var el = document.createElement('div');
         el.id = 'ai-loading-placeholder';
         el.className = 'flex items-start gap-3 max-w-[85%] animate-pulse';
-        el.setAttribute('aria-label', 'SymNexus AI is typing');
+        el.setAttribute('aria-label', 'Symnexus AI is typing');
         el.innerHTML =
             '<div class="w-7 h-7 rounded-lg bg-brandPrimary/60 flex-shrink-0"></div>' +
             '<div class="space-y-2 w-full pt-1">' +
@@ -163,7 +163,7 @@
         document.getElementById('toggle-icon-open').classList.toggle('hidden', open);
         document.getElementById('toggle-icon-close').classList.toggle('hidden', !open);
         toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        toggleBtn.setAttribute('aria-label', open ? 'Close the SymNexus AI assistant' : 'Open the SymNexus AI assistant');
+        toggleBtn.setAttribute('aria-label', open ? 'Close the Symnexus AI assistant' : 'Open the Symnexus AI assistant');
 
         if (open) {
             windowEl.classList.remove('hidden', 'animate-apple-close');

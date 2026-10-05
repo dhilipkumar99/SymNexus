@@ -2,7 +2,7 @@
 $status    = http_response_code();
 $isMissing = $status === 404;
 
-$pageTitle = ($isMissing ? '404' : (string) $status) . ' — SymNexus';
+$pageTitle = ($isMissing ? '404' : (string) $status) . ' — Symnexus';
 $pageMeta  = ['robots' => 'noindex, follow'];
 
 require SRC_DIR . '/includes/header.php';

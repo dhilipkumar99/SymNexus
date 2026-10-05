@@ -1,22 +1,23 @@
 <?php
-$pageTitle = 'About — SymNexus';
+$pageTitle = 'About — Symnexus';
 $pageMeta  = [
-    'description' => 'SymNexus is a Silicon Valley team of engineers and researchers from Amazon, Zoom, ServiceNow, NXP, Stanford and Berkeley, building production AI systems for businesses, including FluorocellAI and ComplianceCall.',
+    'description' => 'FluorocellAI, ComplianceCall and custom AI systems from Symnexus — a Silicon Valley team of engineers and researchers building domain-native software for regulated and technical industries.',
+    'og_image'    => img('scientistScope', 1200),
 ];
 
 $differentiators = [
-    ['num' => '01', 'title' => 'Team expertise',        'body' => 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon and ServiceNow, plus Stanford- and Berkeley-trained researchers: the systems engineering to deploy AI reliably, and the domain depth to know what it has to get right.'],
-    ['num' => '02', 'title' => 'Built around your workflow', 'body' => 'We start from how your team works today and fit AI into it. The people who use each system validate it before it goes live; we never ask them to adapt to a generic tool.'],
-    ['num' => '03', 'title' => 'Proven on your data',   'body' => 'We prove the model on your own data before you commit to a build, then train your team to run the system independently.'],
-    ['num' => '04', 'title' => 'Flexible architecture', 'body' => 'One modular stack (ingestion, data lake, fine-tuned models, agents and copilot) lets us ship new systems fast and extend them to new sites, data and jurisdictions without rebuilding.'],
-    ['num' => '05', 'title' => 'Compliance by design',  'body' => 'Every system ships with an audit trail and access controls built in, not bolted on: a standard we set for customers who answer to the FDA and other regulators.'],
+    ['num' => '01', 'title' => 'Team expertise',        'body' => 'Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and Stanford-trained researchers, led by a neuroscience Ph.D. researcher and a Berkeley-trained operator — built for both the hardware/deployment side and the regulated-science domain side of this problem, and for deploying that engineering to clients operating overseas.'],
+    ['num' => '02', 'title' => 'Unique wedge',          'body' => 'We build domain-native software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt generic enterprise technology after the fact for the lab.'],
+    ['num' => '03', 'title' => 'Proprietary data',      'body' => 'Every deployment adds annotated microscopy data and mapped regulatory precedent across FDA — a compounding dataset a generic tool cannot replicate.'],
+    ['num' => '04', 'title' => 'Flexible architecture', 'body' => 'One modular software stack — ingestion, data lake, fine-tuned models, agents, and copilot — powers both products today and lets us add new regulatory jurisdictions or imaging modalities without rebuilding from scratch.'],
+    ['num' => '05', 'title' => 'Compliance by design',  'body' => 'We build full audit-trail transparency into every Symnexus platform by design, rather than bolt it on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.'],
 ];
 
 $team = [
     ['name' => 'Brent Luker',           'role' => 'Generative AI Software Engineer', 'note' => 'Formerly Zoom'],
     ['name' => 'Sameera Velammuri',     'role' => 'AI/ML Software Engineer',         'note' => 'Formerly Amazon'],
     ['name' => 'Prabhat Jammalamadaka', 'role' => 'Business Development',            'note' => ''],
-    ['name' => 'Arshi Saxena',          'role' => 'Product Development & Forward-Deployed Engineering',       'note' => 'Formerly ServiceNow'],
+    ['name' => 'Arshi Saxena',          'role' => 'Product Development & FDE',       'note' => 'Formerly ServiceNow'],
     ['name' => 'Rijul Mahajan',         'role' => 'Front-End Software Engineer',     'note' => 'UC Berkeley'],
     ['name' => 'Varun Singh',           'role' => 'AI/ML Researcher',                'note' => 'Stanford'],
 ];
@@ -26,17 +27,50 @@ require SRC_DIR . '/includes/header.php';
 ?>
 
 <?php partial('page-header', [
-    'eyebrow'   => 'About SymNexus',
-    'title'     => 'The team building',
-    'highlight' => 'production AI systems.',
-    'lead'      => 'We\'re a Silicon Valley team of engineers and researchers who design, build and deploy AI for businesses, from cell-image analysis and pharmaceutical compliance to retail operations, for clients in the United States, Canada and beyond.',
+    'eyebrow' => 'Products',
+    'title'   => 'AI Agents to',
+    'highlight' => 'Maximize Efficiency',
+    'lead'    => 'SymNexus employs a team of Silicon Valley educated and trained machine learning engineers to develop custom AI solutions for high-throughput industries, using the latest AI/ML models produced in the Bay Area. SymNexus has built two large-scale products for industries in the United States and Canada; it is now building out solutions globally.',
 ]); ?>
+
+<a href="/products"
+    class="group mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-inset hover:border-brandPrimary/60 transition-colors">
+    <span>
+        <span class="pill mb-2">SymNexus tasks</span>
+        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">108 ready-made tasks for every department</span>
+        <span class="block body-copy text-sm mt-1">Predict, Forecast, Sentinel, Extract, Gen, Vision, Match, Decide and Voice. Find the task that fits your work and plan a project in minutes.</span>
+    </span>
+    <span class="btn-primary flex-shrink-0">
+        Browse tasks
+        <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
+    </span>
+</a>
+
+<div id="products" class="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-mt-28">
+    <?php foreach (PRODUCTS as $slug => $p): ?>
+        <?php partial('product-card', [
+            'slug'   => $slug,
+            'p'      => $p,
+            'slides' => PRODUCT_MEDIA[$slug] ?? null,
+            'class'  => isset(PRODUCT_MEDIA[$slug]) ? '' : 'md:col-span-2',
+        ]); ?>
+    <?php endforeach; ?>
+</div>
+
+<!-- About Symnexus -->
+<header class="mt-20 mb-12 border-b border-gray-200 dark:border-gray-700/60 pb-8 max-w-4xl" aria-labelledby="about-title">
+    <p class="badge mb-5">About Symnexus</p>
+    <h2 id="about-title" class="font-headline font-bold text-4xl sm:text-5xl text-gray-900 dark:text-white tracking-tight leading-tight mb-4">
+        The team building <span class="text-brandPrimary">domain-native software systems.</span>
+    </h2>
+    <p class="font-sans text-lg font-medium text-gray-600 dark:text-gray-300 leading-relaxed max-w-3xl">We&rsquo;re a Silicon Valley team of engineers and researchers building software systems for regulated and technical industries — from cell image analysis and pharmaceutical compliance to monitoring and account intelligence for other fields entirely, deployed for clients operating globally.</p>
+</header>
 
 <!-- What we do: narrative + focus card -->
 <section class="grid grid-cols-1 md:grid-cols-3 gap-12 pb-12" aria-labelledby="what-we-do">
     <div class="md:col-span-2 space-y-6 body-copy">
         <h2 id="what-we-do" class="font-sans text-2xl md:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-            We build AI that experts actually use.
+            We build software domain experts actually use.
         </h2>
         <p>
             Most software vendors sell a platform and leave the customer to adapt their workflow to it. That works poorly
@@ -44,13 +78,13 @@ require SRC_DIR . '/includes/header.php';
             businesses to manage these systems independently.
         </p>
         <p>
-            At SymNexus, we begin with a deep operational understanding of the domain — a cancer-research lab's
+            At Symnexus, we begin with a deep operational understanding of the domain — a cancer-research lab's
             cell-analysis workflow, a pharmaceutical team's regulatory audit trail — and build software validated by the
             working scientists and compliance professionals who use it.
         </p>
         <div class="flex flex-wrap gap-3 pt-2">
-            <a href="/services" class="btn-primary">Our services</a>
-            <a href="/research" class="btn-secondary">Case studies</a>
+            <a href="/products" class="btn-primary">Explore SymNexus tasks</a>
+            <a href="/research" class="btn-secondary">Our research</a>
         </div>
     </div>
 
@@ -64,11 +98,20 @@ require SRC_DIR . '/includes/header.php';
     </div>
 </section>
 
+<!-- Image strip -->
+<div class="grid grid-cols-2 md:grid-cols-3 gap-6 py-6">
+    <?php foreach ([['labEquipment', 'Laboratory equipment and scientific instruments', '-rotate-1'], ['phytoplankton', 'Microscopic biological organisms', 'rotate-1'], ['cellGrowth', 'Cell cultures growing in laboratory conditions', '-rotate-1']] as $i => [$key, $alt, $rotate]): ?>
+        <div class="<?= $i === 2 ? 'hidden md:block' : '' ?> transform <?= $rotate ?> shadow-xl rounded-3xl overflow-hidden border border-white/5 aspect-[4/3]">
+            <img src="<?= e(img($key, 800)) ?>" alt="<?= e($alt) ?>" loading="lazy" decoding="async" class="w-full h-full object-cover transition-transform duration-700 hover:scale-105">
+        </div>
+    <?php endforeach; ?>
+</div>
+
 <!-- Differentiators -->
 <section class="py-16" aria-labelledby="different-title">
     <div class="mb-6 md:mb-8 max-w-2xl">
         <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Why Teams Choose Us</p>
-        <h2 id="different-title" class="section-title">What makes us different.</h2>
+        <h2 id="different-title" class="section-title">What makes our software different.</h2>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <?php foreach ($differentiators as $d): ?>
@@ -84,24 +127,24 @@ require SRC_DIR . '/includes/header.php';
 </section>
 
 <!-- Team -->
-<section id="team" class="py-12 scroll-mt-28" aria-labelledby="team-title">
+<section class="py-12" aria-labelledby="team-title">
     <div class="mb-6 md:mb-8">
         <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Team</p>
-        <h2 id="team-title" class="section-title">The people who build your system.</h2>
+        <h2 id="team-title" class="section-title">Leadership</h2>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <article class="card">
             <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Dhilip Raman</h3>
             <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Executive Officer</p>
-            <p class="mt-4 body-copy text-sm">Leads operations, client engagements and market entry. Background in clinical research and clinical data management, and neuroscience research at the doctoral level.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Clinical Research Coordinator, Stanford · Clinical Data Manager · Catalent Pharma Solutions</p>
+            <p class="mt-4 body-copy text-sm">Ph.D. student, Neuroscience. Leads operations, contracts, and market entry.</p>
+            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Previously: Clinical Research Coordinator (Stanford); Clinical Data Manager; Catalent Pharma Solutions.</p>
         </article>
         <article class="card">
             <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Jacob Matthew Rajesh</h3>
             <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Technical Officer</p>
-            <p class="mt-4 body-copy text-sm">Leads technical design and the engineering team, from system architecture to deployment.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Systems engineering · NXP Semiconductors</p>
+            <p class="mt-4 body-copy text-sm">Leads technical design and engineering teams.</p>
+            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Currently: NXP Semiconductor Engineer.</p>
         </article>
     </div>
 
@@ -118,43 +161,11 @@ require SRC_DIR . '/includes/header.php';
     </div>
 </section>
 
-<!-- What we've shipped -->
-<section class="py-12" aria-labelledby="shipped-title">
-    <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Shipped in production</p>
-        <h2 id="shipped-title" class="section-title">What we&rsquo;ve built.</h2>
-    </div>
-
-<a href="/products"
-    class="group mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 card-inset hover:border-brandPrimary/60 transition-colors">
-    <span>
-        <span class="pill mb-2">SymNexus Models</span>
-        <span class="block font-sans text-xl font-bold text-gray-900 dark:text-white">Nine model families, 108 ready-made tasks</span>
-        <span class="block body-copy text-sm mt-1">Predict, Forecast, Sentinel, Extract, Gen, Vision, Match, Decide and Voice. Find the model closest to your work and we&rsquo;ll configure it to your data.</span>
-    </span>
-    <span class="btn-primary flex-shrink-0">
-        Browse models
-        <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
-    </span>
-</a>
-
-<div id="products" class="grid grid-cols-1 md:grid-cols-2 gap-8 scroll-mt-28">
-    <?php foreach (PRODUCTS as $slug => $p): ?>
-        <?php partial('product-card', [
-            'slug'   => $slug,
-            'p'      => $p,
-            'slides' => PRODUCT_MEDIA[$slug] ?? null,
-            'class'  => isset(PRODUCT_MEDIA[$slug]) ? '' : 'md:col-span-2',
-        ]); ?>
-    <?php endforeach; ?>
-</div>
-</section>
-
 <?php partial('cta', [
-    'title'     => 'Work with the team that built these.',
-    'body'      => 'Book a 30-minute scoping call with the engineers who would build your system.',
-    'primary'   => PRIMARY_CTA,
-    'secondary' => ['label' => 'Our services', 'href' => '/services'],
+    'title'     => 'Ready to see these on your own data?',
+    'body'      => 'Our scientific and engineering staff build every demonstration around your specific workflow, skipping the generic product tour.',
+    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'secondary' => ['label' => 'View Pricing', 'href' => '/pricing'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

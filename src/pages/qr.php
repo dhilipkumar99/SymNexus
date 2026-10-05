@@ -17,7 +17,7 @@ $defaultLink = 'https://symnexus.co/contact';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
     <meta name="color-scheme" content="light">
-    <title>QR code generator · SymNexus</title>
+    <title>QR code generator · Symnexus</title>
     <link rel="icon" href="/favicon.ico" sizes="48x48">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <style>

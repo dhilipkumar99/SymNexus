@@ -63,12 +63,12 @@
     </div>
 
     <div class="px-6 sm:px-8 py-4 bg-gray-50 dark:bg-slate-800/20 border-t border-gray-100 dark:border-slate-800 flex flex-wrap justify-between items-center gap-4">
-        <a href="/demo?interest=<?= e(isset(CONTACT_PRODUCTS[$slug]) ? $slug : 'custom') ?>" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors">
+        <a href="/demo" class="inline-flex items-center text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-brandPrimary dark:hover:text-brandPrimary transition-colors">
             <?= e($p['cta']) ?>
         </a>
         <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
             class="inline-flex items-center text-sm font-semibold text-brandPrimary hover:underline group">
-            <?= $p['external'] || isset($p['site']) ? e($p['link']) : 'View ' . e($p['name']) ?>
+            <?= $p['external'] ? e($p['link']) : 'View ' . e($p['name']) ?>
             <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-4 h-4 ml-1.5 transition-transform group-hover:translate-x-0.5' . ($p['external'] ? ' group-hover:-translate-y-0.5' : '')) ?>
         </a>
     </div>

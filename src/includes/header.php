@@ -7,7 +7,7 @@
 // fragment is sent, so this file emits response headers and nothing else.
 // ============================================================
 
-$pageTitle = $pageTitle ?? 'SymNexus — Custom AI Software Development | Silicon Valley Engineers';
+$pageTitle = $pageTitle ?? 'Symnexus — Domain-Native Software Systems for Regulated Industries';
 $pageMeta  = $pageMeta ?? [];
 
 if (is_spa_request()) {
@@ -18,17 +18,24 @@ if (is_spa_request()) {
 }
 
 $canonical        = $pageMeta['canonical'] ?? (SITE_URL . current_path());
-$meta_description = $pageMeta['description'] ?? SITE_DESCRIPTION;
+$meta_description = $pageMeta['description']
+    ?? 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FluorocellAI, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.';
 $meta_og_type      = $pageMeta['og_type'] ?? 'website';
-// Branded share card by default; pages with real product imagery may override it.
-$meta_og_image     = $pageMeta['og_image'] ?? SITE_URL . asset('images/og-symnexus.png');
-$meta_og_image_alt = $pageMeta['og_image_alt'] ?? 'SymNexus — production AI systems, built by Silicon Valley engineers';
+$meta_og_image     = $pageMeta['og_image'] ?? img('darkLab', 1200);
+$meta_og_image_alt = $pageMeta['og_image_alt'] ?? 'Symnexus — domain-native software systems';
 $meta_robots       = $pageMeta['robots'] ?? 'index, follow';
 
-$ld = $pageMeta['jsonld'] ?? organization_jsonld();
-
-// Optional third-party tags, enabled per environment so no IDs live in the code.
-$linkedinPartnerId = env('LINKEDIN_PARTNER_ID');
+$ld = $pageMeta['jsonld'] ?? [
+    '@context'    => 'https://schema.org',
+    '@type'       => 'Organization',
+    'name'        => SITE_NAME,
+    'legalName'   => SITE_LEGAL_NAME,
+    'url'         => SITE_URL,
+    'logo'        => SITE_URL . '/android-chrome-512x512.png',
+    'email'       => SITE_EMAIL,
+    'telephone'   => SITE_PHONE_TEL,
+    'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries, deployed for clients operating globally.',
+];
 
 header('Content-Type: text/html; charset=utf-8');
 ?>
@@ -91,23 +98,6 @@ header('Content-Type: text/html; charset=utf-8');
 
     <script src="<?= e(asset('js/site.js')) ?>" defer></script>
     <script src="<?= e(asset('js/spa-router.js')) ?>" defer></script>
-
-    <!-- Vercel Web Analytics (page views, incl. SPA navigations). Enable it in the Vercel project's Analytics tab. -->
-    <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
-    <script defer src="/_vercel/insights/script.js"></script>
-<?php if ($linkedinPartnerId !== null): ?>
-
-    <!-- LinkedIn Insight Tag (LINKEDIN_PARTNER_ID) -->
-    <script>
-        window._linkedin_data_partner_ids = (window._linkedin_data_partner_ids || []).concat(<?= json_encode($linkedinPartnerId, JSON_HEX_TAG) ?>);
-        (function (l) {
-            if (!l) { window.lintrk = function (a, b) { window.lintrk.q.push([a, b]); }; window.lintrk.q = []; }
-            var s = document.getElementsByTagName('script')[0], b = document.createElement('script');
-            b.type = 'text/javascript'; b.async = true; b.src = 'https://snap.licdn.com/li.lms-analytics/insight.min.js';
-            s.parentNode.insertBefore(b, s);
-        })(window.lintrk);
-    </script>
-<?php endif; ?>
 </head>
 
 <body class="bg-white dark:bg-black min-h-screen font-body flex flex-col transition-colors duration-300">
@@ -121,9 +111,9 @@ header('Content-Type: text/html; charset=utf-8');
         <div class="max-w-6xl mx-auto flex items-center justify-between h-16">
 
             <!-- Logo pill: naked at the top, glass once scrolled -->
-            <div id="logo-pill" class="flex-shrink min-w-0 flex items-center rounded-full px-3 sm:px-5 py-2">
+            <div id="logo-pill" class="flex-shrink-0 flex items-center rounded-full px-5 py-2">
                 <a href="/" class="block transition-opacity hover:opacity-80">
-                    <img src="<?= e(asset('images/symnexus-wordmark.webp')) ?>" alt="SymNexus — home" width="1067" height="124"
+                    <img src="<?= e(asset('images/symnexus-wordmark.webp')) ?>" alt="Symnexus — home" width="1067" height="124"
                         class="block h-4 sm:h-5 w-auto dark:brightness-0 dark:invert">
                 </a>
             </div>
@@ -138,12 +128,18 @@ header('Content-Type: text/html; charset=utf-8');
                 <?php endforeach; ?>
             </nav>
 
-            <!-- Right: floating pill for the primary call to action, theme toggle and mobile trigger -->
+            <!-- Right: floating pill for team login, demo link, theme toggle and mobile trigger -->
             <div
                 class="flex items-center space-x-1 bg-white/40 dark:bg-neutral-900/40 backdrop-blur-md border border-gray-200/40 dark:border-neutral-800/40 shadow-md rounded-full p-1.5 transition-colors duration-300">
-                <a href="<?= e(PRIMARY_CTA['href']) ?>" data-cta="header"
-                    class="inline-flex items-center whitespace-nowrap rounded-full px-3 sm:px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary focus-visible:ring-offset-1 transition-colors">
-                    <span class="sm:hidden">Book a call</span><span class="hidden sm:inline"><?= e(PRIMARY_CTA['label']) ?></span>
+                <a href="<?= e(TEAM_LOGIN_URL) ?>"
+                    class="hidden md:inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-semibold text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 shadow-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary focus-visible:ring-offset-1 transition-colors">
+                    Team login
+                </a>
+                <!-- Hidden from lg to ~1360px, where the centred nav leaves room for only one of
+                     these two links; the page's own demo call-to-action stays visible. -->
+                <a href="/demo"
+                    class="hidden sm:inline-flex lg:hidden min-[1360px]:inline-flex items-center rounded-full px-3 py-1.5 text-sm font-semibold text-brandPrimary hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 transition-colors">
+                    Request a demo
                 </a>
                 <button id="theme-toggle" type="button"
                     class="text-gray-500 dark:text-gray-300 hover:bg-gray-200/50 dark:hover:bg-neutral-800/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary rounded-full text-sm p-2 transition-all"
@@ -177,8 +173,10 @@ header('Content-Type: text/html; charset=utf-8');
                         <?= nav_is_active($link) ? 'aria-current="page"' : '' ?>
                         class="block text-sm font-medium px-4 py-2.5 rounded-xl transition-colors text-gray-600 dark:text-gray-300 hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold aria-[current=page]:bg-gray-100 dark:aria-[current=page]:bg-white/5 dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
                 <?php endforeach; ?>
-                <a href="<?= e(PRIMARY_CTA['href']) ?>" data-cta="mobile-menu"
-                    class="block text-center text-sm font-semibold px-4 py-2.5 mt-2 rounded-xl text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 transition-colors"><?= e(PRIMARY_CTA['label']) ?></a>
+                <a href="/demo"
+                    class="block text-sm font-semibold px-4 py-2.5 rounded-xl text-brandPrimary hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Request a demonstration</a>
+                <a href="<?= e(TEAM_LOGIN_URL) ?>"
+                    class="block text-center text-sm font-semibold px-4 py-2.5 mt-2 rounded-xl text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 transition-colors">Team login</a>
             </nav>
         </div>
     </header>

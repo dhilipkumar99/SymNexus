@@ -12,7 +12,7 @@ declare(strict_types=1);
  * Environment:
  *   RESEND_API_KEY      required — provisioned by the Vercel Marketplace integration
  *   CONTACT_TO_EMAIL    default SITE_EMAIL (info@symnexus.co)
- *   CONTACT_FROM_EMAIL  default "SymNexus Website <website@symnexus.co>"; the domain
+ *   CONTACT_FROM_EMAIL  default "Symnexus Website <website@symnexus.co>"; the domain
  *                       must be verified in Resend
  *
  * Works with fetch (JSON in/out, used by site.js) and with a plain HTML form
@@ -64,13 +64,19 @@ function contact_validate(array $in): array
     ];
 
     $errors = [];
-    foreach (['firstName' => 'first name', 'lastName' => 'last name', 'organization' => 'company', 'message' => 'message'] as $key => $label) {
+    foreach (['firstName' => 'first name', 'lastName' => 'last name', 'organization' => 'organization', 'message' => 'message'] as $key => $label) {
         if ($d[$key] === '') {
             $errors[] = "Please enter your $label.";
         }
     }
     if ($d['email'] === '' || filter_var($d['email'], FILTER_VALIDATE_EMAIL) === false) {
         $errors[] = 'Please enter a valid email address.';
+    }
+    if ($form === 'contact' && $d['subject'] === '') {
+        $errors[] = 'Please enter a subject.';
+    }
+    if ($form === 'demo' && $d['product'] === '') {
+        $errors[] = 'Please choose a product of interest.';
     }
 
     return [$d, $errors];
@@ -80,10 +86,9 @@ function contact_validate(array $in): array
 function contact_compose(array $d): array
 {
     $name = $d['firstName'] . ' ' . $d['lastName'];
-    $topic   = $d['product'] !== '' ? ' (' . $d['product'] . ')' : '';
     $subject = $d['form'] === 'demo'
-        ? 'Scoping call request — ' . $d['organization'] . $topic
-        : 'Website enquiry — ' . ($d['subject'] !== '' ? $d['subject'] : $d['organization'] . $topic);
+        ? 'Demonstration request — ' . $d['organization']
+        : 'Website enquiry: ' . $d['subject'];
 
     $rows = array_filter([
         'Name'                => $name,
@@ -91,12 +96,12 @@ function contact_compose(array $d): array
         'Phone'               => $d['phone'],
         'Organization'        => $d['organization'],
         'Role'                => $d['role'],
-        'Subject'             => $d['subject'],
-        'Interested in'       => $d['product'],
+        'Subject'             => $d['form'] === 'contact' ? $d['subject'] : '',
+        'Product of interest' => $d['product'],
         'Organization type'   => $d['labType'],
     ], static fn(string $v): bool => $v !== '');
 
-    $source = $d['form'] === 'demo' ? '/demo (Book a scoping call)' : '/contact (Contact)';
+    $source = $d['form'] === 'demo' ? '/demo (Request a Demonstration)' : '/contact (Contact)';
 
     $text = '';
     foreach ($rows as $label => $value) {
@@ -120,7 +125,7 @@ function contact_send(array $d, string $apiKey): bool
 {
     $mail = contact_compose($d);
     $payload = json_encode([
-        'from'     => env('CONTACT_FROM_EMAIL', 'SymNexus Website <website@symnexus.co>'),
+        'from'     => env('CONTACT_FROM_EMAIL', 'Symnexus Website <website@symnexus.co>'),
         'to'       => [env('CONTACT_TO_EMAIL', SITE_EMAIL)],
         'reply_to' => $d['firstName'] . ' ' . $d['lastName'] . ' <' . $d['email'] . '>',
         'subject'  => $mail['subject'],

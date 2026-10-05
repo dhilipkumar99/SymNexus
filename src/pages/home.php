@@ -1,197 +1,237 @@
 <?php
-$pageTitle = 'SymNexus — Custom AI Software Development | Silicon Valley Engineers';
+$pageTitle = 'Symnexus — Domain-Native Software Systems for Regulated Industries';
 $pageMeta  = [
-    'description' => SITE_DESCRIPTION,
+    'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FluorocellAI, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.',
 ];
 
-// Shipped systems, presented as proof of the service.
-$proof = [
-    [
-        'category' => 'Life sciences · Computer vision',
-        'name'     => 'FluorocellAI',
-        'outcome'  => '3–4 days of manual cell review → a same-day first pass',
-        'body'     => 'Automated segmentation, counting and QC for cancer-research labs, with an audit trail behind every result and no change to how the lab prepares its slides.',
-        'image'    => ['images/fluorocellai-segmentation-800.webp', 800, 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary', 'object-cover'],
-        'links'    => [['Read the case study', '/research/fluorocellai-cancer-research-lab'], ['Product', '/fluorocellai']],
-    ],
-    [
-        'category' => 'Pharma · Regulatory compliance',
-        'name'     => 'ComplianceCall',
-        'outcome'  => 'A continuously auditable record, instead of reconstructing history at audit time',
-        'body'     => 'Benchmarks pharmaceutical development against current federal regulation and tracks what each chemical\'s hazard category used to be, and why it changed.',
-        'image'    => ['images/compliancecall-dashboard-900.webp', 900, 'ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels', 'object-contain bg-white'],
-        'links'    => [['Product', '/compliancecall']],
-    ],
-    [
-        'category' => 'Retail & wholesale · Agents and monitoring',
-        'name'     => 'Yashara',
-        'outcome'  => 'Inventory and quality issues flagged before they reach a customer',
-        'body'     => 'For an ethically-sourced goods retailer operating overseas: AI monitoring across the catalog, plus an AI layer that handles large wholesale accounts and escalates exceptions to a person.',
-        'image'    => null,
-        'links'    => [['Read the case study', '/research/yashara-retail-ai']],
-    ],
+$gallery = [
+    ['darkLab',         'Laboratory at night, lit by instrument displays', '-rotate-2'],
+    ['purpleCells',     'Fluorescence microscopy of cells',                'rotate-3'],
+    ['labGlassware',    'Laboratory glassware and research equipment',     '-rotate-2'],
+    ['microscopeSetup', 'Microscope set up for imaging',                   'rotate-2'],
+    ['scientistScope',  'Researcher working at a microscope',              '-rotate-2'],
 ];
 
-$why = [
-    ['icon' => 'users',        'title' => 'Senior engineers only',          'body' => 'The engineers who scope your project are the ones who build it: Silicon Valley engineers from Amazon, Zoom, ServiceNow and NXP, with Stanford- and Berkeley-trained researchers.'],
-    ['icon' => 'check',        'title' => 'Proven on your data first',      'body' => 'We prove the model on your own data before you commit to a build, so you decide on evidence rather than a demo of someone else\'s data.'],
-    ['icon' => 'squares',      'title' => 'Built around your workflow',     'body' => 'We fit AI into the tools and processes your team already uses, and the people who use it validate it before it goes live.'],
-    ['icon' => 'shield-check', 'title' => 'Production-grade and auditable', 'body' => 'Every system ships with an audit trail and access controls by design, a standard we built for FDA-regulated customers, and we train your team to run it independently.'],
+$approach = [
+    ['icon' => 'users',        'title' => 'Unique wedge',        'tags' => ['Domain-native', 'Practitioner-validated'], 'body' => 'We build domain-native software, and the working scientists and compliance professionals who use it validate it — we don\'t adapt generic enterprise technology after the fact for the lab.'],
+    ['icon' => 'database',     'title' => 'Proprietary data',    'tags' => ['Microscopy', 'Regulatory precedent'],      'body' => 'Every deployment adds annotated microscopy data and mapped regulatory precedent across FDA — a compounding dataset a generic tool cannot replicate.'],
+    ['icon' => 'shield-check', 'title' => 'Compliance by design', 'tags' => ['Audit trail', 'FDA'],                     'body' => 'We build full audit-trail transparency into every Symnexus platform by design, rather than bolt it on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.'],
 ];
 
 require SRC_DIR . '/includes/header.php';
 ?>
 
 <!-- HERO -->
-<p class="badge mb-5 self-start">Custom AI software development</p>
-<h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight max-w-4xl transition-colors duration-300">
-    Production AI systems, built around <span class="text-brandPrimary">how your business already works.</span>
+<?php partial('logo-frame'); ?>
+
+<h1 class="font-sans text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 leading-tight tracking-tight transition-colors duration-300">
+    Domain-native AI software<br class="hidden sm:block"> systems, built to fit.
 </h1>
 
 <p class="text-gray-600 dark:text-gray-300 text-base sm:text-lg leading-relaxed max-w-2xl mb-10 transition-colors duration-300">
-    SymNexus is a Silicon Valley engineering team that designs, builds and deploys AI for businesses: agents,
-    document automation, computer vision and forecasting. We prove it on your own data before you commit, then
-    build it into your workflow.
+    We design and build software systems for regulated, technical industries — we engineer them around how your
+    team already works, instead of bending your team to fit a generic tool.
+    <a href="/about" class="link-inline">A Silicon Valley engineering team</a>, deployed for clients operating globally.
 </p>
 
-<div class="flex flex-wrap items-center gap-x-6 gap-y-4 mb-12">
-    <a href="<?= e(PRIMARY_CTA['href']) ?>" data-cta="home-hero" class="btn-primary group">
-        <?= e(PRIMARY_CTA['label']) ?>
+<div class="flex flex-wrap items-center gap-x-6 gap-y-4">
+    <a href="/demo" class="btn-primary group">
+        Request a demonstration
         <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
     </a>
-    <a href="/research" class="btn-secondary">See our work</a>
-    <a href="/video" data-film-trigger data-no-spa class="inline-flex items-center gap-2 text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-brandPrimary transition-colors">
-        <span class="flex h-8 w-8 items-center justify-center rounded-full bg-teal-700 text-white" aria-hidden="true"><?= icon('play', 'w-3.5 h-3.5') ?></span>
-        Watch the 1-minute overview
+    <a href="<?= e(mailto()) ?>" class="text-gray-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200" aria-label="Email <?= e(SITE_EMAIL) ?>">
+        <?= icon('mail', 'w-5 h-5') ?>
+    </a>
+    <a href="tel:<?= e(SITE_PHONE_TEL) ?>" class="text-gray-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200" aria-label="Call <?= e(SITE_PHONE) ?>">
+        <?= icon('phone', 'w-5 h-5') ?>
     </a>
 </div>
 
-<?php partial('team-pedigree'); ?>
-
-<div class="mt-12">
-    <?php partial('logo-frame'); ?>
+<!-- GALLERY -->
+<div class="relative w-screen left-1/2 -translate-x-1/2 overflow-visible my-6">
+    <div tabindex="0" role="region" aria-label="Photo gallery" class="focus:outline-none focus-visible:ring-2 focus-visible:ring-brandPrimary flex flex-row items-center lg:justify-center gap-10 overflow-x-auto overflow-y-visible py-10 w-full px-6 sm:px-8 no-scrollbar">
+        <?php foreach ($gallery as $i => [$key, $alt, $rotate]): ?>
+            <div class="group relative w-64 h-80 shadow-2xl border border-white/5 flex-shrink-0 transform <?= $rotate ?>">
+                <div class="w-full h-full rounded-3xl overflow-hidden relative">
+                    <img src="<?= e(img($key, 640)) ?>" alt="<?= e($alt) ?>" width="256" height="320"
+                        <?= $i > 1 ? 'loading="lazy"' : '' ?> decoding="async" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                </div>
+                <span class="absolute bottom-4 left-4 z-20 text-white/80 text-xs font-light tracking-wide opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    Photo: Unsplash
+                </span>
+            </div>
+        <?php endforeach; ?>
+    </div>
 </div>
 
-<!-- WHAT WE BUILD -->
-<section class="panel mt-6" aria-labelledby="build-title">
-    <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">What we build</p>
-        <h2 id="build-title" class="section-title">AI that does real work inside your business.</h2>
-        <p class="section-lead">From a single assistant to a system that runs across every site, we engineer each one around your data, your tools and the people who will use it.</p>
+<!-- CURRENTLY OFFERING -->
+<section class="panel mt-6" aria-labelledby="offering-title">
+    <div class="mb-6 md:mb-8">
+        <h2 id="offering-title" class="section-title">Currently Offering</h2>
     </div>
 
-    <?php partial('service-capabilities'); ?>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <?php foreach (PRODUCTS as $slug => $p): ?>
+            <?php $p = array_merge($p, $p['home'] ?? []); ?>
+            <article class="card-ghost flex flex-col h-full group">
+                <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
+                <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"><?= e($p['name']) ?></h3>
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 flex-grow transition-colors duration-300">
+                    <?= e($p['summary']) ?>
+                </p>
+                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
+                    <div>
+                        <?php if (isset($p['secondary'])): ?>
+                            <a href="<?= e($p['secondary']['href']) ?>" <?= $p['secondary']['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                                class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium inline-flex items-center transition-colors">
+                                <?= e($p['secondary']['label']) ?>
+                                <?php if ($p['secondary']['external']): ?><?= icon('arrow-up-right', 'w-3.5 h-3.5 ml-1') ?><?php endif; ?>
+                            </a>
+                        <?php elseif ($p['pricing'] !== null): ?>
+                            <a href="/pricing#<?= e($slug) ?>" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Pricing</a>
+                        <?php else: ?>
+                            <a href="/contact" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
+                        <?php endif; ?>
+                    </div>
+                    <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                        class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center transition-colors">
+                        <?= e($p['link']) ?>
+                        <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-3.5 h-3.5 ml-1') ?>
+                    </a>
+                </div>
+            </article>
+        <?php endforeach; ?>
+    </div>
 
-    <div class="mt-10">
-        <a href="/services" class="link-arrow group">
-            How we work and what an engagement includes
+    <p class="mt-10 body-copy text-sm max-w-2xl">
+        We build domain-native software systems for many industries —
+        <a href="/contact" class="link-inline">reach out</a> if you&rsquo;re seeking AI development services.
+    </p>
+
+    <div class="mt-6">
+        <a href="/about#products" class="link-arrow group">
+            View all products
             <?= icon('chevron-right', 'w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform') ?>
         </a>
     </div>
 </section>
 
-<!-- SHIPPED IN PRODUCTION -->
-<section class="panel mt-10" aria-labelledby="proof-title">
+<!-- APPROACH -->
+<section class="panel mt-10" aria-labelledby="approach-title">
     <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Shipped in production</p>
-        <h2 id="proof-title" class="section-title">Systems we&rsquo;ve built and deployed.</h2>
-        <p class="section-lead">In cancer-research labs, FDA-regulated pharmaceutical teams and overseas retail, for clients in the United States, Canada and beyond.</p>
+        <h2 id="approach-title" class="section-title">Domain-Native: Integrated into your Workflows</h2>
+        <p class="section-lead">
+            For cell researchers, FluorocellAI turned a 3–4 day manual review into a same-day first pass — because the system is built around
+            how a lab already works, not the other way around.
+        </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <?php foreach ($proof as $p): ?>
-            <article class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800 flex flex-col">
-                <?php if ($p['image'] !== null): ?>
-                    <?php [$src, $w, $alt, $fit] = $p['image']; ?>
-                    <img src="<?= e(asset($src)) ?>" alt="<?= e($alt) ?>" width="<?= (int) $w ?>" height="<?= (int) round($w * 9 / 16) ?>" loading="lazy" decoding="async"
-                        class="w-full aspect-video <?= e($fit) ?> border-b border-gray-100 dark:border-slate-800">
-                <?php else: ?>
-                    <div class="w-full aspect-video flex items-center justify-center bg-gradient-to-br from-teal-700 to-emerald-900 text-white border-b border-gray-100 dark:border-slate-800" aria-hidden="true">
-                        <?= icon('globe', 'w-14 h-14 opacity-80') ?>
-                    </div>
-                <?php endif; ?>
-                <div class="p-6 flex flex-col flex-grow">
-                    <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
-                    <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-3"><?= e($p['name']) ?></h3>
-                    <p class="font-sans text-sm font-semibold text-gray-900 dark:text-white mb-3"><?= e($p['outcome']) ?></p>
-                    <p class="font-body text-sm leading-relaxed text-gray-600 dark:text-gray-300 flex-grow"><?= e($p['body']) ?></p>
-                    <div class="flex flex-wrap items-center justify-between gap-3 mt-6 pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
-                        <?php foreach ($p['links'] as $i => [$label, $href]): ?>
-                            <a href="<?= e($href) ?>" class="<?= $i === 0 ? 'text-teal-700 dark:text-teal-400 font-semibold' : 'text-gray-600 dark:text-gray-300 font-medium' ?> hover:text-emerald-600 dark:hover:text-emerald-400 text-sm inline-flex items-center transition-colors">
-                                <?= e($label) ?>
-                                <?php if ($i === 0): ?><?= icon('arrow-right', 'w-3.5 h-3.5 ml-1') ?><?php endif; ?>
-                            </a>
-                        <?php endforeach; ?>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-10">
+        <?php foreach ($approach as $card): ?>
+            <div class="card flex flex-col h-full">
+                <div class="icon-badge mb-6"><?= icon($card['icon'], 'w-5 h-5') ?></div>
+                <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-2 transition-colors duration-300"><?= e($card['title']) ?></h3>
+                <div class="font-body text-sm font-medium mb-4 flex flex-wrap gap-1.5 items-center">
+                    <?php foreach ($card['tags'] as $t => $tag): ?>
+                        <?php if ($t > 0): ?><span class="text-emerald-700/50 dark:text-emerald-500/50 font-bold" aria-hidden="true">·</span><?php endif; ?>
+                        <span class="text-teal-700 dark:text-teal-400"><?= e($tag) ?></span>
+                    <?php endforeach; ?>
                 </div>
-            </article>
+                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed flex-grow transition-colors duration-300"><?= e($card['body']) ?></p>
+            </div>
         <?php endforeach; ?>
     </div>
+
+    <div class="mt-10">
+        <a href="/about" class="link-arrow group">
+            What makes our software different
+            <?= icon('chevron-right', 'w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform') ?>
+        </a>
+    </div>
 </section>
 
-<!-- HOW WE WORK -->
-<section class="panel mt-10" aria-labelledby="process-title">
-    <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">How we work</p>
-        <h2 id="process-title" class="section-title">From first call to a system your team runs.</h2>
-    </div>
-    <?php partial('service-process'); ?>
-</section>
-
-<!-- WHY SYMNEXUS + LEADERSHIP -->
-<section class="panel mt-10" aria-labelledby="why-title">
-    <div class="mb-6 md:mb-8 max-w-3xl">
-        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Why SymNexus</p>
-        <h2 id="why-title" class="section-title">Senior Silicon Valley engineers, without big-consultancy overhead.</h2>
+<!-- RESEARCH + LEADERSHIP -->
+<section class="panel mt-10" aria-labelledby="research-title">
+    <div class="mb-6 md:mb-8">
+        <h2 id="research-title" class="section-title">Latest Research</h2>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-start">
-        <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <?php foreach ($why as $card): ?>
-                <div class="card flex flex-col h-full">
-                    <div class="icon-badge mb-5"><?= icon($card['icon'], 'w-5 h-5') ?></div>
-                    <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white mb-2"><?= e($card['title']) ?></h3>
-                    <p class="font-body text-sm leading-relaxed text-gray-600 dark:text-gray-300 flex-grow"><?= e($card['body']) ?></p>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-start w-full">
+
+        <div class="flex flex-col gap-12">
+            <article class="group relative flex flex-col items-start">
+                <h3 class="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+                    <span class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" aria-hidden="true"></span>
+                    <a href="/research/fluorocellai-cancer-research-lab">
+                        <span class="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl"></span>
+                        <span class="relative z-10">FluorocellAI, in a cancer-research lab.</span>
+                    </a>
+                </h3>
+                <p class="relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5">
+                    <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
+                        <span class="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500"></span>
+                    </span>
+                    Case Study
+                </p>
+                <p class="relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+                    A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses
+                    manual review of cells from a week of manual cross-referencing to a same-day first pass.
+                </p>
+                <div aria-hidden="true" class="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-700">
+                    Read case study
+                    <?= icon('arrow-up-right', 'ml-1 h-4 w-4 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-200') ?>
                 </div>
-            <?php endforeach; ?>
+            </article>
+
+            <div>
+                <a href="/research" class="link-arrow group">
+                    View all research
+                    <?= icon('chevron-right', 'w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform') ?>
+                </a>
+            </div>
         </div>
 
         <div class="card-inset">
             <div class="flex items-center gap-3 mb-6">
                 <div class="text-gray-500 dark:text-teal-400"><?= icon('briefcase', 'w-5 h-5') ?></div>
-                <h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wide">The team</h3>
+                <h3 class="text-sm font-semibold text-gray-900 dark:text-white tracking-wide">Leadership</h3>
             </div>
 
-            <ul class="space-y-4 mb-6">
-                <?php foreach ([
-                    ['Dhilip Raman', 'Chief Executive Officer', 'Clinical research & data · Stanford, Catalent'],
-                    ['Jacob Matthew Rajesh', 'Chief Technical Officer', 'Systems engineering · NXP Semiconductors'],
-                    ['Brent Luker', 'Generative AI Engineer', 'Formerly Zoom'],
-                    ['Sameera Velammuri', 'AI/ML Engineer', 'Formerly Amazon'],
-                    ['Arshi Saxena', 'Product & Forward-Deployed Engineering', 'Formerly ServiceNow'],
-                ] as [$name, $role, $note]): ?>
-                    <li class="flex flex-col">
-                        <span class="text-sm font-semibold text-gray-900 dark:text-white leading-tight"><?= e($name) ?></span>
-                        <span class="text-xs text-teal-700 dark:text-teal-400 mt-0.5 font-medium"><?= e($role) ?></span>
-                        <span class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><?= e($note) ?></span>
-                    </li>
+            <div class="space-y-6 mb-6">
+                <?php foreach ([['DR', 'Dhilip Raman', 'Chief Executive Officer'], ['JR', 'Jacob Matthew Rajesh', 'Chief Technical Officer']] as [$initials, $name, $role]): ?>
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 border border-gray-200 dark:border-gray-600/50">
+                            <span class="text-xs font-bold text-brandNeutral tracking-tighter"><?= e($initials) ?></span>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-sm font-semibold text-gray-900 dark:text-white leading-tight"><?= e($name) ?></span>
+                            <span class="text-xs text-teal-700 dark:text-teal-400 mt-0.5 font-medium"><?= e($role) ?></span>
+                        </div>
+                    </div>
                 <?php endforeach; ?>
-            </ul>
+            </div>
 
-            <a href="/about#team"
+            <p class="text-xs leading-relaxed text-gray-500 dark:text-gray-300 mb-6">
+                Silicon Valley engineers from NXP Semiconductors, Zoom, Amazon, and ServiceNow, plus Berkeley- and
+                Stanford-trained researchers.
+            </p>
+
+            <a href="/about"
                 class="group w-full inline-flex items-center justify-center gap-2 rounded-xl text-sm font-medium py-3 px-4 bg-gray-100 hover:bg-gray-200/80 dark:bg-neutral-800/60 dark:hover:bg-neutral-800 dark:text-zinc-200 border border-gray-300/60 dark:border-gray-700/50 hover:border-gray-400 dark:hover:border-gray-600 transition-all duration-200">
-                Meet the whole team
+                Meet the team
                 <?= icon('arrow-right', 'w-3.5 h-3.5 animate-drop-twice') ?>
             </a>
         </div>
+
     </div>
 </section>
 
 <?php partial('cta', [
-    'title'     => 'Have a process that should be running on AI?',
-    'body'      => 'Book a 30-minute scoping call with the engineers who would build it. You\'ll leave with a shortlist of where AI pays back first, whether or not you work with us.',
-    'primary'   => PRIMARY_CTA,
-    'secondary' => ['label' => 'See engagements & pricing', 'href' => '/pricing'],
+    'title'     => 'We build new, innovative AI products for businesses around the world.',
+    'body'      => 'The people who build the product run your demonstration and build it around your workflow.',
+    'primary'   => ['label' => 'Request a demonstration', 'href' => '/demo'],
+    'secondary' => ['label' => 'View pricing', 'href' => '/pricing'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

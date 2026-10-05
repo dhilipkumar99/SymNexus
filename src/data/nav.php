@@ -4,30 +4,25 @@
 const TEAM_LOGIN_URL = 'https://symnexus-team.vercel.app/login';
 
 // Primary navigation. `match` lists every path prefix that highlights the link.
-// Careers and Team login live in the footer only.
 const NAV_LINKS = [
-    ['label' => 'Services',     'href' => '/services', 'match' => ['/services']],
-    ['label' => 'Case Studies', 'href' => '/research', 'match' => ['/research']],
-    ['label' => 'Models',       'href' => '/products', 'match' => ['/products']],
     // FluorocellAI and ComplianceCall are presented on the About page.
-    ['label' => 'About',        'href' => '/about',    'match' => ['/about', '/fluorocellai', '/compliancecall']],
-    ['label' => 'Pricing',      'href' => '/pricing',  'match' => ['/pricing']],
-    ['label' => 'Contact',      'href' => '/contact',  'match' => ['/contact']],
+    ['label' => 'About',    'href' => '/about',    'match' => ['/about', '/fluorocellai', '/compliancecall']],
+    ['label' => 'Products', 'href' => '/products', 'match' => ['/products']],
+    ['label' => 'Research', 'href' => '/research', 'match' => ['/research']],
+    ['label' => 'Pricing',  'href' => '/pricing',  'match' => ['/pricing']],
+    ['label' => 'Careers',  'href' => '/careers',  'match' => ['/careers']],
+    ['label' => 'Contact',  'href' => '/contact',  'match' => ['/contact']],
 ];
 
-// The one primary call to action, used in the header and across pages.
-const PRIMARY_CTA = ['label' => 'Book a scoping call', 'href' => '/demo'];
-
 const FOOTER_LINKS = [
-    ['label' => 'Home',         'href' => '/'],
-    ['label' => 'Services',     'href' => '/services'],
-    ['label' => 'Case Studies', 'href' => '/research'],
-    ['label' => 'Models',       'href' => '/products'],
-    ['label' => 'About',        'href' => '/about'],
-    ['label' => 'Pricing',      'href' => '/pricing'],
-    ['label' => 'Careers',      'href' => '/careers'],
-    ['label' => 'Contact',      'href' => '/contact'],
-    ['label' => 'Team login',   'href' => TEAM_LOGIN_URL],
+    ['label' => 'Home',     'href' => '/'],
+    ['label' => 'About',    'href' => '/about'],
+    ['label' => 'Products', 'href' => '/products'],
+    ['label' => 'Pricing',  'href' => '/pricing'],
+    ['label' => 'Research', 'href' => '/research'],
+    ['label' => 'Careers',  'href' => '/careers'],
+    ['label' => 'Contact',  'href' => '/contact'],
+    ['label' => 'Team login', 'href' => TEAM_LOGIN_URL],
 ];
 
 const LEGAL_LINKS = [

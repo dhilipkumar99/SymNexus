@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'FluorocellAI — SymNexus';
+$pageTitle = 'FluorocellAI — Symnexus';
 $pageMeta  = [
     'description' => 'FluorocellAI: AI-automated cell identification, counting, and analysis for cell and cancer research labs. A same-day first pass, without changing how you prepare or image samples.',
     'og_image'    => img('fluoroCells', 1200),
@@ -53,7 +53,7 @@ require SRC_DIR . '/includes/header.php';
 ]); ?>
 
 <div class="flex flex-wrap gap-3 -mt-4 mb-12">
-    <a href="/demo?interest=fluorocellai" class="btn-primary group">Request a demonstration <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
+    <a href="/demo" class="btn-primary group">Request Evaluation <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
     <a href="/pricing#fluorocellai" class="btn-secondary">View Pricing</a>
 </div>
 
@@ -151,8 +151,8 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'     => 'Begin your FluorocellAI evaluation.',
     'body'      => 'We tailor every evaluation to your imaging modality, cell type, and existing pipeline. Our scientific team guides the process from installation to your first publication-quality output.',
-    'note'      => 'Working in a different domain entirely? We build custom AI systems well beyond imaging. <a href="/services" class="link-inline">See our AI development services</a>.',
-    'primary'   => ['label' => 'Request a demonstration', 'href' => '/demo?interest=fluorocellai'],
+    'note'      => 'Working in a different domain entirely? We build domain-native software systems well beyond imaging — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
+    'primary'   => ['label' => 'Request Evaluation', 'href' => '/demo'],
     'secondary' => ['label' => 'View Pricing', 'href' => '/pricing#fluorocellai'],
 ]); ?>
 
