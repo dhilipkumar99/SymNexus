@@ -18,6 +18,34 @@ $approach = [
     ['icon' => 'shield-check', 'title' => 'Compliance by design', 'tags' => ['Audit trail', 'FDA'],                     'body' => 'We build full audit-trail transparency into every Symnexus platform by design, rather than bolt it on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.'],
 ];
 
+// Shipped systems, presented as proof of what we build.
+$proof = [
+    [
+        'category' => 'Life sciences · Computer vision',
+        'name'     => 'FluorocellAI',
+        'outcome'  => '3–4 days of manual cell review → a same-day first pass',
+        'body'     => 'Automated segmentation, counting and QC for cancer-research labs, with an audit trail behind every result and no change to how the lab prepares its slides.',
+        'image'    => ['images/fluorocellai-segmentation-800.webp', 800, 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary', 'object-cover'],
+        'links'    => [['Read the case study', '/research/fluorocellai-cancer-research-lab', false], ['Product', '/fluorocellai', false]],
+    ],
+    [
+        'category' => 'Pharma · Regulatory compliance',
+        'name'     => 'ComplianceCall',
+        'outcome'  => 'A continuously auditable record, instead of reconstructing history at audit time',
+        'body'     => 'Benchmarks pharmaceutical development against current federal regulation and tracks what each chemical\'s hazard category used to be, and why it changed.',
+        'image'    => ['images/compliancecall-dashboard-900.webp', 900, 'ComplianceCall dashboard: compliance audit readiness by framework, vulnerability response and security operations panels', 'object-contain bg-white'],
+        'links'    => [['Product', '/compliancecall', false]],
+    ],
+    [
+        'category' => 'Retail & wholesale · Agents and monitoring',
+        'name'     => 'Yashara',
+        'outcome'  => 'Inventory and quality issues flagged before they reach a customer',
+        'body'     => 'For an ethically-sourced goods retailer operating overseas: AI monitoring across the catalog, plus an AI layer that handles large wholesale accounts and escalates exceptions to a person.',
+        'image'    => ['images/yashara-storefront-900.webp', 900, 'Yashara storefront: handcrafted, ethically sourced clothing from South East Asia', 'object-cover object-top'],
+        'links'    => [['Visit Yashara', 'https://yashara.org/', true], ['Custom systems', '/about#yashara', false]],
+    ],
+];
+
 require SRC_DIR . '/includes/header.php';
 ?>
 
@@ -65,40 +93,34 @@ require SRC_DIR . '/includes/header.php';
     </div>
 </div>
 
-<!-- CURRENTLY OFFERING -->
-<section class="panel mt-6" aria-labelledby="offering-title">
-    <div class="mb-6 md:mb-8">
-        <h2 id="offering-title" class="section-title">Currently Offering</h2>
+<!-- SHIPPED IN PRODUCTION -->
+<section class="panel mt-6" aria-labelledby="proof-title">
+    <div class="mb-6 md:mb-8 max-w-3xl">
+        <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2">Shipped in production</p>
+        <h2 id="proof-title" class="section-title">Systems we&rsquo;ve built and deployed.</h2>
+        <p class="section-lead">In cancer-research labs, FDA-regulated pharmaceutical teams and overseas retail, for clients in the United States, Canada and beyond.</p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <?php foreach (PRODUCTS as $slug => $p): ?>
-            <?php $p = array_merge($p, $p['home'] ?? []); ?>
-            <article class="card-ghost flex flex-col h-full group">
-                <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
-                <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"><?= e($p['name']) ?></h3>
-                <p class="font-body text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-6 flex-grow transition-colors duration-300">
-                    <?= e($p['summary']) ?>
-                </p>
-                <div class="flex items-center justify-between mt-auto pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
-                    <div>
-                        <?php if (isset($p['secondary'])): ?>
-                            <a href="<?= e($p['secondary']['href']) ?>" <?= $p['secondary']['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
-                                class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium inline-flex items-center transition-colors">
-                                <?= e($p['secondary']['label']) ?>
-                                <?php if ($p['secondary']['external']): ?><?= icon('arrow-up-right', 'w-3.5 h-3.5 ml-1') ?><?php endif; ?>
+        <?php foreach ($proof as $p): ?>
+            <?php [$src, $w, $alt, $fit] = $p['image']; ?>
+            <article class="bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800 flex flex-col">
+                <img src="<?= e(asset($src)) ?>" alt="<?= e($alt) ?>" width="<?= (int) $w ?>" height="<?= (int) round($w * 9 / 16) ?>" loading="lazy" decoding="async"
+                    class="w-full aspect-video <?= e($fit) ?> border-b border-gray-100 dark:border-slate-800">
+                <div class="p-6 flex flex-col flex-grow">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-2"><?= e($p['category']) ?></p>
+                    <h3 class="font-sans text-xl font-bold text-gray-900 dark:text-white mb-3"><?= e($p['name']) ?></h3>
+                    <p class="font-sans text-sm font-semibold text-gray-900 dark:text-white mb-3"><?= e($p['outcome']) ?></p>
+                    <p class="font-body text-sm leading-relaxed text-gray-600 dark:text-gray-300 flex-grow"><?= e($p['body']) ?></p>
+                    <div class="flex flex-wrap items-center justify-between gap-3 mt-6 pt-4 border-t border-gray-200/60 dark:border-gray-700/40">
+                        <?php foreach ($p['links'] as $i => [$label, $href, $external]): ?>
+                            <a href="<?= e($href) ?>" <?= $external ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
+                                class="<?= $i === 0 ? 'text-teal-700 dark:text-teal-400 font-semibold' : 'text-gray-600 dark:text-gray-300 font-medium' ?> hover:text-emerald-600 dark:hover:text-emerald-400 text-sm inline-flex items-center transition-colors">
+                                <?= e($label) ?>
+                                <?php if ($external): ?><?= icon('arrow-up-right', 'w-3.5 h-3.5 ml-1') ?><?php elseif ($i === 0): ?><?= icon('arrow-right', 'w-3.5 h-3.5 ml-1') ?><?php endif; ?>
                             </a>
-                        <?php elseif ($p['pricing'] !== null): ?>
-                            <a href="/pricing#<?= e($slug) ?>" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Pricing</a>
-                        <?php else: ?>
-                            <a href="/contact" class="text-gray-600 dark:text-gray-300 hover:text-teal-700 dark:hover:text-teal-400 text-sm font-medium transition-colors">Custom system</a>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
-                    <a href="<?= e($p['href']) ?>" <?= $p['external'] ? 'target="_blank" rel="noopener noreferrer"' : '' ?>
-                        class="text-teal-700 dark:text-teal-400 hover:text-emerald-600 dark:hover:text-emerald-400 text-sm font-medium inline-flex items-center transition-colors">
-                        <?= e($p['link']) ?>
-                        <?= icon($p['external'] ? 'arrow-up-right' : 'arrow-right', 'w-3.5 h-3.5 ml-1') ?>
-                    </a>
                 </div>
             </article>
         <?php endforeach; ?>
