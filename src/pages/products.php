@@ -12,6 +12,11 @@
  *
  * Every section is rendered server-side, so the page works without JavaScript; site.js only
  * narrows it to one product and filters tasks ([data-solutions]).
+ *
+ * The search bar ranks every task of every product against free text (typos, synonyms and plain
+ * sentences included) with public/assets/js/task-search.js. Its index, public/assets/data/
+ * task-search.json, is built from the task pages' copy by scripts/build-task-search.py (run by
+ * `npm run sync:modelscore`); its thesaurus is src/data/task-search-terms.txt.
  */
 require_once SRC_DIR . '/includes/modelscore.php';
 
@@ -50,7 +55,20 @@ require SRC_DIR . '/includes/header.php';
     </p>
 </section>
 
-<div id="solutions-browser" data-solutions class="mb-8">
+<div id="solutions-browser" data-solutions data-search-index="<?= e(asset('data/task-search.json')) ?>" class="mb-8">
+
+    <!-- Task search: shown only once site.js is running. -->
+    <form data-solutions-controls data-solutions-form role="search" action="/products" method="get"
+        class="task-search centered hidden mb-10">
+        <div class="search">
+            <input type="text" id="task-search" name="q" data-solutions-search autocomplete="off" spellcheck="false"
+                enterkeyhint="search" placeholder="Search tasks, e.g. customer churn" aria-label="Search all tasks">
+            <button type="submit">
+                <label for="task-search">search</label>
+                <div class="search-icon"></div>
+            </button>
+        </div>
+    </form>
 
     <nav aria-label="SymNexus tasks" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-3 mb-6">
         <a href="#solutions-browser" data-product-pill data-product="all"
@@ -68,15 +86,8 @@ require SRC_DIR . '/includes/header.php';
         <?php endforeach; ?>
     </nav>
 
-    <!-- Search and department filters: shown only once site.js is running. -->
+    <!-- Department filters: shown only once site.js is running. -->
     <div data-solutions-controls class="hidden mb-8">
-        <label for="solutions-search" class="sr-only">Search tasks</label>
-        <div class="relative max-w-xl mb-3">
-            <?= icon('magnifying-glass', 'w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none') ?>
-            <input id="solutions-search" type="search" data-solutions-search autocomplete="off" spellcheck="false"
-                placeholder="Search tasks, e.g. churn, invoices, defects"
-                class="form-field pl-10">
-        </div>
         <div role="group" aria-label="Filter by department" class="flex flex-wrap gap-2">
             <?php foreach ($depts as $dept => $n): ?>
                 <button type="button" data-dept-chip="<?= e($dept) ?>" aria-pressed="false"
@@ -87,6 +98,13 @@ require SRC_DIR . '/includes/header.php';
         </div>
         <p data-solutions-status class="mt-4 text-sm text-gray-500 dark:text-gray-400" aria-live="polite"></p>
     </div>
+
+    <!-- Search results, best match first: site.js fills this with copies of the task buttons below. -->
+    <section data-solutions-results aria-label="Search results" class="hidden mb-16">
+        <div class="rounded-2xl bg-gray-100/80 dark:bg-white/5 border border-gray-200 dark:border-gray-700/50 p-3 sm:p-4">
+            <div data-solutions-results-grid class="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+        </div>
+    </section>
 
     <?php foreach ($products as $p):
         $base = modelscore_base($p); ?>
@@ -112,7 +130,7 @@ require SRC_DIR . '/includes/header.php';
             <div class="rounded-2xl bg-gray-100/80 dark:bg-white/5 border border-gray-200 dark:border-gray-700/50 p-3 sm:p-4">
                 <div class="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     <?php foreach ($p['tasks'] as $i => $t): ?>
-                        <a href="<?= e($base . $t['path']) ?>" data-task data-dept="<?= e($t['dept']) ?>"
+                        <a href="<?= e($base . $t['path']) ?>" data-task data-task-id="<?= e($p['key'] . '/' . $t['slug']) ?>" data-dept="<?= e($t['dept']) ?>"
                             data-search="<?= e(mb_strtolower($t['title'] . ' ' . $t['dept'] . ' ' . $t['sub'] . ' ' . $p['word'])) ?>"
                             class="mc-task <?= $i === 0 ? 'mc-selected' : '' ?> bg-white dark:bg-[#3a3d48] text-gray-900 dark:text-white mc-focus group flex flex-col items-center justify-center text-center rounded-xl border-2 px-4 py-4 min-h-[88px] transition-all duration-200">
                             <span class="mb-2 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-white shadow-sm ring-1 ring-black/5">

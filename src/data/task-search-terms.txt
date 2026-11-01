@@ -1,0 +1,180 @@
+# Task search thesaurus: the "library of terms" behind the /products search.
+#
+# One concept per line: comma-separated words or phrases that mean the same thing to someone
+# looking for a task. A search for any entry also finds tasks that use the others (at a slightly
+# lower weight than an exact word). Write base forms; plurals and -ing/-ed/-ation endings are
+# matched automatically. Phrases (e.g. "call center") match only as a whole.
+#
+# A line starting with "=" lists exact equivalents instead (abbreviations, spellings): those
+# match at full weight, as if the word itself had been typed.
+#
+# After editing, rebuild the index: python3 scripts/build-task-search.py  (or npm run sync:modelscore)
+
+# ── Exact equivalents ─────────────────────────────────────────────────────────
+= chatbot, chat bot, bot, chat assistant
+= hr, human resources
+= cv, resume, curriculum vitae
+= customer service, customer support, cs
+= call center, call centre, contact center, contact centre
+= x-ray, xray
+= m&a, mergers and acquisitions, merger, acquisition
+= r&d, research and development
+= self driving, self-driving, autonomous vehicle, driverless
+= ecommerce, e-commerce, online store, online shop
+= roi, return on investment
+= romi, return on marketing investment
+= kpi, key performance indicator
+= ocr, optical character recognition
+= pii, personally identifiable information
+= ap, accounts payable
+= po, purchase order
+= faq, frequently asked questions
+
+# ── Customers and revenue ─────────────────────────────────────────────────────
+churn, attrition, cancel, cancellation, unsubscribe, leave, leaving, lapse, turnover, drop off, stop buying, customer loss
+retention, retain, loyalty, keep customers, win back, save customers
+customer, client, buyer, shopper, consumer, account, patron
+lead, prospect, opportunity, pipeline, sales funnel, funnel
+lead scoring, qualify leads, lead qualification, hot leads, propensity to buy, likelihood to buy, likely to buy, will buy, ready to buy, conversion
+segmentation, segment, cluster, cohort, persona, customer groups, grouping
+personalization, personalize, tailor, one to one, individual offers, recommendation, recommend, next best offer, cross sell, upsell
+retargeting, remarketing, re-engage, abandoned cart, come back
+campaign, marketing, promotion, advertising, ads, advert, adverts
+roi, romi, return on investment, return on marketing, marketing spend, budget, attribution, marketing mix, media mix, channel mix
+social media, twitter, facebook, instagram, linkedin, tiktok, posts, mentions
+competitor, competition, competitive, market intelligence, benchmark, rival
+revenue, sales, income, bookings
+price, pricing, quote, quotation, premium, cost estimate
+discount, offer, coupon, incentive
+
+# ── Sales ─────────────────────────────────────────────────────────────────────
+crm, salesforce, hubspot, dynamics, customer records
+next step, next best action, playbook, what to do next, deal coaching
+commission, compensation, quota, incentive plan, bonus, sales comp
+territory, region, account planning
+
+# ── People / HR ───────────────────────────────────────────────────────────────
+hr, human resources, people team, people ops, personnel, talent, employee, staff, workforce
+employee, staff, worker, workforce, team member, people, colleague, headcount
+hire, hiring, recruit, recruitment, recruiting, talent acquisition, staffing
+candidate, applicant, job seeker, resume, cv, job application
+screening, shortlist, shortlisting, vet, filter applicants
+interview, onboarding, offer letter
+employee attrition, staff attrition, employee turnover, staff turnover, employee leaving, staff leaving, people leaving, employee quitting, staff quitting, retain staff, quit, quitting, leave, leaving, resign, resignation, flight risk, employee retention, keep staff, keep employees
+performance, productivity, appraisal, review cycle, kpi, output
+diversity, inclusion, dei, underrepresented, equal opportunity, fair hiring
+sentiment, mood, emotion, feeling, morale, satisfaction, opinion, tone, attitude
+engagement, pulse survey, employee survey, feedback
+
+# ── Customer service ──────────────────────────────────────────────────────────
+customer service, customer support, support, help desk, helpdesk, service desk, contact center, contact centre, call center, call centre, cs
+ticket, complaint, request, inquiry, enquiry, issue
+routing, triage, route, assign, dispatch, escalate, escalation, prioritize, prioritise
+chatbot, chat bot, bot, virtual assistant, assistant, virtual agent, conversational ai, conversational, chat, faq
+reply, response, answer, draft reply, suggested reply, canned response, template response
+call, phone, voice, caller, telephone, voicemail, recording, audio, speech
+transcribe, transcription, speech to text, dictation, captions
+voice authentication, voice biometrics, speaker verification, voiceprint, identity verification, verify caller, kyc
+survey, questionnaire, nps, net promoter, open ended, verbatim, comment
+
+# ── Documents and text ────────────────────────────────────────────────────────
+document, paperwork, pdf, form, scan, scanned, file, record
+extract, extraction, ocr, parse, read, capture, data entry, digitize, digitise, pull out
+invoice, bill, billing, accounts payable, ap, vendor invoice, supplier invoice
+receipt, expense, expense report, reimbursement, spend
+purchase order, po, procurement, purchasing, buying, sourcing, requisition, vendor, supplier
+contract, agreement, clause, terms, nda, lease, msa
+legal, law, lawyer, attorney, counsel, litigation, lawsuit, court, case law, paralegal
+discovery, ediscovery, e-discovery, document review, privilege, evidence
+compliance, regulation, regulatory, policy, rule, gdpr, hipaa, ccpa, sox, audit trail
+personal data, pii, personally identifiable, privacy, sensitive data, redact, redaction, anonymize, anonymise, mask
+classify, classification, categorize, categorise, tag, label, sort, triage
+summarize, summarise, summary, digest, condense, tldr
+write, writing, generate, generation, draft, compose, author, copywriting, copy
+content, article, blog, newsletter, post, caption, product description, recipe
+translate, translation, multilingual, language
+
+# ── Finance, risk and security ────────────────────────────────────────────────
+finance, financial, accounting, bookkeeping, ledger, general ledger, cfo
+credit, loan, lending, mortgage, borrower, credit card
+underwriting, underwrite, risk assessment, credit decision, approve, approval, decline
+default, delinquency, non payment, bad debt, write off, repayment
+insurance, insurer, policyholder, premium, claim, actuarial
+fraud, scam, fraudulent, suspicious, money laundering, aml, chargeback, theft, abuse
+anomaly, outlier, unusual, abnormal, irregular, odd, deviation, doesn't fit, out of the ordinary
+audit, auditor, journal entry, controls, reconciliation, sampling
+security, cybersecurity, cyber, breach, intrusion, attack, hacker, threat, malware, siem, soc, network traffic
+deception, honeypot, decoy, honeytoken, trap
+trading, trade, stock, equities, portfolio, hedge fund, quant, investment strategy
+investment, investor, acquisition, merger, m&a, due diligence, target company, private equity, deal screening
+risk, hazard, danger, exposure, threat, likelihood
+
+# ── Forecasting and planning ──────────────────────────────────────────────────
+forecast, forecasting, predict, prediction, projection, anticipate, expect, outlook, future, ahead, tomorrow, next month, next quarter
+demand, demand planning, consumption, load, usage, volume, orders
+time series, trend, seasonality, seasonal, historical data
+inventory, stock, stock levels, stockout, out of stock, overstock, replenishment, warehouse
+supply chain, logistics, distribution, shipping, freight, fulfilment, fulfillment, network
+allocation, allocate, distribute, assortment, store allocation
+omnichannel, omni channel, online and in store, click and collect, ship from store, ecommerce, e-commerce
+capacity, capacity planning, utilization, utilisation, throughput, bottleneck
+schedule, scheduling, roster, rota, shift, timetable, plan, planning, calendar
+optimize, optimise, optimization, optimal, maximize, minimize, efficient, efficiency, reduce cost
+simulation, simulate, digital twin, what if, scenario, scenario planning
+decision, decide, choose, choice, strategy, reinforcement learning
+
+# ── Operations, industry and energy ───────────────────────────────────────────
+operations, ops, operational, process, workflow, procedure
+process improvement, lean, six sigma, kaizen, continuous improvement, delay, defect, bottleneck, slowdown
+maintenance, repair, breakdown, break down, broken, fail, failure, downtime, outage, wear, fault, malfunction, servicing, upkeep
+machine, equipment, asset, plant, machinery, pump, motor, turbine, sensor, iot, telemetry, vibration
+manufacturing, factory, production, assembly line, plant floor, shop floor
+quality, quality control, qa, qc, inspection, defect, flaw, reject
+robot, robotics, automation, autonomous, cobot, robotic arm
+energy, power, electricity, grid, utility, utilities, renewable, solar, wind, generation, megawatt
+emissions, carbon, co2, environmental, sustainability, esg, pollution, waste, footprint
+building, facility, facilities, property, real estate, hvac, heating, cooling, tenant
+construction, contractor, builder, jobsite, job site, site, project, civil engineering
+cost, costing, budget, estimate, estimating, quantity surveying, bill of quantities, takeoff
+material, materials, concrete, steel, timber, lumber, supplies
+structural, structure, crack, beam, bridge, load bearing, integrity, corrosion
+safety, hazard, accident, injury, ppe, hard hat, health and safety, osha, incident
+design, layout, floor plan, space planning, architect, architecture, occupancy
+delivery, deliveries, logistics, just in time, dispatch, shipment
+
+# ── Health and life sciences ──────────────────────────────────────────────────
+health, healthcare, medical, clinical, clinic, hospital, care, doctor, physician, nurse, patient
+diagnosis, diagnose, diagnostic, detect disease, screening, early detection, risk of illness, disease
+triage, emergency, a&e, urgency, acuity
+monitoring, monitor, vital signs, vitals, wearable, remote monitoring, deterioration, alert
+medical imaging, radiology, x-ray, xray, mri, ct scan, scan, ultrasound, mammogram, pathology, slide
+drug, pharma, pharmaceutical, medicine, medication, compound, molecule, therapy, treatment
+drug discovery, r&d, research and development, lead compound, screening compounds
+clinical trial, trial, efficacy, effectiveness, outcome, response to treatment, real world evidence
+gene, genome, genomic, dna, rna, sequence, sequencing, crispr, genetic, biology, bioinformatics
+surgery, surgical, operating room, surgeon, endoscopy, laparoscopy
+
+# ── Vision ────────────────────────────────────────────────────────────────────
+image, picture, photo, photograph, camera, video, footage, cctv, visual, vision, computer vision
+object detection, detect objects, recognize, recognition
+labeling, labelling, annotation, annotate, tagging, bounding box, ground truth, training data
+checkout, cashierless, self checkout, frictionless, grab and go, till, point of sale, pos, queue
+shelf, planogram, store, retail, shop, supermarket, grocery, merchandising, footfall
+driving, driver, vehicle, car, truck, lorry, adas, lane, pedestrian, road
+self driving, autonomous vehicle, driverless, autopilot, drone, aircraft, plane
+transport, transportation, transit, traffic, rail, train, railway, airport, air traffic, flight, airline, fleet
+farm, farming, agriculture, agricultural, crop, harvest, harvesting, field, yield, orchard, fruit, grower
+weather, rainfall, soil, fertilizer, fertiliser, irrigation, seed
+
+# ── Data and technology ───────────────────────────────────────────────────────
+data, dataset, database, table, spreadsheet, excel, csv, records
+data quality, data accuracy, dirty data, duplicates, deduplicate, dedupe, data cleaning, cleanse, validation, errors
+data mapping, schema mapping, field mapping, integration, etl, onboard data, migrate, migration, merge data
+customer data platform, cdp, single customer view, identity resolution, golden record, unify, 360 view, record linkage, entity resolution
+synthetic data, fake data, test data, mock data, privacy safe data, generated data
+search, query, ask, lookup, look up, natural language query, text to sql, sql, bi, business intelligence, dashboard, report, chart, visualization, visualisation, analytics
+code, coding, programming, software, developer, engineer, code generation, copilot, unit test, testing, bug, script
+technology, tech, software, it operations, devops
+matching, match, similar, similarity, lookalike, look alike, find similar, pair
+explain, explainable, explanation, reason, driver, factor, insight, root cause, what drives
+analysis, analyse, analyze, analytics, insight, understand, study, investigate

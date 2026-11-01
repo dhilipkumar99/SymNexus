@@ -258,18 +258,63 @@
 
     // ── Product catalog (/products) ─────────────────────────────────────────
     // The server renders every product section, so the page works without JS. This
-    // narrows it to one product (or all) and filters tasks by text and department.
-    // The selected product lives in the URL hash (#predict…) so it can be linked to.
+    // narrows it to one product (or all) and filters tasks by department, and the search
+    // bar ranks every task against the query (task-search.js) into one results grid.
+    // The selected product lives in the URL hash (#predict…) and the query in ?q=, so
+    // both can be linked to.
+    var taskSearch = null;      // the search engine, once its index has loaded
+    var taskSearchLoad = null;  // the pending load, so it happens once per page view
+
+    function loadTaskSearch(root) {
+        var url = root.getAttribute('data-search-index');
+        if (taskSearch || taskSearchLoad || !url || !window.SymNexusTaskSearch || !window.fetch) return taskSearchLoad;
+        taskSearchLoad = fetch(url, { credentials: 'same-origin' })
+            .then(function (res) {
+                if (!res.ok) throw new Error('task search index: HTTP ' + res.status);
+                return res.json();
+            })
+            .then(function (data) {
+                taskSearch = window.SymNexusTaskSearch.create(data);
+                return taskSearch;
+            })
+            .catch(function () {
+                taskSearchLoad = null; // keep the plain text filter; retry on the next visit
+                return null;
+            });
+        return taskSearchLoad;
+    }
+
     function productFromHash(root) {
         var key = window.location.hash.slice(1);
         return key && root.querySelector('[data-product-pill][data-product="' + CSS.escape(key) + '"]') ? key : null;
+    }
+
+    function setQueryInUrl(query) {
+        var params = new URLSearchParams(window.location.search);
+        if (query) params.set('q', query);
+        else params.delete('q');
+        var search = params.toString();
+        history.replaceState(history.state, '', window.location.pathname + (search ? '?' + search : '') + window.location.hash);
     }
 
     function applySolutions(root) {
         var scope = root.getAttribute('data-scope') || 'all';
         var dept = root.getAttribute('data-dept') || '';
         var input = root.querySelector('[data-solutions-search]');
-        var terms = input ? input.value.toLowerCase().split(/\s+/).filter(Boolean) : [];
+        var query = input ? input.value.trim() : '';
+        var results = root.querySelector('[data-solutions-results]');
+
+        if (query && taskSearch) {
+            var found = taskSearch.search(query);
+            if (found.understood) {
+                showRanked(root, found, scope, dept);
+                return;
+            }
+        }
+        if (results) results.classList.add('hidden');
+
+        // Until the index loads (or if it can't), match the query's words as plain text.
+        var terms = !taskSearch && query ? query.toLowerCase().split(/\s+/).filter(Boolean) : [];
         var filtering = terms.length > 0 || dept !== '';
         var shown = 0, products = 0, elsewhere = 0;
 
@@ -290,19 +335,89 @@
             if (count) products++;
         });
 
+        markSolutionsFilters(root, scope, dept);
+        setSolutionsStatus(root, !filtering ? '' : shown === 0 ? 'No matching tasks.'
+            : shown + (shown === 1 ? ' task' : ' tasks') + (products > 1 ? ' across ' + products + ' task groups' : ''));
+        showSolutionsEmpty(root, shown, elsewhere);
+    }
+
+    /** Search results: copies of the matching task buttons, best match first and highlighted. */
+    function showRanked(root, found, scope, dept) {
+        var cards = {};
+        root.querySelectorAll('[data-product-section] [data-task]').forEach(function (card) {
+            cards[card.getAttribute('data-task-id')] = card;
+        });
+
+        var hits = [], groups = {}, elsewhere = 0;
+        found.results.forEach(function (r) {
+            var card = cards[r.id];
+            if (!card || (dept && card.getAttribute('data-dept') !== dept)) return;
+            var section = card.closest('[data-product-section]');
+            if (scope !== 'all' && section.id !== scope) {
+                elsewhere++;
+                return;
+            }
+            hits.push(card);
+            groups[section.id] = true;
+        });
+
+        var grid = root.querySelector('[data-solutions-results-grid]');
+        var fragment = document.createDocumentFragment();
+        hits.forEach(function (card, i) {
+            var section = card.closest('[data-product-section]');
+            var copy = card.cloneNode(true);
+            copy.removeAttribute('data-task');
+            copy.classList.remove('hidden');
+            copy.classList.toggle('mc-selected', i === 0);
+            copy.classList.add('mc-product');
+            copy.setAttribute('style', section.getAttribute('style') || '');
+            var product = document.createElement('span');
+            product.className = 'mt-1 text-[11px] font-semibold uppercase tracking-wider mc-text-gradient';
+            var heading = section.querySelector('h2');
+            product.textContent = heading ? heading.textContent.trim() : '';
+            copy.appendChild(product);
+            fragment.appendChild(copy);
+        });
+        if (grid) grid.replaceChildren(fragment);
+
+        root.querySelectorAll('[data-product-section]').forEach(function (section) {
+            section.classList.add('hidden');
+        });
+        root.querySelector('[data-solutions-results]').classList.toggle('hidden', hits.length === 0);
+
+        var status = '';
+        if (found.corrections.length) {
+            var input = root.querySelector('[data-solutions-search]');
+            var corrected = found.corrections.reduce(function (text, c) {
+                return text.replace(new RegExp('\\b' + c.from + '\\b', 'i'), c.to);
+            }, input ? input.value.trim() : '');
+            status = 'Showing results for \u201c' + corrected + '\u201d. ';
+        }
+        var n = Object.keys(groups).length;
+        if (hits.length) {
+            status += hits.length + (hits.length === 1 ? ' task' : ' tasks')
+                + (n > 1 ? ' across ' + n + ' task groups' : '') + ', best match first.';
+        }
+        markSolutionsFilters(root, scope, dept);
+        setSolutionsStatus(root, status || 'No matching tasks.');
+        showSolutionsEmpty(root, hits.length, elsewhere);
+    }
+
+    function markSolutionsFilters(root, scope, dept) {
         root.querySelectorAll('[data-product-pill]').forEach(function (pill) {
             pill.setAttribute('aria-current', pill.getAttribute('data-product') === scope ? 'true' : 'false');
         });
         root.querySelectorAll('[data-dept-chip]').forEach(function (chip) {
             chip.setAttribute('aria-pressed', chip.getAttribute('data-dept-chip') === dept ? 'true' : 'false');
         });
+    }
 
+    function setSolutionsStatus(root, text) {
         var status = root.querySelector('[data-solutions-status]');
-        if (status) {
-            status.textContent = !filtering ? '' : shown === 0 ? 'No matching tasks.'
-                : shown + (shown === 1 ? ' task' : ' tasks') + (products > 1 ? ' across ' + products + ' task groups' : '');
-        }
+        if (status) status.textContent = text;
+    }
 
+    function showSolutionsEmpty(root, shown, elsewhere) {
         var empty = root.querySelector('[data-solutions-empty]');
         if (empty) {
             empty.classList.toggle('hidden', shown > 0);
@@ -330,13 +445,26 @@
     function initSolutions() {
         var root = document.querySelector('[data-solutions]');
         if (!root) return;
-        var controls = root.querySelector('[data-solutions-controls]');
-        if (controls) controls.classList.remove('hidden');
+        root.querySelectorAll('[data-solutions-controls]').forEach(function (controls) {
+            controls.classList.remove('hidden');
+        });
+
+        // A linked search (/products?q=churn) searches every product.
+        var input = root.querySelector('[data-solutions-search]');
+        var query = new URLSearchParams(window.location.search).get('q') || '';
+        if (input && query) input.value = query;
 
         var fromHash = productFromHash(root);
         var first = root.querySelector('[data-product-section]');
-        root.setAttribute('data-scope', fromHash || (first ? first.id : 'all'));
+        root.setAttribute('data-scope', fromHash || (query || !first ? 'all' : first.id));
         applySolutions(root);
+
+        var loading = loadTaskSearch(root);
+        if (loading) {
+            loading.then(function (engine) {
+                if (engine && document.contains(root) && input && input.value.trim()) applySolutions(root);
+            });
+        }
 
         // The browser (or SPA router) may already have scrolled to #product while every
         // section was visible; re-align now that the others are hidden.
@@ -410,6 +538,8 @@
             if (target.closest('[data-solutions-clear]')) {
                 var search = solutions.querySelector('[data-solutions-search]');
                 if (search) search.value = '';
+                setQueryInUrl('');
+                solutions.removeAttribute('data-searching');
                 solutions.setAttribute('data-dept', '');
                 applySolutions(solutions);
                 if (search) search.focus();
@@ -453,6 +583,22 @@
     });
 
     document.addEventListener('keydown', function (e) {
+        if (e.target instanceof Element && e.target.matches('[data-solutions-search]')) {
+            var searchRoot = e.target.closest('[data-solutions]');
+            if (e.key === 'Escape' && e.target.value && searchRoot) {
+                e.target.value = '';
+                e.target.dispatchEvent(new Event('input', { bubbles: true }));
+                return;
+            }
+            if (e.key === 'ArrowDown' && searchRoot) {
+                var firstResult = searchRoot.querySelector('[data-solutions-results]:not(.hidden) a');
+                if (firstResult) {
+                    e.preventDefault();
+                    firstResult.focus();
+                }
+                return;
+            }
+        }
         if (e.key === 'Escape') {
             document.querySelectorAll('[data-logo-player][data-playing]').forEach(function (player) {
                 stopFilm(player, player.contains(document.activeElement));
@@ -470,6 +616,16 @@
 
     document.addEventListener('submit', function (e) {
         var form = e.target;
+        if (form instanceof HTMLFormElement && form.hasAttribute('data-solutions-form')) {
+            e.preventDefault();
+            var solutionsRoot = form.closest('[data-solutions]');
+            if (solutionsRoot) {
+                applySolutions(solutionsRoot);
+                var best = solutionsRoot.querySelector('[data-solutions-results]:not(.hidden) a');
+                if (best) best.focus();
+            }
+            return;
+        }
         if (form instanceof HTMLFormElement && form.hasAttribute('data-contact-form')) {
             e.preventDefault();
             submitContactForm(form);
@@ -480,7 +636,17 @@
         var target = e.target;
         if (target instanceof Element && target.matches('[data-solutions-search]')) {
             var root = target.closest('[data-solutions]');
-            if (root) applySolutions(root);
+            if (!root) return;
+            var query = target.value.trim();
+            setQueryInUrl(query);
+            // A new search looks through every product, whichever one was open.
+            if (query && !root.hasAttribute('data-searching')) {
+                root.setAttribute('data-searching', '');
+                setSolutionsScope(root, 'all');
+            } else {
+                applySolutions(root);
+            }
+            if (!query) root.removeAttribute('data-searching');
         }
     });
 
