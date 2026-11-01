@@ -2,8 +2,9 @@
 // page, an API handler or a static asset) needs a valid session: signed-in
 // employees get the Burst web app, everyone else goes to /login.
 //
-// The account pages (/accounts, /account, /setup) and API handlers (/api, /ws,
-// /storage, /auth) check the session themselves, as they must not rely on Proxy.
+// The app's own pages (/accounts, /account, /setup, /campaigns, /crm, /tasks,
+// /wiki), the public unsubscribe page, and API handlers (/api, /ws, /storage,
+// /auth) check the session themselves, as they must not rely on Proxy.
 
 import { NextResponse, type NextRequest } from 'next/server';
 import { SESSION_COOKIE, verifySessionCookie } from '@/lib/auth';
@@ -27,6 +28,6 @@ export const config = {
   matcher: [
     // Everything except: the sign-in page and its server action, API handlers,
     // Next internals and the SPA's static files.
-    '/((?!login|accounts|account|setup/|api/|api$|ws$|storage/|auth/|_next/|assets/|brand/|env\\.js$|app\\.html$|favicon\\.ico$|robots\\.txt$).*)',
+    '/((?!login|accounts|account|campaigns|crm|tasks|wiki|unsubscribe/|setup/|api/|api$|ws$|storage/|auth/|_next/|assets/|brand/|env\\.js$|app\\.html$|favicon\\.ico$|robots\\.txt$).*)',
   ],
 };

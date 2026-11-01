@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Hash, LogOut, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield, Users, KeyRound } from "lucide-react";
+import { Hash, LogOut, Plus, X, MessageCircle, Search, Sun, Moon, Settings, Shield, Users, KeyRound, Mail, Contact, ListChecks, BookOpen } from "lucide-react";
 import { SidebarResizeHandle } from "./sidebar-resize";
 import { useSidebarWidth } from "./use-sidebar-width";
 import { useQuery, useQueries, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -214,7 +214,30 @@ export function Sidebar() {
                 <Shield className="h-4 w-4" />
               </button>
             )}
-            {/* SymNexus Team: account pages served by the sign-in app (team/web). */}
+            {/* SymNexus Team: CRM, tasks, wiki and account pages served by team/web. */}
+            {[
+              { href: "/crm", title: "CRM", Icon: Contact },
+              { href: "/tasks", title: "Tasks", Icon: ListChecks },
+              { href: "/wiki", title: "Wiki", Icon: BookOpen },
+            ].map(({ href, title, Icon }) => (
+              <a
+                key={href}
+                href={href}
+                className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                title={title}
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
+            {user.role === "admin" && (
+              <a
+                href="/campaigns"
+                className="rounded p-1.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-gray-700 dark:hover:text-gray-300"
+                title="Email campaigns"
+              >
+                <Mail className="h-4 w-4" />
+              </a>
+            )}
             {user.role === "admin" && (
               <a
                 href="/accounts"

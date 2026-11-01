@@ -7,7 +7,7 @@
     "build": "node scripts/build-spa.mjs && next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test --experimental-strip-types --no-warnings test/*.test.ts",
+    "test": "node --test --experimental-strip-types --no-warnings --test-concurrency=1 test/*.test.ts",
     "owner": "node --experimental-strip-types --no-warnings scripts/owner.ts"
   },
   "dependencies": {

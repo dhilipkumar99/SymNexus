@@ -19,6 +19,12 @@
 			"entrypoint": "Dockerfile"
 		}
 	},
+	"crons": [
+		{
+			"path": "/campaigns/tick",
+			"schedule": "0 13 * * *"
+		}
+	],
 	"rewrites": [
 		{
 			"source": "/(.*)",

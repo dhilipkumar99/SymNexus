@@ -32,6 +32,9 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // This app is self-contained in team/web (the repo has other lockfiles).
   turbopack: { root: path.resolve(__dirname) },
+  // Campaign recipient lists are uploaded through a server action (Vercel's
+  // request limit is 4.5 MB).
+  experimental: { serverActions: { bodySizeLimit: '4mb' } },
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

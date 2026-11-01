@@ -59,7 +59,7 @@ export async function listAccounts(): Promise<AccountListRow[]> {
 
 export async function listAudit(limit = 100) {
   const { rows } = await (await db()).query(
-    'SELECT at, actor_email, action, target_email, detail FROM team_auth.audit_log ORDER BY at DESC LIMIT $1',
+    "SELECT at, actor_email, action, target_email, detail FROM team_auth.audit_log WHERE action LIKE 'account.%' ORDER BY at DESC LIMIT $1",
     [limit],
   );
   return rows as { at: Date; actor_email: string | null; action: string; target_email: string | null; detail: Record<string, unknown> | null }[];
