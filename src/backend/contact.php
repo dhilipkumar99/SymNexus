@@ -160,7 +160,7 @@ function contact_send(array $d, string $apiKey): bool
 }
 
 /**
- * Record the submission as a lead in the team CRM (app.symnexus.co/crm).
+ * Record the submission as a lead in the team CRM (symnexus-team.vercel.app/crm).
  * Optional: skipped unless LEADS_API_SECRET is set. Returns true when stored.
  */
 function contact_to_crm(array $d): bool
@@ -183,7 +183,7 @@ function contact_to_crm(array $d): bool
         'message'      => $d['message'],
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-    $ch = curl_init(env('LEADS_API_URL', 'https://app.symnexus.co/api/leads'));
+    $ch = curl_init(env('LEADS_API_URL', 'https://symnexus-team.vercel.app/api/leads'));
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST           => true,

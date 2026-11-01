@@ -1,7 +1,7 @@
 <?php
 
 // Employee messaging (team/, a separate Vercel project).
-const TEAM_LOGIN_URL = 'https://app.symnexus.co/login';
+const TEAM_LOGIN_URL = 'https://symnexus-team.vercel.app/login';
 
 // Company profiles: shown in the footer and as JSON-LD sameAs once a URL is set.
 const SOCIAL_LINKS = [
