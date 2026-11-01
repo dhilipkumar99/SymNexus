@@ -38,7 +38,7 @@ partial('legal', [
         ],
         [
             'title' => 'Cookies and Similar Technologies',
-            'body'  => 'The symnexus.co website does not set advertising or tracking cookies. It stores your light or dark theme choice in your browser\'s local storage, and a service worker keeps a copy of pages so the site works offline; both stay on your device. Our employee sign-in at app.symnexus.co uses a single essential session cookie. Our analytics are cookie-free. Because we use no non-essential cookies, we do not show a cookie banner.',
+            'body'  => 'The symnexus.co website does not set advertising or tracking cookies. It stores your light or dark theme choice in your browser\'s local storage, and a service worker keeps a copy of pages so the site works offline; both stay on your device. Our employee sign-in at symnexus-team.vercel.app uses a single essential session cookie. Our analytics are cookie-free. Because we use no non-essential cookies, we do not show a cookie banner.',
         ],
         [
             'title' => 'Who We Share It With',
