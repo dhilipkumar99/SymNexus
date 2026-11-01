@@ -56,8 +56,31 @@ per-IP rate limit (5 per 10 minutes). Without JavaScript the forms still work as
 | `CONTACT_TO_EMAIL` | no | `info@symnexus.co` (`SITE_EMAIL` in `src/bootstrap.php`) |
 | `CONTACT_FROM_EMAIL` | no | `Symnexus Website <website@symnexus.co>` — its domain must be verified in Resend |
 
-If the key is missing or Resend rejects a message, visitors see an error with the email address
-to write to instead, and the detail is written to the Vercel function logs.
+Each submission is also posted to the team CRM (`https://app.symnexus.co/api/leads`, see
+`team/README.md`) when `LEADS_API_SECRET` is set; it must match the team project's value. The visitor
+sees success if the message reached the inbox or the CRM; if neither worked they see an error with the
+email address to write to instead, and the detail is written to the Vercel function logs.
+
+| Variable | Required | Default |
+| --- | :---: | --- |
+| `LEADS_API_SECRET` | no | — (forms are not copied to the CRM without it) |
+| `LEADS_API_URL` | no | `https://app.symnexus.co/api/leads` |
+
+## Company details, social links and photos
+
+- Email, phone, legal name and location: constants at the top of `src/bootstrap.php`.
+- Company LinkedIn / YouTube / X: fill `href` in `SOCIAL_LINKS` (`src/data/nav.php`). Each appears in
+  the footer and in the Organization JSON-LD (`sameAs`) once it has a URL.
+- Leadership headshots: square images at `public/assets/images/team/dhilip-raman.webp` and
+  `jacob-matthew-rajesh.webp` (at least 320×320). Each shows on /about as soon as the file exists;
+  LinkedIn URLs go in `$leaders` in `src/pages/about.php`.
+
+## Analytics
+
+Production pages load Vercel Web Analytics (`/_vercel/insights/script.js`): cookie-free and free on
+the Hobby plan. Turn it on once in the Vercel dashboard (project `symnexus` → Analytics → Enable).
+Search Console: verify the `symnexus.co` domain property with the DNS TXT record Google gives you
+(GoDaddy DNS), then submit `https://symnexus.co/sitemap.xml`.
 
 ## Products page (SymNexus product sites)
 

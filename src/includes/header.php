@@ -34,8 +34,9 @@ $ld = $pageMeta['jsonld'] ?? [
     'logo'        => SITE_URL . '/android-chrome-512x512.png',
     'email'       => SITE_EMAIL,
     'telephone'   => SITE_PHONE_TEL,
+    'address'     => ['@type' => 'PostalAddress', 'addressRegion' => 'CA', 'addressCountry' => 'US'],
     'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries, deployed for clients operating globally.',
-];
+] + (social_links() ? ['sameAs' => array_column(social_links(), 'href')] : []);
 
 header('Content-Type: text/html; charset=utf-8');
 ?>
@@ -98,6 +99,11 @@ header('Content-Type: text/html; charset=utf-8');
 
     <script src="<?= e(asset('js/site.js')) ?>" defer></script>
     <script src="<?= e(asset('js/spa-router.js')) ?>" defer></script>
+    <?php if (getenv('VERCEL')): ?>
+        <!-- Vercel Web Analytics: cookie-free, aggregate page views (enable it in the Vercel project). -->
+        <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+        <script defer src="/_vercel/insights/script.js"></script>
+    <?php endif; ?>
 </head>
 
 <body class="bg-white dark:bg-black min-h-screen font-body flex flex-col transition-colors duration-300">
@@ -174,7 +180,7 @@ header('Content-Type: text/html; charset=utf-8');
                         class="block text-sm font-medium px-4 py-2.5 rounded-xl transition-colors text-gray-600 dark:text-gray-300 hover:text-brandPrimary aria-[current=page]:text-brandPrimary aria-[current=page]:font-semibold aria-[current=page]:bg-gray-100 dark:aria-[current=page]:bg-white/5 dark:aria-[current=page]:text-brandPrimary"><?= e($link['label']) ?></a>
                 <?php endforeach; ?>
                 <a href="/demo"
-                    class="block text-sm font-semibold px-4 py-2.5 rounded-xl text-brandPrimary hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Request a demonstration</a>
+                    class="block text-sm font-semibold px-4 py-2.5 rounded-xl text-brandPrimary hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">Request a demo</a>
                 <a href="<?= e(TEAM_LOGIN_URL) ?>"
                     class="block text-center text-sm font-semibold px-4 py-2.5 mt-2 rounded-xl text-white bg-teal-700 hover:bg-teal-800 dark:bg-teal-600 dark:hover:bg-teal-500 transition-colors">Team login</a>
             </nav>

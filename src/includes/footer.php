@@ -18,6 +18,11 @@
                 <a href="<?= e($link['href']) ?>"
                     class="text-gray-600 dark:text-zinc-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200"><?= e($link['label']) ?></a>
             <?php endforeach; ?>
+            <?php foreach (social_links() as $link): ?>
+                <a href="<?= e($link['href']) ?>" target="_blank" rel="noopener" aria-label="<?= e(SITE_NAME . ' on ' . $link['label']) ?>"
+                    class="text-gray-500 dark:text-zinc-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200"><?= brand_icon($link['icon']) ?></a>
+            <?php endforeach; ?>
+            <span class="text-gray-600 dark:text-zinc-400"><?= e(SITE_LOCATION) ?></span>
             <span class="text-gray-600 dark:text-zinc-400">&copy; <?= date('Y') ?> <?= e(SITE_LEGAL_NAME) ?></span>
         </div>
 

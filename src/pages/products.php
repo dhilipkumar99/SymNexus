@@ -140,7 +140,7 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'     => 'Not sure which task fits?',
     'body'      => 'Tell us what you are trying to predict, find or automate. Our engineers will map it to the right task and walk you through it on your own data.',
-    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
     'secondary' => ['label' => 'Contact Us', 'href' => '/contact'],
 ]); ?>
 

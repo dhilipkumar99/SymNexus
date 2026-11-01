@@ -64,7 +64,7 @@ require SRC_DIR . '/includes/header.php';
 
 <div class="flex flex-wrap items-center gap-x-6 gap-y-4">
     <a href="/demo" class="btn-primary group">
-        Request a demonstration
+        Request a demo
         <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?>
     </a>
     <a href="<?= e(mailto()) ?>" class="text-gray-400 hover:text-brandPrimary dark:hover:text-white transition-colors duration-200" aria-label="Email <?= e(SITE_EMAIL) ?>">
@@ -132,7 +132,7 @@ require SRC_DIR . '/includes/header.php';
     </p>
 
     <div class="mt-6">
-        <a href="/about#products" class="link-arrow group">
+        <a href="/products" class="link-arrow group">
             View all products
             <?= icon('chevron-right', 'w-4 h-4 ml-1.5 transform group-hover:translate-x-1 transition-transform') ?>
         </a>
@@ -198,7 +198,7 @@ require SRC_DIR . '/includes/header.php';
                 </p>
                 <p class="relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
                     A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses
-                    manual review of cells from a week of manual cross-referencing to a same-day first pass.
+                    manual review of cells from three to four days of manual cross-referencing to a same-day first pass.
                 </p>
                 <div aria-hidden="true" class="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-700">
                     Read case study
@@ -252,7 +252,7 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'     => 'We build new, innovative AI products for businesses around the world.',
     'body'      => 'The people who build the product run your demonstration and build it around your workflow.',
-    'primary'   => ['label' => 'Request a demonstration', 'href' => '/demo'],
+    'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
     'secondary' => ['label' => 'View pricing', 'href' => '/pricing'],
 ]); ?>
 

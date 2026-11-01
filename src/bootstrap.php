@@ -8,6 +8,8 @@ const SITE_LEGAL_NAME = 'Symnexus Ltd.';
 const SITE_URL        = 'https://symnexus.co';
 const SITE_EMAIL      = 'info@symnexus.co';
 const SITE_PHONE      = '+1 (408) 508-4718';
+// Shown in the footer and the Organization JSON-LD.
+const SITE_LOCATION   = 'Silicon Valley, California';
 const SITE_PHONE_TEL  = '+14085084718';
 // The SymNexus film: played at /video and inside the hero logo frame on click.
 const FEATURE_VIDEO   = '/video/symnexus-voiced.mp4';

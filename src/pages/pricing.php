@@ -10,7 +10,7 @@ $faq = [
     ['q' => 'Is pricing billed monthly or annually?',                  'a' => 'Both options are available and discussed as part of your pricing conversation.'],
     ['q' => 'Do you work with academic or non-profit institutions?',   'a' => 'Yes — several of our early deployments are with research labs and academic institutions. Contact us to discuss institutional pricing.'],
     ['q' => 'What if my field isn\'t FluorocellAI or ComplianceCall?', 'a' => 'Those are our current products, not the limit of what we build. We design domain-native software systems for other technical and regulated fields — reach out to discuss your workflow.'],
-    ['q' => 'What does onboarding look like?',                         'a' => 'Domain specialists run every demonstration, not sales staff, and we build each demo around your specific workflow before we discuss terms.'],
+    ['q' => 'What does onboarding look like?',                         'a' => 'Onboarding starts from the evaluation: our engineers configure the system on your own data and connect it to the tools your team already uses, your domain experts check its results alongside your current process, and we train your team to run it independently. Everything is logged in an audit trail from day one.'],
     ['q' => 'Can I cancel or change my plan?',                         'a' => 'Cancellation and plan-change terms, including notice period, are set out in your contract. Reach out to your account contact to review your specific terms or initiate a change.'],
 ];
 
@@ -74,7 +74,7 @@ require SRC_DIR . '/includes/header.php';
             </div>
 
             <div class="mt-8 pt-6 border-t border-gray-100 dark:border-gray-700/40">
-                <a href="/demo" class="btn-primary">Request a Demonstration</a>
+                <a href="/demo" class="btn-primary">Request a demo</a>
             </div>
         </article>
 
@@ -128,9 +128,9 @@ require SRC_DIR . '/includes/header.php';
 </section>
 
 <?php partial('cta', [
-    'title'   => 'Not sure which plan is right for you?',
-    'body'    => 'Our scientific team will review your workflow and recommend the right plan before you commit to anything.',
-    'primary' => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'title'   => 'Not sure where to start?',
+    'body'    => 'Our scientific team will review your workflow and recommend a scope before you commit to anything.',
+    'primary' => ['label' => 'Request a demo', 'href' => '/demo'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

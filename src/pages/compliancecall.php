@@ -55,7 +55,7 @@ require SRC_DIR . '/includes/header.php';
 ]); ?>
 
 <div class="flex flex-wrap gap-3 -mt-4 mb-12">
-    <a href="/demo" class="btn-primary group">Request Demonstration <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
+    <a href="/demo" class="btn-primary group">Request a demo <?= icon('arrow-right', 'w-4 h-4 animate-drop-twice') ?></a>
     <a href="/pricing#compliancecall" class="btn-secondary">View Pricing</a>
 </div>
 
@@ -149,7 +149,7 @@ require SRC_DIR . '/includes/header.php';
     'title'     => 'Speak with a compliance specialist.',
     'body'      => 'Domain specialists run every ComplianceCall demonstration, not sales staff. We review your current compliance posture before the call so the conversation is immediately relevant to your work.',
     'note'      => 'Not a regulatory workflow? We build domain-native software systems for many industries — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
-    'primary'   => ['label' => 'Request Demonstration', 'href' => '/demo'],
+    'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
     'secondary' => ['label' => 'View Pricing', 'href' => '/pricing#compliancecall'],
 ]); ?>
 

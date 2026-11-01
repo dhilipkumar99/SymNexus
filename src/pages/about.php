@@ -13,6 +13,26 @@ $differentiators = [
     ['num' => '05', 'title' => 'Compliance by design',  'body' => 'We build full audit-trail transparency into every Symnexus platform by design, rather than bolt it on — critical trust infrastructure for customers operating under FDA and other regulatory bodies.'],
 ];
 
+// Photos live in public/assets/images/team/ and show once the file exists.
+$leaders = [
+    [
+        'name'       => 'Dhilip Raman',
+        'role'       => 'Chief Executive Officer',
+        'photo'      => 'dhilip-raman.webp',
+        'linkedin'   => '',
+        'bio'        => 'Ph.D. student, Neuroscience. Leads operations, contracts, and market entry.',
+        'background' => 'Previously: Clinical Research Coordinator (Stanford); Clinical Data Manager; Catalent Pharma Solutions.',
+    ],
+    [
+        'name'       => 'Jacob Matthew Rajesh',
+        'role'       => 'Chief Technical Officer',
+        'photo'      => 'jacob-matthew-rajesh.webp',
+        'linkedin'   => '',
+        'bio'        => 'Leads technical design and engineering teams.',
+        'background' => 'Currently: NXP Semiconductor Engineer.',
+    ],
+];
+
 $team = [
     ['name' => 'Brent Luker',           'role' => 'Generative AI Software Engineer', 'note' => 'Formerly Zoom'],
     ['name' => 'Sameera Velammuri',     'role' => 'AI/ML Software Engineer',         'note' => 'Formerly Amazon'],
@@ -134,18 +154,27 @@ require SRC_DIR . '/includes/header.php';
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <article class="card">
-            <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Dhilip Raman</h3>
-            <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Executive Officer</p>
-            <p class="mt-4 body-copy text-sm">Ph.D. student, Neuroscience. Leads operations, contracts, and market entry.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Previously: Clinical Research Coordinator (Stanford); Clinical Data Manager; Catalent Pharma Solutions.</p>
-        </article>
-        <article class="card">
-            <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white">Jacob Matthew Rajesh</h3>
-            <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider">Chief Technical Officer</p>
-            <p class="mt-4 body-copy text-sm">Leads technical design and engineering teams.</p>
-            <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300">Currently: NXP Semiconductor Engineer.</p>
-        </article>
+        <?php foreach ($leaders as $leader): ?>
+            <?php $photo = 'images/team/' . $leader['photo']; ?>
+            <article class="card">
+                <div class="flex items-center gap-4">
+                    <?php if (is_file(PUBLIC_DIR . '/assets/' . $photo)): ?>
+                        <img src="<?= e(asset($photo)) ?>" alt="<?= e($leader['name']) ?>" width="160" height="160" loading="lazy" decoding="async"
+                            class="w-16 h-16 rounded-full object-cover flex-shrink-0 border border-gray-200 dark:border-gray-700">
+                    <?php endif; ?>
+                    <div class="min-w-0">
+                        <h3 class="font-sans text-lg font-bold text-gray-900 dark:text-white"><?= e($leader['name']) ?></h3>
+                        <p class="text-xs text-teal-700 dark:text-teal-400 mt-1 font-semibold uppercase tracking-wider"><?= e($leader['role']) ?></p>
+                    </div>
+                    <?php if ($leader['linkedin'] !== ''): ?>
+                        <a href="<?= e($leader['linkedin']) ?>" target="_blank" rel="noopener" aria-label="<?= e($leader['name']) ?> on LinkedIn"
+                            class="ml-auto self-start text-gray-400 hover:text-brandPrimary transition-colors"><?= brand_icon('linkedin', 'w-5 h-5') ?></a>
+                    <?php endif; ?>
+                </div>
+                <p class="mt-4 body-copy text-sm"><?= e($leader['bio']) ?></p>
+                <p class="mt-4 pt-4 border-t border-gray-100 dark:border-gray-700/40 text-xs leading-relaxed text-gray-500 dark:text-gray-300"><?= e($leader['background']) ?></p>
+            </article>
+        <?php endforeach; ?>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:-mx-8">
@@ -164,7 +193,7 @@ require SRC_DIR . '/includes/header.php';
 <?php partial('cta', [
     'title'     => 'Ready to see these on your own data?',
     'body'      => 'Our scientific and engineering staff build every demonstration around your specific workflow, skipping the generic product tour.',
-    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
     'secondary' => ['label' => 'View Pricing', 'href' => '/pricing'],
 ]); ?>
 

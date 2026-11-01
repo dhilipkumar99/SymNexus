@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Request a Demonstration — Symnexus';
+$pageTitle = 'Request a Demo — Symnexus';
 $pageMeta  = [
     'description' => 'Request a tailored demonstration of FluorocellAI or ComplianceCall. Domain specialists run every demonstration, not sales staff.',
     'og_image'    => img('scientistScope', 1200),
@@ -16,7 +16,7 @@ require SRC_DIR . '/includes/header.php';
 ?>
 
 <?php partial('page-header', [
-    'eyebrow' => 'Request a Demonstration',
+    'eyebrow' => 'Request a demo',
     'title'   => 'See it in the context of',
     'highlight' => 'your workflow.',
     'lead'    => 'Every demonstration is conducted by a domain specialist and built around your workflow — your imaging modality, your cell type, your regulatory structure. Not a scripted product walkthrough.',
@@ -83,7 +83,7 @@ require SRC_DIR . '/includes/header.php';
                 ['name' => 'labType', 'label' => 'Organization Type', 'required' => false, 'options' => ['' => 'Select type'] + CONTACT_ORG_TYPES],
             ],
             'textarea'     => ['name' => 'message', 'label' => 'Describe your workflow', 'rows' => 4, 'placeholder' => 'What are you imaging / what regulatory challenges are you facing? The more specific, the more useful our demonstration will be.'],
-            'submitLabel'  => 'Request Demonstration',
+            'submitLabel'  => 'Request a demo',
             'footnote'     => 'We respond within one business day. No automated sales sequences.',
         ]); ?>
     </div>

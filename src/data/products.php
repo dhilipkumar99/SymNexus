@@ -9,7 +9,7 @@ const PRODUCTS = [
         'link'     => 'See how it works',
         'category' => 'Imaging & Cell Analysis',
         'icon'     => 'beaker',
-        'summary'  => 'Upload your microscopy images. Get automated cell counts, segmentation, and a QC audit trail back the same day — instead of a week of manual review.',
+        'summary'  => 'Upload your microscopy images. Get automated cell counts, segmentation, and a QC audit trail back the same day — instead of three to four days of manual review.',
         'overview' => 'FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.',
         'detail'   => 'A cell-analysis workflow that once took three to four days of manual cross-referencing — slide prep, manual counting, manual QC, and write-up — compresses to a same-day first pass. Slide prep and imaging stay unchanged; automated segmentation and counting run in minutes instead of days, with automatic QC and an audit trail behind every result.',
         'features' => [
@@ -49,7 +49,7 @@ const PRODUCTS = [
             'One modular AI stack shared with FluorocellAI',
             'REST API for compliance workflow integration',
         ],
-        'cta'      => 'Request Demonstration',
+        'cta'      => 'Request a demo',
         'pricing'  => [
             'desc'     => 'Benchmarks pharmaceutical development against federal regulation, with full audit-trail transparency.',
             'features' => [

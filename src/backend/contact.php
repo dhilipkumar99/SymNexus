@@ -88,7 +88,7 @@ function contact_compose(array $d): array
     $name = $d['firstName'] . ' ' . $d['lastName'];
     $subject = $d['form'] === 'demo'
         ? 'Demonstration request — ' . $d['organization']
-        : 'Website enquiry: ' . $d['subject'];
+        : 'Website inquiry: ' . $d['subject'];
 
     $rows = array_filter([
         'Name'                => $name,
@@ -101,7 +101,7 @@ function contact_compose(array $d): array
         'Organization type'   => $d['labType'],
     ], static fn(string $v): bool => $v !== '');
 
-    $source = $d['form'] === 'demo' ? '/demo (Request a Demonstration)' : '/contact (Contact)';
+    $source = $d['form'] === 'demo' ? '/demo (Request a demo)' : '/contact (Contact)';
 
     $text = '';
     foreach ($rows as $label => $value) {
@@ -159,6 +159,51 @@ function contact_send(array $d, string $apiKey): bool
     return false;
 }
 
+/**
+ * Record the submission as a lead in the team CRM (app.symnexus.co/crm).
+ * Optional: skipped unless LEADS_API_SECRET is set. Returns true when stored.
+ */
+function contact_to_crm(array $d): bool
+{
+    $secret = env('LEADS_API_SECRET');
+    if ($secret === null) {
+        return false;
+    }
+    $payload = json_encode([
+        'source'       => $d['form'] === 'demo' ? 'Website demo request' : 'Website contact form',
+        'firstName'    => $d['firstName'],
+        'lastName'     => $d['lastName'],
+        'email'        => $d['email'],
+        'phone'        => $d['phone'],
+        'organization' => $d['organization'],
+        'role'         => $d['role'],
+        'subject'      => $d['subject'],
+        'product'      => $d['product'],
+        'orgType'      => $d['labType'],
+        'message'      => $d['message'],
+    ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+    $ch = curl_init(env('LEADS_API_URL', 'https://app.symnexus.co/api/leads'));
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => $payload,
+        CURLOPT_CONNECTTIMEOUT => 4,
+        CURLOPT_TIMEOUT        => 8,
+        CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $secret, 'Content-Type: application/json'],
+    ]);
+    $response = curl_exec($ch);
+    $status   = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlErr  = curl_error($ch);
+    curl_close($ch);
+
+    if ($status >= 200 && $status < 300) {
+        return true;
+    }
+    error_log(sprintf('[symnexus contact] CRM failure: HTTP %d %s %s', $status, $curlErr, is_string($response) ? mb_substr($response, 0, 300) : ''));
+    return false;
+}
+
 function handle_contact(): void
 {
     $wantsJson = str_contains($_SERVER['CONTENT_TYPE'] ?? '', 'application/json')
@@ -213,15 +258,18 @@ function handle_contact(): void
         return;
     }
 
+    // The message counts as received if it reached the inbox or the CRM.
+    $inCrm = contact_to_crm($data);
     $apiKey = env('RESEND_API_KEY');
     if ($apiKey === null) {
-        error_log('[symnexus contact] RESEND_API_KEY is not configured; message not sent.');
-        $fail(503, 'Our message service is temporarily unavailable. Please email us directly at ' . SITE_EMAIL . '.');
-        return;
+        error_log('[symnexus contact] RESEND_API_KEY is not configured; message not emailed.');
     }
+    $emailed = $apiKey !== null && contact_send($data, $apiKey);
 
-    if (!contact_send($data, $apiKey)) {
-        $fail(502, 'We couldn\'t send your message just now. Please try again, or email us directly at ' . SITE_EMAIL . '.');
+    if (!$emailed && !$inCrm) {
+        $apiKey === null
+            ? $fail(503, 'Our message service is temporarily unavailable. Please email us directly at ' . SITE_EMAIL . '.')
+            : $fail(502, 'We couldn\'t send your message just now. Please try again, or email us directly at ' . SITE_EMAIL . '.');
         return;
     }
 

@@ -1,7 +1,20 @@
 <?php
 
 // Employee messaging (team/, a separate Vercel project).
-const TEAM_LOGIN_URL = 'https://symnexus-team.vercel.app/login';
+const TEAM_LOGIN_URL = 'https://app.symnexus.co/login';
+
+// Company profiles: shown in the footer and as JSON-LD sameAs once a URL is set.
+const SOCIAL_LINKS = [
+    ['label' => 'LinkedIn',    'icon' => 'linkedin', 'href' => ''],
+    ['label' => 'YouTube',     'icon' => 'youtube',  'href' => ''],
+    ['label' => 'X (Twitter)', 'icon' => 'x',        'href' => ''],
+];
+
+/** SOCIAL_LINKS entries that have a URL. */
+function social_links(): array
+{
+    return array_values(array_filter(SOCIAL_LINKS, static fn(array $l): bool => $l['href'] !== ''));
+}
 
 // Primary navigation. `match` lists every path prefix that highlights the link.
 const NAV_LINKS = [

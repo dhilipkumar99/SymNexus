@@ -54,7 +54,7 @@ require SRC_DIR . '/includes/header.php';
     <article class="font-body text-base leading-relaxed text-gray-600 dark:text-gray-300 space-y-6">
         <p>
             A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual
-            review of cells from a week of manual cross-referencing to a same-day first pass.
+            review of cells from three to four days of manual cross-referencing to a same-day first pass.
         </p>
 
         <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">Before FluorocellAI</h2>
@@ -88,8 +88,8 @@ require SRC_DIR . '/includes/header.php';
 
     <?php partial('cta', [
         'title'   => 'Want to see this on your own data?',
-        'body'    => 'Request a Demonstration and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
-        'primary' => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+        'body'    => 'Request a demo and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
+        'primary' => ['label' => 'Request a demo', 'href' => '/demo'],
         'secondary' => ['label' => 'About FluorocellAI', 'href' => '/fluorocellai'],
     ]); ?>
 </div>

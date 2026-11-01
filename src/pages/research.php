@@ -11,8 +11,9 @@ $entries = [
         'title'     => 'FluorocellAI, in a cancer-research lab.',
         'category'  => 'Case Study',
         'meta'      => 'FluorocellAI',
-        'excerpt'   => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual review of cells from a week of manual cross-referencing to a same-day first pass.',
+        'excerpt'   => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual review of cells from three to four days of manual cross-referencing to a same-day first pass.',
         'thumbnail' => 'fluoroCells',
+        'alt'       => 'Fluorescence microscopy image of stained cells',
     ],
 ];
 
@@ -36,7 +37,7 @@ require SRC_DIR . '/includes/header.php';
                 <div class="absolute -inset-x-4 -inset-y-2 z-0 scale-95 bg-gray-200/40 dark:bg-gray-800/30 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 rounded-2xl sm:-inset-x-6" aria-hidden="true"></div>
 
                 <div class="relative z-10 w-full sm:w-[240px] aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900/40 flex-shrink-0">
-                    <img src="<?= e(img($entry['thumbnail'], 600)) ?>" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                    <img src="<?= e(img($entry['thumbnail'], 600)) ?>" alt="<?= e($entry['alt']) ?>" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
                 </div>
 
                 <div class="relative z-10 w-full flex flex-col justify-center">
@@ -81,9 +82,9 @@ require SRC_DIR . '/includes/header.php';
 
 <?php partial('cta', [
     'title'     => 'Want to see this on your own data?',
-    'body'      => 'Request a Demonstration and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
+    'body'      => 'Request a demo and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
     'note'      => 'Working outside imaging or compliance? We build domain-native software systems for many industries — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
-    'primary'   => ['label' => 'Request a Demonstration', 'href' => '/demo'],
+    'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
 ]); ?>
 
 <?php require SRC_DIR . '/includes/footer.php'; ?>

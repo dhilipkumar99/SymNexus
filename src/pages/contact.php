@@ -69,7 +69,7 @@ require SRC_DIR . '/includes/header.php';
                 ['name' => 'product', 'label' => 'Product of Interest', 'required' => false, 'options' => ['' => 'Select a product'] + CONTACT_PRODUCTS],
             ],
             'textarea'     => ['name' => 'message', 'label' => 'Message', 'rows' => 5, 'placeholder' => 'Describe your organization, current workflow, and what you\'d like to evaluate...'],
-            'submitLabel'  => 'Send Enquiry',
+            'submitLabel'  => 'Send inquiry',
             'footnote'     => 'We reply within one business day.',
         ]); ?>
     </div>

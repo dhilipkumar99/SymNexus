@@ -5,7 +5,7 @@
  * @var string $eyebrow
  * @var string $title
  * @var string $meta      e.g. "Last updated: January 2025"
- * @var array  $sections  [['title' => ..., 'body' => ...]] — body may contain the {email} placeholder
+ * @var array  $sections  [['title' => ..., 'body' => ..., 'items' => [...]?, 'after' => ...?]] — text may contain the {email} placeholder
  */
 $emailLink = '<a href="' . e(mailto()) . '" class="link-inline">' . e(SITE_EMAIL) . '</a>';
 ?>
@@ -24,6 +24,16 @@ $emailLink = '<a href="' . e(mailto()) . '" class="link-inline">' . e(SITE_EMAIL
             <section>
                 <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white mb-3"><?= e($section['title']) ?></h2>
                 <p><?= str_replace('{email}', $emailLink, e($section['body'])) ?></p>
+                <?php if (!empty($section['items'])): ?>
+                    <ul class="mt-4 list-disc pl-6 space-y-2">
+                        <?php foreach ($section['items'] as $item): ?>
+                            <li><?= str_replace('{email}', $emailLink, e($item)) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php endif; ?>
+                <?php if (!empty($section['after'])): ?>
+                    <p class="mt-4"><?= str_replace('{email}', $emailLink, e($section['after'])) ?></p>
+                <?php endif; ?>
             </section>
         <?php endforeach; ?>
     </article>

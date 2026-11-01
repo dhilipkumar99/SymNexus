@@ -32,10 +32,10 @@ $capabilities = [
 ];
 
 $useCases = [
-    ['role' => 'Cancer-Research Institutes',  'img' => 'labEquipment',    'desc' => 'Compress cell-analysis turnaround from days to a same-day first pass, without changing established imaging protocols.'],
-    ['role' => 'Academic Cell-Biology Cores', 'img' => 'microscopeSetup', 'desc' => 'Offer AI-assisted counting and analysis as a core facility service, integrated into existing lab workflows.'],
-    ['role' => 'CROs & Pharma/Biotech R&D',   'img' => 'labSamples',      'desc' => 'Scale cell-analysis throughput across client programs without proportionally scaling headcount.'],
-    ['role' => 'Regulatory Affairs Teams',    'img' => 'phytoplankton',   'desc' => 'Rely on automatic QC and a built-in audit trail for cell-analysis data that supports regulatory submissions.'],
+    ['role' => 'Cancer-Research Institutes',  'img' => 'labEquipment',   'alt' => 'Laboratory equipment and scientific instruments',  'desc' => 'Compress cell-analysis turnaround from days to a same-day first pass, without changing established imaging protocols.'],
+    ['role' => 'Academic Cell-Biology Cores', 'img' => 'microscopeSetup', 'alt' => 'Microscope set up for imaging',  'desc' => 'Offer AI-assisted counting and analysis as a core facility service, integrated into existing lab workflows.'],
+    ['role' => 'CROs & Pharma/Biotech R&D',   'img' => 'labSamples',     'alt' => 'Laboratory samples prepared for analysis',  'desc' => 'Scale cell-analysis throughput across client programs without proportionally scaling headcount.'],
+    ['role' => 'Regulatory Affairs Teams',    'img' => 'phytoplankton',  'alt' => 'Microscopic biological organisms',  'desc' => 'Rely on automatic QC and a built-in audit trail for cell-analysis data that supports regulatory submissions.'],
 ];
 
 require SRC_DIR . '/includes/header.php';
@@ -136,7 +136,7 @@ require SRC_DIR . '/includes/header.php';
         <?php foreach ($useCases as $uc): ?>
             <article class="group bg-white dark:bg-slate-900 rounded-xl shadow-md overflow-hidden border border-gray-100 dark:border-slate-800 transition-all duration-200 hover:shadow-lg">
                 <div class="relative h-36 overflow-hidden">
-                    <img src="<?= e(img($uc['img'], 600)) ?>" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <img src="<?= e(img($uc['img'], 600)) ?>" alt="<?= e($uc['alt']) ?>" loading="lazy" decoding="async" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                 </div>
                 <div class="p-5">
