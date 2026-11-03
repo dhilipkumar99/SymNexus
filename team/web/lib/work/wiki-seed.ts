@@ -54,7 +54,7 @@ export const SEED_PAGES: { slug: string; title: string; body: string }[] = [
 # First week
 
 - [ ] Shadow a customer call or demo
-- [ ] Walk through FluorocellAI and ComplianceCall with an engineer
+- [ ] Walk through FLUORO and ComplianceCall with an engineer
 - [ ] Pick up a first task from the board and close it
 
 # Leaving
@@ -69,13 +69,13 @@ export const SEED_PAGES: { slug: string; title: string; body: string }[] = [
     title: 'Product one-pagers',
     body: `Keep these in step with symnexus.co. If a number changes, change it in both places.
 
-# FluorocellAI
+# FLUORO
 
 - **What it is**: automated cell identification, counting, segmentation and QC for cell and cancer-research labs.
 - **The result**: a cell-analysis workflow that took three to four days of manual review becomes a same-day first pass. Slide prep and imaging stay unchanged.
 - **Who buys it**: cancer-research institutes, academic cell-biology cores, CRO and pharma/biotech R&D, regulatory affairs teams.
 - **Why us**: built with working scientists, an audit trail behind every result, a REST API for lab pipelines.
-- **Links**: https://symnexus.co/fluorocellai · case study https://symnexus.co/research/fluorocellai-cancer-research-lab
+- **Links**: https://symnexus.co/fluoro · case study https://symnexus.co/research/fluoro-cancer-research-lab
 
 # ComplianceCall
 
@@ -160,7 +160,7 @@ Keep one *Brand* folder on the shared drive with:
 # Website
 
 - [x] Contact email on the site is info@symnexus.co
-- [x] One FluorocellAI figure everywhere (three to four days → same-day first pass)
+- [x] One FLUORO figure everywhere (three to four days → same-day first pass)
 - [x] Fuller privacy policy (retention, rights, cookies, sub-processors)
 - [x] One label for the demo button ("Request a demo"), US spelling, location line
 - [x] Website forms go into the CRM

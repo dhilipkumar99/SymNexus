@@ -2,7 +2,7 @@
 /**
  * Media carousel with lightbox support (reference "projects" card media).
  *
- * @var string $label   Accessible name, e.g. "FluorocellAI media"
+ * @var string $label   Accessible name, e.g. "FLUORO media"
  * @var array  $slides  List of ['img' => key, 'alt' => text] or ['partial' => name]
  */
 $count = count($slides);

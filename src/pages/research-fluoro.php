@@ -1,18 +1,18 @@
 <?php
-$pageTitle = 'FluorocellAI, in a cancer-research lab — Symnexus Research';
+$pageTitle = 'FLUORO, in a cancer-research lab — Symnexus Research';
 $pageMeta  = [
-    'description' => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI: from roughly three to four days of manual review to same-day turnaround.',
+    'description' => 'A cancer-research lab\'s cell-analysis workflow, before and after FLUORO: from roughly three to four days of manual review to same-day turnaround.',
     'og_type'     => 'article',
     'og_image'    => img('fluoroCells', 1200),
     'jsonld'      => [
         '@context'         => 'https://schema.org',
         '@type'            => 'Article',
-        'headline'         => 'FluorocellAI, in a cancer-research lab.',
-        'description'      => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI.',
+        'headline'         => 'FLUORO, in a cancer-research lab.',
+        'description'      => 'A cancer-research lab\'s cell-analysis workflow, before and after FLUORO.',
         'image'            => img('fluoroCells', 1200),
         'author'           => ['@type' => 'Organization', 'name' => SITE_NAME, 'url' => SITE_URL],
         'publisher'        => ['@type' => 'Organization', 'name' => SITE_NAME, 'url' => SITE_URL],
-        'mainEntityOfPage' => SITE_URL . '/research/fluorocellai-cancer-research-lab',
+        'mainEntityOfPage' => SITE_URL . '/research/fluoro-cancer-research-lab',
     ],
 ];
 
@@ -37,27 +37,27 @@ require SRC_DIR . '/includes/header.php';
                 <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
                     <span class="h-3 w-0.5 rounded-full bg-teal-500"></span>
                 </span>
-                FluorocellAI
+                FLUORO
             </span>
             <span class="text-gray-300 dark:text-gray-600" aria-hidden="true">•</span>
             <span class="badge">Case Study</span>
         </div>
         <h1 class="font-headline text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900 dark:text-white leading-tight">
-            FluorocellAI, in a cancer-research lab.
+            FLUORO, in a cancer-research lab.
         </h1>
     </div>
 
     <div class="relative w-full aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-slate-900 mb-10 shadow-xl">
-        <img src="<?= e(img('fluoroCells', 1600)) ?>" alt="Fluorescence microscopy of cells, the kind FluorocellAI analyzes" class="w-full h-full object-cover" fetchpriority="high">
+        <img src="<?= e(img('fluoroCells', 1600)) ?>" alt="Fluorescence microscopy of cells, the kind FLUORO analyzes" class="w-full h-full object-cover" fetchpriority="high">
     </div>
 
     <article class="font-body text-base leading-relaxed text-gray-600 dark:text-gray-300 space-y-6">
         <p>
-            A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual
+            A cancer-research lab's cell-analysis workflow, before and after FLUORO. FLUORO compresses manual
             review of cells from three to four days of manual cross-referencing to a same-day first pass.
         </p>
 
-        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">Before FluorocellAI</h2>
+        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">Before FLUORO</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <?php foreach ($before as [$label, $value]): ?>
                 <div class="rounded-xl bg-white dark:bg-slate-800/60 border border-gray-200/80 dark:border-slate-700/50 p-4 text-center">
@@ -67,7 +67,7 @@ require SRC_DIR . '/includes/header.php';
             <?php endforeach; ?>
         </div>
 
-        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">With FluorocellAI</h2>
+        <h2 class="font-headline text-2xl font-bold tracking-tight text-gray-900 dark:text-white pt-4">With FLUORO</h2>
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <?php foreach ($after as [$label, $value]): ?>
                 <div class="rounded-xl bg-brandPrimary/10 border border-brandPrimary/30 p-4 text-center">
@@ -88,9 +88,9 @@ require SRC_DIR . '/includes/header.php';
 
     <?php partial('cta', [
         'title'   => 'Want to see this on your own data?',
-        'body'    => 'Request a demo and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
+        'body'    => 'Request a demo and we\'ll walk through FLUORO or ComplianceCall using your own workflow as the basis.',
         'primary' => ['label' => 'Request a demo', 'href' => '/demo'],
-        'secondary' => ['label' => 'About FluorocellAI', 'href' => '/fluorocellai'],
+        'secondary' => ['label' => 'About FLUORO', 'href' => '/fluoro'],
     ]); ?>
 </div>
 

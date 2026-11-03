@@ -12,11 +12,11 @@ const ROUTES = [
     '/'                                        => ['page' => 'home',                'priority' => '1.0'],
     '/about'                                   => ['page' => 'about',               'priority' => '0.8'],
     '/products'                                => ['page' => 'products',            'priority' => '0.9'],
-    '/fluorocellai'                            => ['page' => 'fluorocellai',        'priority' => '0.9'],
+    '/fluoro'                                  => ['page' => 'fluoro',              'priority' => '0.9'],
     '/compliancecall'                          => ['page' => 'compliancecall',      'priority' => '0.9'],
     '/pricing'                                 => ['page' => 'pricing',             'priority' => '0.7'],
     '/research'                                => ['page' => 'research',            'priority' => '0.6'],
-    '/research/fluorocellai-cancer-research-lab' => ['page' => 'research-fluorocellai', 'priority' => '0.6'],
+    '/research/fluoro-cancer-research-lab'     => ['page' => 'research-fluoro',     'priority' => '0.6'],
     '/careers'                                 => ['page' => 'careers',             'priority' => '0.5'],
     '/contact'                                 => ['page' => 'contact',             'priority' => '0.7'],
     '/demo'                                    => ['page' => 'demo',                'priority' => '0.8'],
@@ -30,11 +30,15 @@ const ROUTES = [
 
 /** Legacy URLs kept alive (the old per-product pricing pages were folded into /pricing). */
 const REDIRECTS = [
-    '/fluorocellai/pricing'   => ['/pricing#fluorocellai', 307],
+    '/fluorocellai/pricing'   => ['/pricing#fluoro', 307],
+    '/fluoro/pricing'         => ['/pricing#fluoro', 307],
     '/compliancecall/pricing' => ['/pricing#compliancecall', 307],
     '/index.php'              => ['/', 301],
     // The catalog moved to /products; the SymNexus(x) product sites still link here.
     '/solutions'              => ['/products', 301],
+    // FluorocellAI was renamed FLUORO.
+    '/fluorocellai'           => ['/fluoro', 301],
+    '/research/fluorocellai-cancer-research-lab' => ['/research/fluoro-cancer-research-lab', 301],
 ];
 
 function send_common_headers(): void

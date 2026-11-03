@@ -19,7 +19,7 @@ if (is_spa_request()) {
 
 $canonical        = $pageMeta['canonical'] ?? (SITE_URL . current_path());
 $meta_description = $pageMeta['description']
-    ?? 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FluorocellAI, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.';
+    ?? 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FLUORO, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.';
 $meta_og_type      = $pageMeta['og_type'] ?? 'website';
 $meta_og_image     = $pageMeta['og_image'] ?? img('darkLab', 1200);
 $meta_og_image_alt = $pageMeta['og_image_alt'] ?? 'Symnexus — domain-native software systems';

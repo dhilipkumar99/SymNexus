@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'About — Symnexus';
 $pageMeta  = [
-    'description' => 'FluorocellAI, ComplianceCall and custom AI systems from Symnexus — a Silicon Valley team of engineers and researchers building domain-native software for regulated and technical industries.',
+    'description' => 'FLUORO, ComplianceCall and custom AI systems from Symnexus — a Silicon Valley team of engineers and researchers building domain-native software for regulated and technical industries.',
     'og_image'    => img('scientistScope', 1200),
 ];
 

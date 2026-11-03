@@ -12,7 +12,7 @@ require SRC_DIR . '/includes/header.php';
     'title'   => 'Let\'s discuss',
     'highlight' => 'your requirements.',
     'lead'    => 'We provide structured evaluation access for qualified research and regulatory teams. Domain specialists run every demonstration, not sales staff.',
-    'sublead' => 'We also build domain-native software systems well beyond FluorocellAI and ComplianceCall — if you have a custom solution in mind, tell us about it below.',
+    'sublead' => 'We also build domain-native software systems well beyond FLUORO and ComplianceCall — if you have a custom solution in mind, tell us about it below.',
 ]); ?>
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-16 pb-8">

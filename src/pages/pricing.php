@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Pricing — Symnexus';
 $pageMeta  = [
-    'description' => 'Symnexus pricing for FluorocellAI and ComplianceCall. We size every deployment to your workflow — contact us for a quote.',
+    'description' => 'Symnexus pricing for FLUORO and ComplianceCall. We size every deployment to your workflow — contact us for a quote.',
 ];
 
 $faq = [
@@ -9,7 +9,7 @@ $faq = [
     ['q' => 'How is pricing determined?',                              'a' => 'We size pricing to the scope of your deployment — number of sites, data volume, and workflow complexity. We prove the model on your data first, then discuss a plan sized to your organization.'],
     ['q' => 'Is pricing billed monthly or annually?',                  'a' => 'Both options are available and discussed as part of your pricing conversation.'],
     ['q' => 'Do you work with academic or non-profit institutions?',   'a' => 'Yes — several of our early deployments are with research labs and academic institutions. Contact us to discuss institutional pricing.'],
-    ['q' => 'What if my field isn\'t FluorocellAI or ComplianceCall?', 'a' => 'Those are our current products, not the limit of what we build. We design domain-native software systems for other technical and regulated fields — reach out to discuss your workflow.'],
+    ['q' => 'What if my field isn\'t FLUORO or ComplianceCall?', 'a' => 'Those are our current products, not the limit of what we build. We design domain-native software systems for other technical and regulated fields — reach out to discuss your workflow.'],
     ['q' => 'What does onboarding look like?',                         'a' => 'Onboarding starts from the evaluation: our engineers configure the system on your own data and connect it to the tools your team already uses, your domain experts check its results alongside your current process, and we train your team to run it independently. Everything is logged in an audit trail from day one.'],
     ['q' => 'Can I cancel or change my plan?',                         'a' => 'Cancellation and plan-change terms, including notice period, are set out in your contract. Reach out to your account contact to review your specific terms or initiate a change.'],
 ];

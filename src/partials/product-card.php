@@ -1,6 +1,6 @@
 <?php
 /**
- * Product card (About page grid; FluorocellAI also on /research).
+ * Product card (About page grid; FLUORO also on /research).
  *
  * @var string     $slug    Key in PRODUCTS; also the card's id
  * @var array      $p       PRODUCTS[$slug]
@@ -39,7 +39,7 @@
                 <?php endforeach; ?>
             </ul>
 
-            <?php if ($slug === 'fluorocellai'): ?>
+            <?php if ($slug === 'fluoro'): ?>
                 <div class="mt-6 grid grid-cols-2 rounded-lg border border-gray-100 dark:border-slate-800 divide-x divide-gray-100 dark:divide-slate-800 text-xs">
                     <div class="p-4">
                         <p class="font-mono text-[10px] uppercase tracking-wider text-gray-500 dark:text-gray-300 mb-3">Before</p>
@@ -50,7 +50,7 @@
                         </ul>
                     </div>
                     <div class="p-4">
-                        <p class="font-mono text-[10px] uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-3">With FluorocellAI</p>
+                        <p class="font-mono text-[10px] uppercase tracking-wider text-teal-700 dark:text-teal-400 mb-3">With FLUORO</p>
                         <ul class="space-y-2 text-gray-700 dark:text-gray-200">
                             <li>Automated counting: minutes</li>
                             <li>QC / audit trail: automatic</li>

@@ -76,7 +76,7 @@
         }).then(function (response) {
             // Only accept genuine fragments; anything else triggers a full load.
             // Redirects also go through a full load: fetch hides the target's #fragment,
-            // which the browser preserves (e.g. /fluorocellai/pricing → /pricing#fluorocellai).
+            // which the browser preserves (e.g. /fluoro/pricing → /pricing#fluoro).
             if (!response.ok || response.redirected || response.headers.get('X-SPA-Fragment') !== '1') {
                 throw new Error('Not an SPA fragment (HTTP ' + response.status + ')');
             }

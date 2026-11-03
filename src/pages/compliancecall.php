@@ -29,7 +29,7 @@ $capabilities = [
     ['icon' => 'globe',        'title' => 'Live federal regulatory sync',  'body' => 'Benchmarks pharmaceutical development against current federal regulation, so requirements surface automatically rather than at the next review.'],
     ['icon' => 'shield-check', 'title' => 'Full audit-trail transparency', 'body' => 'Every action is logged, attributable, and exportable by design — critical trust infrastructure for teams operating under FDA and other regulatory bodies.'],
     ['icon' => 'document',     'title' => 'Document control',              'body' => 'Version history and access logs mean a superseded SOP can never be mistaken for the current one — the ambiguity that turns into a finding during an audit.'],
-    ['icon' => 'cube',         'title' => 'Shared modular AI stack',       'body' => 'Runs on the same ingestion, data lake, and fine-tuned-model architecture as FluorocellAI, letting us extend coverage to new jurisdictions without rebuilding.'],
+    ['icon' => 'cube',         'title' => 'Shared modular AI stack',       'body' => 'Runs on the same ingestion, data lake, and fine-tuned-model architecture as FLUORO, letting us extend coverage to new jurisdictions without rebuilding.'],
     ['icon' => 'briefcase',    'title' => 'Built for FDA filings',         'body' => 'ComplianceCall\'s regulatory benchmarking is built for teams filing into the FDA process — the majority of the world\'s pharmaceutical applications.'],
 ];
 
@@ -82,7 +82,7 @@ require SRC_DIR . '/includes/header.php';
             the fact.
         </p>
         <p class="text-sm">
-            Built on the same modular AI stack as FluorocellAI — ingestion, data lake, fine-tuned models, agents, and
+            Built on the same modular AI stack as FLUORO — ingestion, data lake, fine-tuned models, agents, and
             copilot — letting us extend coverage to new regulatory jurisdictions without rebuilding from scratch.
         </p>
     </div>

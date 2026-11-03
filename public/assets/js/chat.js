@@ -10,7 +10,7 @@
 
     var STORAGE_KEY = 'symnexus_chat_history';
     var MAX_HISTORY = 10;
-    var GREETING = "Hello! I'm the Symnexus AI assistant. Ask me about FluorocellAI, ComplianceCall, the custom systems we build, or how to request a demonstration.";
+    var GREETING = "Hello! I'm the Symnexus AI assistant. Ask me about FLUORO, ComplianceCall, the custom systems we build, or how to request a demonstration.";
 
     var windowEl = document.getElementById('ai-chat-window');
     var screenEl = document.getElementById('chat-screen');
@@ -55,7 +55,7 @@
     // links, everything else is escaped. Matching once means links never nest.
     var LINK_PATTERN = new RegExp([
         '(https?:\\/\\/[^\\s<>"\']*[^\\s<>"\'.,;:!?)\\]])',                                  // 1: URL
-        '(^|[\\s(])(\\/(?:demo|contact|pricing|products|about|research|careers|fluorocellai|compliancecall)\\b)', // 2: lead char, 3: site path
+        '(^|[\\s(])(\\/(?:demo|contact|pricing|products|about|research|careers|fluoro|compliancecall)\\b)', // 2: lead char, 3: site path
         '([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,})',                                   // 4: email
         '(\\+1 \\(\\d{3}\\) \\d{3}-\\d{4})',                                                  // 5: phone
     ].join('|'), 'g');

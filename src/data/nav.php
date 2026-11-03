@@ -18,8 +18,8 @@ function social_links(): array
 
 // Primary navigation. `match` lists every path prefix that highlights the link.
 const NAV_LINKS = [
-    // FluorocellAI and ComplianceCall are presented on the About page.
-    ['label' => 'About',    'href' => '/about',    'match' => ['/about', '/fluorocellai', '/compliancecall']],
+    // FLUORO and ComplianceCall are presented on the About page.
+    ['label' => 'About',    'href' => '/about',    'match' => ['/about', '/fluoro', '/compliancecall']],
     ['label' => 'Products', 'href' => '/products', 'match' => ['/products']],
     ['label' => 'Research', 'href' => '/research', 'match' => ['/research']],
     ['label' => 'Pricing',  'href' => '/pricing',  'match' => ['/pricing']],

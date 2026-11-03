@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Symnexus — Domain-Native Software Systems for Regulated Industries';
 $pageMeta  = [
-    'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FluorocellAI, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.',
+    'description' => 'Symnexus designs and builds domain-native software systems for regulated, technical industries — currently offering FLUORO, automated cell image analysis, and ComplianceCall, real-time pharmaceutical compliance tracking.',
 ];
 
 $gallery = [
@@ -22,11 +22,11 @@ $approach = [
 $proof = [
     [
         'category' => 'Life sciences · Computer vision',
-        'name'     => 'FluorocellAI',
+        'name'     => 'FLUORO',
         'outcome'  => '3–4 days of manual cell review → a same-day first pass',
         'body'     => 'Automated segmentation, counting and QC for cancer-research labs, with an audit trail behind every result and no change to how the lab prepares its slides.',
-        'image'    => ['images/fluorocellai-segmentation-800.webp', 800, 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary', 'object-cover'],
-        'links'    => [['Read the case study', '/research/fluorocellai-cancer-research-lab', false], ['Product', '/fluorocellai', false]],
+        'image'    => ['images/fluoro-segmentation-800.webp', 800, 'FLUORO segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary', 'object-cover'],
+        'links'    => [['Read the case study', '/research/fluoro-cancer-research-lab', false], ['Product', '/fluoro', false]],
     ],
     [
         'category' => 'Pharma · Regulatory compliance',
@@ -144,7 +144,7 @@ require SRC_DIR . '/includes/header.php';
     <div class="mb-6 md:mb-8 max-w-3xl">
         <h2 id="approach-title" class="section-title">Domain-Native: Integrated into your Workflows</h2>
         <p class="section-lead">
-            For cell researchers, FluorocellAI turned a 3–4 day manual review into a same-day first pass — because the system is built around
+            For cell researchers, FLUORO turned a 3–4 day manual review into a same-day first pass — because the system is built around
             how a lab already works, not the other way around.
         </p>
     </div>
@@ -185,9 +185,9 @@ require SRC_DIR . '/includes/header.php';
             <article class="group relative flex flex-col items-start">
                 <h3 class="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
                     <span class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" aria-hidden="true"></span>
-                    <a href="/research/fluorocellai-cancer-research-lab">
+                    <a href="/research/fluoro-cancer-research-lab">
                         <span class="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl"></span>
-                        <span class="relative z-10">FluorocellAI, in a cancer-research lab.</span>
+                        <span class="relative z-10">FLUORO, in a cancer-research lab.</span>
                     </a>
                 </h3>
                 <p class="relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500 pl-3.5">
@@ -197,7 +197,7 @@ require SRC_DIR . '/includes/header.php';
                     Case Study
                 </p>
                 <p class="relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                    A cancer-research lab's cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses
+                    A cancer-research lab's cell-analysis workflow, before and after FLUORO. FLUORO compresses
                     manual review of cells from three to four days of manual cross-referencing to a same-day first pass.
                 </p>
                 <div aria-hidden="true" class="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-700">

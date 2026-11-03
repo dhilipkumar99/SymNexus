@@ -1,17 +1,17 @@
 <?php
 $pageTitle = 'Research — Symnexus';
 $pageMeta  = [
-    'description' => 'A case study on FluorocellAI in a cancer-research lab: what changed, and how much time it saved.',
+    'description' => 'A case study on FLUORO in a cancer-research lab: what changed, and how much time it saved.',
     'og_image'    => img('fluoroCells', 1200),
 ];
 
 $entries = [
     [
-        'href'      => '/research/fluorocellai-cancer-research-lab',
-        'title'     => 'FluorocellAI, in a cancer-research lab.',
+        'href'      => '/research/fluoro-cancer-research-lab',
+        'title'     => 'FLUORO, in a cancer-research lab.',
         'category'  => 'Case Study',
-        'meta'      => 'FluorocellAI',
-        'excerpt'   => 'A cancer-research lab\'s cell-analysis workflow, before and after FluorocellAI. FluorocellAI compresses manual review of cells from three to four days of manual cross-referencing to a same-day first pass.',
+        'meta'      => 'FLUORO',
+        'excerpt'   => 'A cancer-research lab\'s cell-analysis workflow, before and after FLUORO. FLUORO compresses manual review of cells from three to four days of manual cross-referencing to a same-day first pass.',
         'thumbnail' => 'fluoroCells',
         'alt'       => 'Fluorescence microscopy image of stained cells',
     ],
@@ -27,7 +27,7 @@ require SRC_DIR . '/includes/header.php';
             What changed for one small research lab.
         </h1>
         <p class="font-body text-gray-600 dark:text-gray-300 text-sm md:text-base leading-relaxed max-w-2xl">
-            A before-and-after look at FluorocellAI in production.
+            A before-and-after look at FLUORO in production.
         </p>
     </div>
 
@@ -70,19 +70,19 @@ require SRC_DIR . '/includes/header.php';
         <?php endforeach; ?>
     </div>
 
-    <!-- The FluorocellAI product card from the About page, with its first image only. -->
+    <!-- The FLUORO product card from the About page, with its first image only. -->
     <div class="mt-10">
         <?php partial('product-card', [
-            'slug'   => 'fluorocellai',
-            'p'      => PRODUCTS['fluorocellai'],
-            'slides' => array_slice(PRODUCT_MEDIA['fluorocellai'], 0, 1),
+            'slug'   => 'fluoro',
+            'p'      => PRODUCTS['fluoro'],
+            'slides' => array_slice(PRODUCT_MEDIA['fluoro'], 0, 1),
         ]); ?>
     </div>
 </div>
 
 <?php partial('cta', [
     'title'     => 'Want to see this on your own data?',
-    'body'      => 'Request a demo and we\'ll walk through FluorocellAI or ComplianceCall using your own workflow as the basis.',
+    'body'      => 'Request a demo and we\'ll walk through FLUORO or ComplianceCall using your own workflow as the basis.',
     'note'      => 'Working outside imaging or compliance? We build domain-native software systems for many industries — <a href="/contact" class="link-inline">reach out</a> to discuss a custom system.',
     'primary'   => ['label' => 'Request a demo', 'href' => '/demo'],
 ]); ?>

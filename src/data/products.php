@@ -2,15 +2,15 @@
 
 // Product catalogue shared by the home, products and pricing pages.
 const PRODUCTS = [
-    'fluorocellai' => [
-        'name'     => 'FluorocellAI',
-        'href'     => '/fluorocellai',
+    'fluoro' => [
+        'name'     => 'FLUORO',
+        'href'     => '/fluoro',
         'external' => false,
         'link'     => 'See how it works',
         'category' => 'Imaging & Cell Analysis',
         'icon'     => 'beaker',
         'summary'  => 'Upload your microscopy images. Get automated cell counts, segmentation, and a QC audit trail back the same day — instead of three to four days of manual review.',
-        'overview' => 'FluorocellAI automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.',
+        'overview' => 'FLUORO automates cell identification, counting, and analysis for cell and cancer research labs — the same visual-detection discipline our platform applies wherever manual, error-prone inspection is the bottleneck.',
         'detail'   => 'A cell-analysis workflow that once took three to four days of manual cross-referencing — slide prep, manual counting, manual QC, and write-up — compresses to a same-day first pass. Slide prep and imaging stay unchanged; automated segmentation and counting run in minutes instead of days, with automatic QC and an audit trail behind every result.',
         'features' => [
             'Automated segmentation & counting, in minutes',
@@ -46,7 +46,7 @@ const PRODUCTS = [
             'Full audit-trail transparency by design',
             'Historical hazard category tracking',
             'Built for FDA-regulated development teams',
-            'One modular AI stack shared with FluorocellAI',
+            'One modular AI stack shared with FLUORO',
             'REST API for compliance workflow integration',
         ],
         'cta'      => 'Request a demo',
@@ -94,10 +94,10 @@ const PRODUCTS = [
 
 // Card media (first slide leads), shared by the About and Research pages.
 const PRODUCT_MEDIA = [
-    'fluorocellai' => [
-        ['asset' => 'images/fluorocellai-segmentation.webp', 'small' => 'images/fluorocellai-segmentation-800.webp', 'width' => 1494, 'smallWidth' => 800,
-         'alt' => 'FluorocellAI segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary'],
-        ['img' => 'fluoroCells', 'alt' => 'Fluorescence microscopy of cells, the kind FluorocellAI analyzes'],
+    'fluoro' => [
+        ['asset' => 'images/fluoro-segmentation.webp', 'small' => 'images/fluoro-segmentation-800.webp', 'width' => 1494, 'smallWidth' => 800,
+         'alt' => 'FLUORO segmentation output: fluorescent cell nuclei, each outlined by an automatically detected boundary'],
+        ['img' => 'fluoroCells', 'alt' => 'Fluorescence microscopy of cells, the kind FLUORO analyzes'],
         ['img' => 'fluoroHero',  'alt' => 'Fluorescent-stained cells under a microscope'],
     ],
     'compliancecall' => [

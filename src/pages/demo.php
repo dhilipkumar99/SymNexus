@@ -1,7 +1,7 @@
 <?php
 $pageTitle = 'Request a Demo — Symnexus';
 $pageMeta  = [
-    'description' => 'Request a tailored demonstration of FluorocellAI or ComplianceCall. Domain specialists run every demonstration, not sales staff.',
+    'description' => 'Request a tailored demonstration of FLUORO or ComplianceCall. Domain specialists run every demonstration, not sales staff.',
     'og_image'    => img('scientistScope', 1200),
 ];
 
@@ -20,7 +20,7 @@ require SRC_DIR . '/includes/header.php';
     'title'   => 'See it in the context of',
     'highlight' => 'your workflow.',
     'lead'    => 'Every demonstration is conducted by a domain specialist and built around your workflow — your imaging modality, your cell type, your regulatory structure. Not a scripted product walkthrough.',
-    'sublead' => 'Not evaluating FluorocellAI or ComplianceCall? We build domain-native software systems for many industries — tell us what you have in mind below.',
+    'sublead' => 'Not evaluating FLUORO or ComplianceCall? We build domain-native software systems for many industries — tell us what you have in mind below.',
 ]); ?>
 
 <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16 pb-8">

@@ -96,7 +96,7 @@ deployment.
   product sites. Unset, links fall back to `http://localhost:3101…3109`, which only works for local
   demos. The product sites link back to `/solutions`, which now 301-redirects to `/products`.
 
-FluorocellAI, ComplianceCall and the custom-systems cards (`src/data/products.php`) are shown at the
+FLUORO, ComplianceCall and the custom-systems cards (`src/data/products.php`) are shown at the
 top of `/about`.
 
 ## AI assistant (optional)
